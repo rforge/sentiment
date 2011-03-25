@@ -1,0 +1,12 @@
+\name{addSentimentVo}
+\alias{addSentimentVo}
+\title{Add Sentiment Volume as barchart to current chob...}
+\usage{addSentimentVo(fieldname, color="blue")
+}
+\description{Add Sentiment Volume as barchart to current chob}
+\author{Mario Annau}
+\seealso{\code{\link{addSentimentVo}} \code{\link{chartSentiment}}}
+\arguments{\item{fieldname}{Specifies fieldname in XTS object which contains sentiment volume, default "Volume"}
+\item{color}{Color of barchart, default "blue"}
+}
+
