@@ -8,7 +8,7 @@ Suggests: RJSONIO
 Author: Mario Annau <mario.annau@gmail.com>
 Maintainer: Mario Annau <mario.annau@gmail.com>
 Description: Facilitate way to retrieve text corpora from various web
-    sources
+    sources. Currently, various data sources (Google Blog Search, Reuters Spotlight, Yahoo BOSS, etc.) and formats (RSS, ATOM, JSON) are supported.
 License: GPL-3
 Collate: 'export.R' 'extractContent.R' 'feedquery.R' 'getCorpus.R'
     'getFeed.R' 'getMeta.R' 'getURLPart.R' 'removePunctuationExcept.R'

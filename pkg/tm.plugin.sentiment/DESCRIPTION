@@ -6,8 +6,8 @@ Depends: tm, quantmod
 Imports: slam
 Author: Mario Annau <mario.annau@gmail.com>
 Maintainer: Mario Annau <mario.annau@gmail.com>
-Description: Facilitate way to retrieve text corpora from the web and
-    analyze the with a clear focus on sentiment analysis
+Description: tm.plugin.sentiment supports sentiment analysis of text corpora. 
+Scoring of text documents, build up of sentiment time series in xts and charting using facilities of quantmod are supported.
 License: GPL-3
 Collate: 'OHCLSent.transformations.R' 'addSentiment.R'
     'chartSentiment.R' 'corpus.R' 'data.R' 'getRelevant.R' 'metaXTS.R'
