@@ -65,7 +65,7 @@
   Information Sciences Institute\\
   University of Southern California\\
   Marina del Rey, CA 90292, U.S.A\\
-  E-mail: \email{rzinkov@gmail.com}
+  E-mail: \email{zinkov@usc.edu}
 }
 
 %% for those who use Sweave please include the following line (with % symbols):
