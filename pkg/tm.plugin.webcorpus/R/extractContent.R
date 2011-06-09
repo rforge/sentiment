@@ -128,7 +128,7 @@ function(xn, annotate = TRUE){
 #' @param t object of class xmlNode
 #' @param FUN Function to be executed
 #' @param threshold maximum threshold needed to step down the tree, defaults to 0.5
-#' @param attribname ???
+#' @param attribname Name of used attribute, defaults to "attrib"
 # TODO rewrite funtion to be more general and remove attribname???
 #' @param recursive should tree be recursively annotated?, defaults to TRUE
 #' @param mintextlen minimum textlength needed to step down the tree

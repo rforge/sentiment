@@ -1,15 +1,17 @@
 Package: tm.plugin.webcorpus
+Imports: RCurl ,XML
+Maintainer: Mario Annau <mario.annau@gmail.com>
+License: GPL-3
 Title: Text corpus web data retrieval
+Author: Mario Annau <mario.annau@gmail.com>
+Description: Facilitate way to retrieve text corpora from various web
+    sources. Currently, various data sources (Google Blog Search,
+    Reuters Spotlight, Yahoo BOSS, etc.) and formats (RSS, ATOM, JSON)
+    are supported.
 Version: 0.0.1
 Date: 2010-08-09
 Depends: tm, Defaults
-Imports: RCurl ,XML
 Suggests: RJSONIO
-Author: Mario Annau <mario.annau@gmail.com>
-Maintainer: Mario Annau <mario.annau@gmail.com>
-Description: Facilitate way to retrieve text corpora from various web
-    sources. Currently, various data sources (Google Blog Search, Reuters Spotlight, Yahoo BOSS, etc.) and formats (RSS, ATOM, JSON) are supported.
-License: GPL-3
 Collate: 'export.R' 'extractContent.R' 'feedquery.R' 'getCorpus.R'
     'getFeed.R' 'getMeta.R' 'getURLPart.R' 'removePunctuationExcept.R'
     'source.R' 'trimWhiteSpaces.R'
