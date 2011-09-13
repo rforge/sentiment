@@ -41,8 +41,9 @@ metaXTS <- function(corpus,
 	
 	xts_agg = NULL
 	if(length(ep) > 2){
-		xts_agg <- xts(sapply(1:NCOL(xts), function(x) period.apply(xts[,x], ep, aggFUN)),
-				order.by = index(xts)[ep])
+		ldata <- lapply(1:NCOL(xts), function(x) period.apply(xts[,x], ep, aggFUN))
+		ldata_all <- do.call("cbind", ldata)
+		xts_agg <- xts(ldata_all, order.by = index(xts)[ep])
 		volxts_agg <- period.apply(volxts, ep, sum)
 	}else{
 		#ep <- ep[ep > 0]
@@ -57,7 +58,8 @@ metaXTS <- function(corpus,
 	
 	scorevolxts_agg <- cbind(xts_agg, volxts_agg)
 	colnames(scorevolxts_agg) <- paste(prefix,colnames(scorevolxts_agg), sep=".")
-	index(scorevolxts_agg) <- as.Date(index(scorevolxts_agg))
+	if(period == "days")
+		index(scorevolxts_agg) <- as.Date(index(scorevolxts_agg))
 	
 	if(!missing(symbol)){
 		names <- colnames(symbol)
