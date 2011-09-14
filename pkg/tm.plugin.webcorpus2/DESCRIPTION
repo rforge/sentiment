@@ -4,13 +4,10 @@ Maintainer: Mario Annau <mario.annau@gmail.com>
 License: GPL-3
 Title: Text corpus web data retrieval
 Author: Mario Annau <mario.annau@gmail.com>
-Description: Facilitate way to retrieve text corpora from many web
-    sources. Currently, various data sources (Google Blog Search,
-    Reuters Spotlight, Yahoo BOSS, etc.) and formats (RSS, ATOM, JSON)
-    are supported. THIS IS A VERY EARLY PROTOTYPE!!!!
+Description: THIS IS A VERY EARLY PROTOTYPE!!!!
 Version: 0.0.1
 Date: 2010-09-13
-Depends: tm, Defaults
+Depends: tm
 Suggests: RJSONIO
 Collate: 'extractContent.R' 'feedquery.R' 'getURLPart.R' 'reader.R'
     'source.R' 'trimWhiteSpaces.R'

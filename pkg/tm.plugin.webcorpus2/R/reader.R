@@ -47,6 +47,7 @@ readTwitter <- readWebXML(spec = list(Author = list("node", "//author/name"),
 				Source = list("node", "//source"),
 				Language = list("node", "//lang"),
 				ID = list("node",  "//id")),
+		extractFUN = extractHTMLStrip,
 		doc = PlainTextDocument())
 
 
@@ -62,6 +63,6 @@ readGoogleFinance <- readWebXML(spec = list(Heading = list("node", "//title"),
 				Origin = list("node", "//link"),
 				Description = list("node", "//item/description"),
 				ID = list("node",  "//guid")),
-		extractFUN = extractContentDOM,
+		extractFUN = NULL,
 		doc = PlainTextDocument())
 
