@@ -1,9 +1,9 @@
-\name{GoogleFinanceSource}
-\alias{GoogleFinanceSource}
-\title{Get Feed Meta Data from Google Finance...}
-\usage{GoogleFinanceSource(query, n=20, ...)
+\name{YahooFinanceSource}
+\alias{YahooFinanceSource}
+\title{Get Feed Meta Data from Yahoo Finance...}
+\usage{YahooFinanceSource(query, n=20, ...)
 }
-\description{Get Feed Meta Data from Google Finance}
+\description{Get Feed Meta Data from Yahoo Finance}
 \author{Mario Annau}
 \value{WebXMLSource}
 \arguments{\item{query}{ticker symbols of companies to be searched for, see \url{http://finance.yahoo.com/lookup}.

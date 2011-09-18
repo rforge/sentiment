@@ -1,9 +1,9 @@
-\name{GoogleFinanceSource}
-\alias{GoogleFinanceSource}
-\title{Get Feed Meta Data from Google Finance...}
-\usage{GoogleFinanceSource(query, n=20, ...)
+\name{GoogleBlogSearchSource}
+\alias{GoogleBlogSearchSource}
+\title{Get Feed Meta Data from GoogleBlogSearch...}
+\usage{GoogleBlogSearchSource(query, n=100, ...)
 }
-\description{Get Feed Meta Data from Google Finance}
+\description{Get Feed Meta Data from GoogleBlogSearch}
 \author{Mario Annau}
 \value{WebXMLSource}
 \arguments{\item{query}{ticker symbols of companies to be searched for, see \url{http://finance.yahoo.com/lookup}.
