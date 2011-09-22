@@ -10,26 +10,22 @@
 #' @param linkreader function to be applied to content elements from parser, returns character vector of urls
 #' @param getLinkContent specifies whether urls from linkreader should be retrieved
 #' @param encoding specifies default encoding, defaults to 'UTF-8'
-#' @param return WebSource
+#' @param vectorized specifies if source is vectorized, defaults to FALSE
+#' @return WebSource
 #' @export
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
 WebSource <- function(feedurls, parser, linkreader, getLinkContent = !missing(linkreader), encoding = "UTF-8", vectorized = FALSE){
-	#TODO: do something "better"
-	
-	
+	#TODO: implement "save url retrieval with retries"
 	#cat("Retrieving ", feedurls, "\n")
 	# retrieve feeds using RCurl
 	content_raw <- getURL(feedurls, followlocation = TRUE)
 	
 	content_parsed <- unlist(lapply(content_raw, parser), recursive = FALSE)
 	
-	# extract content urls from feeds
+	# generate source object
 	s <- tm:::.Source(NULL, encoding, length(content_parsed), FALSE, NULL, 0, vectorized)
 	
-	#TODO: do parsing and concat stuff together
-	#like lapply(content_raw, parse)
-	#function(tree) XML:: 
 	s$Content <- content_parsed
 	
 	if(getLinkContent){ # if contentpath is se
@@ -47,29 +43,37 @@ WebSource <- function(feedurls, parser, linkreader, getLinkContent = !missing(li
 
 #' Get Feed Meta Data from Google Finance
 #' @author Mario Annau
-#' @param query ticker symbols of companies to be searched for, see \url{http://finance.yahoo.com/lookup}.
+#' @param query ticker symbols of companies to be searched for, see \url{http://www.google.com/finance}.
 #' Please note that Google ticker symbols need to be prefixed with the exchange name, e.g. NASDAQ:MSFT
-#' @param n number of results (curr. max is ?), defaults to 20
-#' @param ... additional query parameters
+#' @param params, additional query parameters
+#' @param ... additional parameters to \code{\link{WebSource}}
 #' @return WebXMLSource
+#' @seealso \code{\link{WebSource}}, \code{\link{readGoogleFinance}}
 #' @export
+#' @examples
+#' \dontrun{
+#' corpus <- Corpus(GoogleFinanceSource("NASDAQ:MSFT"))
+#' }
 #' @importFrom XML xmlInternalTreeParse
 #' @importFrom XML xpathSApply
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
-GoogleFinanceSource <- function(query, n = 20, ...){
+GoogleFinanceSource <- function(query, params = 
+				list( 	hl= 'en', 
+						q=query, 
+						ie='utf-8', 
+						start = 0, 
+						num = 20, 
+						output='rss'),...){
 	feed <- "http://www.google.com/finance/company_news"
-	params = list(hl= 'en', q=query, ie='utf-8', start = 0, num = n, output='rss', ...)
-	fq <- feedquery(feed, params)
-	
 	parser <- function(cr){
 		tree <- xmlInternalTreeParse(cr, asText = TRUE)
 		xpathSApply(tree, path = "//item")
 	}
-	
 	linkreader <- function(tree) getNodeSet(tree, ".//link", fun = xmlValue)
 	
-	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader)
+	fq <- feedquery(feed, params)
+	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader, ...)
 	ws$DefaultReader = readGoogleFinance
 	class(ws) <- c("WebXMLSource", "Source")
 	ws
@@ -78,18 +82,24 @@ GoogleFinanceSource <- function(query, n = 20, ...){
 #' Get Feed Meta Data from Yahoo Finance
 #' @author Mario Annau
 #' @param query ticker symbols of companies to be searched for, see \url{http://finance.yahoo.com/lookup}.
-#' Please note that Google ticker symbols need to be prefixed with the exchange name, e.g. NASDAQ:MSFT
-#' @param n number of results (curr. max is ?), defaults to 20
-#' @param ... additional query parameters
+#' @param params, additional query parameters, see \url{http://developer.yahoo.com/rss/}
+#' @param ... additional parameters to \code{\link{WebSource}}
 #' @return WebXMLSource
 #' @export
+#' @examples
+#' \dontrun{
+#' corpus <- Corpus(YahooFinanceSource("MSFT"))
+#' }
+#' @seealso \code{\link{WebSource}}, \code{\link{readYahooFinance}} 
 #' @importFrom XML xmlInternalTreeParse
 #' @importFrom XML xpathSApply
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
-YahooFinanceSource <- function(query, n = 20, ...){
+YahooFinanceSource <- function(query, params = 
+				list(	s= query, 
+						n = 20), ...){
 	feed <- "http://finance.yahoo.com/rss/headline"
-	params <- list(	s= query, n = n, ...)
+	
 	fq <- feedquery(feed, params)
 	parser <- function(cr){
 		tree <- xmlInternalTreeParse(cr, asText = TRUE)
@@ -98,27 +108,36 @@ YahooFinanceSource <- function(query, n = 20, ...){
 	
 	linkreader <- function(tree) getNodeSet(tree, ".//link", fun = xmlValue)
 	
-	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader)
+	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader, ...)
 	ws$DefaultReader = readYahooFinance
 	class(ws) <- c("WebXMLSource", "Source")
 	ws
 }
 
-#' Get Feed Meta Data from GoogleBlogSearch
+#' Get Feed Meta Data from Google Blog Search \url{http://www.google.com/blogsearch}
 #' @author Mario Annau
-#' @param query ticker symbols of companies to be searched for, see \url{http://finance.yahoo.com/lookup}.
-#' Please note that Google ticker symbols need to be prefixed with the exchange name, e.g. NASDAQ:MSFT
-#' @param n number of results (curr. max is ?), defaults to 20
-#' @param ... additional query parameters
+#' @param query Google Blog Search query
+#' @param params, additional query parameters
+#' @param ... additional parameters to \code{\link{WebSource}}
 #' @return WebXMLSource
+#' @seealso \code{\link{WebSource}}, \code{\link{readGoogleBlogSearch}} 
 #' @export
+#' @examples
+#' \dontrun{
+#' corpus <- Corpus(GoogleBlogSearchSource("Microsoft"))
+#' }
 #' @importFrom XML xmlInternalTreeParse
 #' @importFrom XML xpathSApply
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
-GoogleBlogSearchSource <- function(query, n = 100, ...){
+GoogleBlogSearchSource <- function(query, params = 
+				list(	hl= 'en', 
+						q = query, 
+						ie='utf-8', 
+						num = 100, 
+						output='rss'), ...){
 	feed <- "http://blogsearch.google.com/blogsearch_feeds"
-	params = list(hl= 'en', q = query, ie='utf-8', num = n, output='rss', ...)
+
 	fq <- feedquery(feed, params)
 	parser <- function(cr){
 		tree <- xmlInternalTreeParse(cr, asText = TRUE)
@@ -126,35 +145,35 @@ GoogleBlogSearchSource <- function(query, n = 100, ...){
 		xmlns1 <- lapply(nodes, newXMLNamespace, "http://purl.org/dc/elements/1.1/", "dc")
 		nodes
 	}
-	
 	linkreader <- function(tree) getNodeSet(tree, ".//link", fun = xmlValue)
 	
-	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader)
+	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader, ...)
 	ws$DefaultReader = readGoogleBlogSearch
 	class(ws) <- c("WebXMLSource", "Source")
 	ws
 }
 
-
-
 #' Get Feed Meta Data from Twitter
 #' @author Mario Annau
-#' @param query character specifying query to be used to search tweets
-#' @param count number of results per page, defaults to 100
-#' @param n number of results, defaults to 100
-#' @param ... additional query parameters, see \url{http://search.twitter.com/api/}
+#' @param query Google Blog Search query
+#' @param n number of results, defaults to 1500
+#' @param params, additional query parameters, see \url{http://search.twitter.com/api/}
+#' @param ... additional parameters to \code{\link{WebSource}}
 #' @return WebXMLSource
+#' @seealso \code{\link{WebSource}}, \code{\link{readTwitter}} 
 #' @export
+#' @examples
+#' \dontrun{
+#' corpus <- Corpus(TwitterSource("Microsoft"))
+#' }
 #' @importFrom XML xmlInternalTreeParse
 #' @importFrom XML xpathSApply
-#' @importFrom XML newXMLNamespace
-TwitterSource <- function(query, count = 100, n = 1500, ...){
-	page <- seq(1,ceiling(n/count), by = 1)
-	params <- list( q = query,
-			rpp = count,
-			page=page,
-			...
-	)
+#' @importFrom XML getNodeSet
+#' @importFrom XML xmlValue
+TwitterSource <- function(query, n = 1500, params = 
+				list( 	q = query,
+						rpp = 100,
+						page=seq(1,ceiling(n/100), by = 1)),...){
 	
 	feed <- "http://search.twitter.com/search.atom"
 	
@@ -174,48 +193,44 @@ TwitterSource <- function(query, count = 100, n = 1500, ...){
 	}
 	
 	fq <- feedquery(feed, params)
-	ws <- WebSource(feedurls = fq, parser = parser)
+	ws <- WebSource(feedurls = fq, parser = parser, ...)
 	ws$DefaultReader = readTwitter
 	class(ws) <- c("WebXMLSource", "Source")
 	ws
 }
 
 
-#' Get Feed Meta Data from Microsoft Bing Search
+#' Get Feed Meta Data from Bing Live Search API
 #' @author Mario Annau
 #' @param query character specifying query to be used to search tweets
-#' @param count number of results per page, defaults to 100
-#' @param n number of results, defaults to 100
-#' @param appid appid to be specified
-#' @param ... additional query parameters, see \url{http://search.twitter.com/api/}
+#' @param n number of results (curr. max is ?), defaults to 100
+#' @param count number of results per page, defaults to 10
+#' @param appid Developer App id to be used obtained from \url{http://www.bing.com/developers}
+#' @param sources, source type, defaults to "news", see \url{http://msdn.microsoft.com/en-us/library/dd250847.aspx} for additional source types
+#' @param params additional query parameters, see \url{http://msdn.microsoft.com/en-us/library/dd251056.aspx}
+#' @param ... additional parameters to \code{\link{WebSource}}
 #' @return WebXMLSource
+#' @seealso \code{\link{WebSource}}, \code{\link{readBing}} 
 #' @export
+#' @examples
+#' \dontrun{
+#' #set appid, obtained from http://www.bing.com/developers
+#' corpus <- Corpus(BingSource("Microsoft", appid = appid))
+#' }
 #' @importFrom XML xmlInternalTreeParse
 #' @importFrom XML xpathSApply
 #' @importFrom XML newXMLNamespace
-BingSource <- function(query, n = 100, count = 10, appid,  sources = "news", market = "en-US", ...){
+BingSource <- function(query, n = 100, count = 10, appid,  sources = "news", params = 
+				list(	Appid = appid,
+						query = query,
+						sources=sources,
+						market = "en-US"), ...){
+	
+	params[[paste(sources, ".offset", sep = "")]] <- seq(0, n-count, by = count)
+	params[[paste(sources, ".count", sep = "")]] <- count
+	
 	feed <- "http://api.search.live.net/xml.aspx"
-	count = count
-	maxitems = n
-	offset = seq(0, maxitems-count, by = count)
-	
-	countfield <- paste(sources, ".count", sep = "")
-	offsetfield <- paste(sources, ".offset", sep = "")
-	
-	params <- list(	Appid = appid,
-			query = query,
-			sources=sources,
-			offsetfield = offset,
-			...
-	)
-	
-	params[[countfield]] <- count
-	params[[offsetfield]] <- offset
-	
-	if(market != ""){
-		params[["market"]] <- market
-	}
-	
+
 	parser <- function(cr){
 		namespaces = c(	"news" = "http://schemas.microsoft.com/LiveSearch/2008/04/XML/news")
 		
@@ -223,11 +238,9 @@ BingSource <- function(query, n = 100, count = 10, appid,  sources = "news", mar
 		nodes <- xpathSApply(tree, path = "//news:NewsResult", namespaces = namespaces)
 		#to surpress namespace warnings while parsing
 		xmlns1 <- lapply(nodes, newXMLNamespace, "http://schemas.microsoft.com/LiveSearch/2008/04/XML/news", "news")
-		#xmlns2 <- lapply(nodes, newXMLNamespace, "http://www.georss.org/georss", "georss")
 		nodes
 	}
 	linkreader <- function(tree) getNodeSet(tree, "./news:Url", fun = xmlValue)
-	
 	
 	fq <- feedquery(feed, params)
 	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader)
@@ -236,27 +249,31 @@ BingSource <- function(query, n = 100, count = 10, appid,  sources = "news", mar
 	ws
 }
 
-#' Get Feed Meta Data from NYTimes
+
+#' Get Feed Meta Data from NYTimes Article Search
 #' @author Mario Annau
-#' @param query character specifying query to be used to search tweets
+#' @param query character specifying query to be used to search NYTimes articles
+#' @param n number of results defaults to 100
 #' @param count number of results per page, defaults to 10
-#' @param n number of results, defaults to 100
-#' @param appid id to be used for query
-#' @param ... additional query parameters, see \url{http://search.twitter.com/api/}
-#' @return WebJSONSource
+#' @param appid Developer App id to be used, obtained from \url{http://developer.nytimes.com/}
+#' @param params additional query parameters, specified as list, see \url{http://developer.nytimes.com/docs/read/article_search_api}
+#' @param ... additional parameters to \code{\link{WebSource}}
+#' @seealso \code{\link{WebSource}}, \code{\link{readNYTimes}} 
+#' @export
+#' @examples
+#' \dontrun{
+#' #nytimes_appid needs to be specified
+#' corpus <- Corpus(NYTimesSource("Microsoft", appid = nytimes_appid))
+#' }
 #' @export
 #' @importFrom RJSONIO fromJSON
-NYTimesSource <- function(query, n = 100, count = 10, appid, ...){
+NYTimesSource <- function(query, n = 100, count = 10, appid, params = 
+		list(	format="json",
+				query = query,
+				offset=seq(0, n-count, by = count),
+				"api-key" = appid),...){
 	#importDefaults("getMeta.nytimes.articlesearch")
 	feed <- "http://api.nytimes.com/svc/search/v1/article"
-	offset <- seq(0, n-count, by = count)
-	params <- list(format="json",
-			query = query,
-			offset=offset,
-			"api-key" = appid, 
-			...
-	)
-	
 	fq <- feedquery(feed, params)
 	
 	parser <- function(cr){
@@ -276,6 +293,10 @@ NYTimesSource <- function(query, n = 100, count = 10, appid, ...){
 #' @author Mario Annau
 #' @return WebHTMLSource
 #' @export
+#' @examples
+#' \dontrun{
+#' corpus <- Corpus(YahooInplaySource())
+#' }
 #' @importFrom XML htmlTreeParse
 #' @importFrom XML xpathSApply
 YahooInplaySource <- function(){

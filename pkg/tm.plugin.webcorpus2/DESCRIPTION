@@ -1,5 +1,5 @@
 Package: tm.plugin.webcorpus2
-Imports: RCurl ,XML
+Imports: RCurl ,XML, RJSONIO
 Maintainer: Mario Annau <mario.annau@gmail.com>
 License: GPL-3
 Title: Text corpus web data retrieval
@@ -8,6 +8,5 @@ Description: THIS IS A VERY EARLY PROTOTYPE!!!!
 Version: 0.0.1
 Date: 2010-09-13
 Depends: tm
-Suggests: RJSONIO
 Collate: 'extractContent.R' 'feedquery.R' 'getURLPart.R' 'reader.R'
     'source.R' 'trimWhiteSpaces.R'

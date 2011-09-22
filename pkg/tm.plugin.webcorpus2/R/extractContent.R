@@ -10,7 +10,7 @@
 #' 				\cite{Gupta et al., DOM-based Content Extraction of HTML Documents},\url{http://www2003.org/cdrom/papers/refereed/p583/p583-gupta.html}
 #' @export
 extractContent <- 
-function(contentsrc, extractor = "extractContentDOM", verbose = TRUE, ...){
+function(contentsrc, extractor = "extractContentDOM", verbose = FALSE, ...){
 	content <- c()
 	if(!is.null(extractor)){
 		if(verbose)
@@ -86,21 +86,21 @@ function(url, asText = TRUE, ...){
 #' @export
 extractContentDOM <-
 function(url, threshold = 0.5, asText = TRUE, ...){
-	
-	if(url == ""){
-		return("")
-	}
-	
-	parseerror <- capture.output(tree <- htmlTreeParse(url, asText = asText, useInternalNodes = TRUE, ...))
-	childlen <- sapply(xmlChildren(tree), function(x) nchar(toString.XMLNode(x)))
-	childidx <- which(childlen == max(childlen))
-	html <- xmlChildren(tree)[[childidx]]
-	tags <- c("script" , "noscript", "style")
-	htmlclean <- removeTags(html, tags)
-	
-	htmlannotated <- assignValues(htmlclean, FUN = calcDensity, threshold)
-	content <- getMainText(htmlannotated, threshold)
-	return(content)
+
+		if(url == ""){
+			return("")
+		}
+		
+		parseerror <- capture.output(tree <- htmlTreeParse(url, asText = asText, useInternalNodes = TRUE, ...))
+		childlen <- sapply(xmlChildren(tree), function(x) nchar(toString.XMLNode(x)))
+		childidx <- which(childlen == max(childlen))
+		html <- xmlChildren(tree)[[childidx]]
+		tags <- c("script" , "noscript", "style")
+		htmlclean <- removeTags(html, tags)
+		
+		htmlannotated <- assignValues(htmlclean, FUN = calcDensity, threshold)
+		content <- getMainText(htmlannotated, threshold)
+		return(content)
 }
 
 #' Calculate density of html text to overall length of html tree text
