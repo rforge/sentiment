@@ -1,12 +1,17 @@
-Package: tm.plugin.webcorpus2
+Package: tm.plugin.webmining
 Imports: RCurl ,XML, RJSONIO
 Maintainer: Mario Annau <mario.annau@gmail.com>
 License: GPL-3
-Title: Text corpus web data retrieval
+Title: Retrieve structured, textual data from various web sources
 Author: Mario Annau <mario.annau@gmail.com>
-Description: THIS IS A VERY EARLY PROTOTYPE!!!!
-Version: 0.0.1
+Description: tm.plugin.webmining facilitates textual data retrieval
+    from various web feed formats like XML (RSS, ATOM) and JSON. Also
+    direct retrieval from HTML is supported. As most (news) feeds only
+    incorporate small fractions of the original text
+    tm.plugin.webmining goes a step further and even retrieves and
+    extracts the text of the original text source.
+Version: 0.1
 Date: 2010-09-13
-Depends: tm
+Depends: tm, boilerpipeR
 Collate: 'extractContent.R' 'feedquery.R' 'getURLPart.R' 'reader.R'
-    'source.R' 'trimWhiteSpaces.R'
+    'source.R' 'tm.plugin.webmining-package.R' 'trimWhiteSpaces.R'
