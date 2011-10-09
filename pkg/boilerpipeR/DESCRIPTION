@@ -1,10 +1,12 @@
 Package: boilerpipeR
 Maintainer: Mario Annau <mario.annau@gmail.com>
 License: GPL-3
-Title: Extraction of main content from html
-	This is a very early prototype!!!
+Title: Interface to the boilerpipe library by Christian Kohlschutter
+    (http://code.google.com/p/boilerpipe/)
 Author: Mario Annau <mario.annau@gmail.com>
-Description:
+Description: Extraction of main text content from HTML files using the
+    boilerpipe JAVA library. The extraction heuristics of boilerpipe
+    show reasonable performance for a wide range of web sites.
 Version: 0.0.1
 Date: 2010-08-09
 Depends: rJava
