@@ -2,7 +2,8 @@
 \alias{WebSource}
 \title{Read Web Content and respective Link Content from feedurls...}
 \usage{WebSource(feedurls, parser, linkreader, getLinkContent=!missing(linkreader),
-    encoding="UTF-8", vectorized=FALSE)
+    encoding="UTF-8", vectorized=FALSE,
+    curlOpts=curlOptions(followlocation = TRUE, maxconnects = 20))
 }
 \description{Read Web Content and respective Link Content from feedurls}
 \author{Mario Annau}
@@ -13,5 +14,6 @@
 \item{getLinkContent}{specifies whether urls from linkreader should be retrieved}
 \item{encoding}{specifies default encoding, defaults to 'UTF-8'}
 \item{vectorized}{specifies if source is vectorized, defaults to FALSE}
+\item{curlOpts}{a named list or CURLOptions object identifying the curl options for the handle. Type \code{listCurlOptions()} for all Curl options available.}
 }
 

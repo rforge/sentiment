@@ -11,15 +11,18 @@
 #' @param getLinkContent specifies whether urls from linkreader should be retrieved
 #' @param encoding specifies default encoding, defaults to 'UTF-8'
 #' @param vectorized specifies if source is vectorized, defaults to FALSE
+#' @param curlOpts a named list or CURLOptions object identifying the curl options for the handle. Type \code{listCurlOptions()} for all Curl options available.
 #' @return WebSource
 #' @export
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
-WebSource <- function(feedurls, parser, linkreader, getLinkContent = !missing(linkreader), encoding = "UTF-8", vectorized = FALSE){
+#' @importFrom RCurl curlOptions
+WebSource <- function(feedurls, parser, linkreader, getLinkContent = !missing(linkreader), encoding = "UTF-8", vectorized = FALSE, 
+						curlOpts = curlOptions(followlocation = TRUE, maxconnects = 20)){
 	#TODO: implement "save url retrieval with retries"
 	#cat("Retrieving ", feedurls, "\n")
 	# retrieve feeds using RCurl
-	content_raw <- getURL(feedurls, followlocation = TRUE)
+	content_raw <- getURL(feedurls, .opts = curlOpts)
 	
 	content_parsed <- unlist(lapply(content_raw, parser), recursive = FALSE)
 	
@@ -33,7 +36,7 @@ WebSource <- function(feedurls, parser, linkreader, getLinkContent = !missing(li
 		#cat(paste(content_urls, collapse = "\n"))
 		
 		#cat("Retrieving Content...\n")
-		content <- getURL(content_urls, followlocation = TRUE)
+		content <- getURL(content_urls, .opts = curlOpts)
 		s$LinkContent = content
 	}
 	
@@ -90,7 +93,7 @@ GoogleFinanceSource <- function(query, params =
 #' \dontrun{
 #' corpus <- Corpus(YahooFinanceSource("MSFT"))
 #' }
-#' @seealso \code{\link{WebSource}}, \code{\link{readYahooFinance}} 
+#' @seealso \code{\link{WebSource}}, \code{\link{readYahoo}} 
 #' @importFrom XML xmlInternalTreeParse
 #' @importFrom XML xpathSApply
 #' @importFrom XML getNodeSet
@@ -109,7 +112,7 @@ YahooFinanceSource <- function(query, params =
 	linkreader <- function(tree) getNodeSet(tree, ".//link", fun = xmlValue)
 	
 	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader, ...)
-	ws$DefaultReader = readYahooFinance
+	ws$DefaultReader = readYahoo
 	class(ws) <- c("WebXMLSource", "Source")
 	ws
 }
@@ -198,6 +201,44 @@ TwitterSource <- function(query, n = 1500, params =
 	class(ws) <- c("WebXMLSource", "Source")
 	ws
 }
+
+#' Get Feed Meta Data from Yahoo News
+#' @author Mario Annau
+#' @param query words to be searched in Yahoo News, multiple words must be separated by '+'
+#' @param params, additional query parameters, see \url{http://developer.yahoo.com/rss/}
+#' @param ... additional parameters to \code{\link{WebSource}}
+#' @return WebXMLSource
+#' @export
+#' @examples
+#' \dontrun{
+#' corpus <- Corpus(YahooNewsSource("Microsoft"))
+#' }
+#' @seealso \code{\link{WebSource}}, \code{\link{readYahoo}} 
+#' @importFrom XML xmlInternalTreeParse
+#' @importFrom XML xpathSApply
+#' @importFrom XML getNodeSet
+#' @importFrom XML xmlValue
+YahooNewsSource <- function(query, params = 
+				list(	p= query, 
+						n = 20,
+						ei = "UTF-8"), ...){
+	feed <- "http://news.search.yahoo.com/rss"
+	
+	fq <- feedquery(feed, params)
+	parser <- function(cr){
+		tree <- xmlInternalTreeParse(cr, asText = TRUE)
+		xpathSApply(tree, path = "//item")
+	}
+	
+	linkreader <- function(tree) getNodeSet(tree, ".//link", fun = xmlValue)
+	
+	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader, ...)
+	ws$DefaultReader = readYahoo
+	class(ws) <- c("WebXMLSource", "Source")
+	ws
+}
+
+
 
 
 #' Get Feed Meta Data from Bing Live Search API
