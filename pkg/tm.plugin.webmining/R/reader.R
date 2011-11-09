@@ -15,17 +15,31 @@ readWeb <- FunctionGenerator(function(spec, doc, extractFUN = NULL, parser, cont
 	spec <- spec
 	doc <- doc
 	extractFUN <- extractFUN
+	extractFUNargs <- list()
+	
+	if(length(extractFUN) == 2){
+		extractFUNargs <- extractFUN[[2]]
+		extractFUN <- extractFUN[[1]]
+	}
+	
 	
 	function(elem, language, id) {
 		tree <- parser(elem$content)
 	
 		###Set Content
 		Content(doc) <- if ("Content" %in% names(spec)){
-							contentparser(tree, spec[["Content"]])
+							content <- contentparser(tree, spec[["Content"]])
+							if(!is.null(extractFUN))
+								tryCatch(do.call(extractFUN, c(content, extractFUNargs)),
+										error = function(e){
+											#cat("An Error occured at Content Extraction, index ", i, "\n")
+											print(e)
+											character(0)
+										})
 						}
 						else if(!is.null(elem$linkcontent)){
 							if(!is.null(extractFUN))
-								tryCatch(extractFUN(elem$linkcontent),
+								tryCatch(do.call(extractFUN, c(elem$linkcontent, extractFUNargs)),
 									error = function(e){
 										#cat("An Error occured at Content Extraction, index ", i, "\n")
 										print(e)
@@ -126,15 +140,21 @@ readNYTimes <- readWebJSON(spec = list(
 #' @importFrom XML xmlValue
 readTwitter <- readWebXML(spec = list(
 		Author = list("node", "//author/name"),
+		AuthorURI = list("node", "//author/uri"),
 		Content = list("node", "//content"),
 		DateTimeStamp = list("function", function(node)
 					strptime(sapply(getNodeSet(node, "//published"), xmlValue),
 							format = "%Y-%m-%dT%H:%M:%S",
 							tz = "GMT")),
-		Source = list("node", "//source"),
-		Language = list("node", "//lang"),
+		Updated = list("function", function(node)
+					strptime(sapply(getNodeSet(node, "//updated"), xmlValue),
+							format = "%Y-%m-%dT%H:%M:%S",
+							tz = "GMT")),
+		Source = list("node", "//twitter:source"),
+		Language = list("node", "//twitter:lang"),
+		Geo = list("node", "//twitter:geo"),
 		ID = list("node",  "//id")),
-	extractFUN = extractHTMLStrip,
+	extractFUN = list("extractHTMLStrip", list(encoding="UTF-8")),
 	doc = PlainTextDocument())
 
 
@@ -143,15 +163,21 @@ readTwitter <- readWebXML(spec = list(
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
 #' @importFrom boilerpipeR ArticleExtractor
-readGoogleFinance <- readWebXML(spec = list(
+readGoogle <- readWebXML(spec = list(
 		Heading = list("node", "//title"),
 		DateTimeStamp = list("function", function(node){
+					loc <- Sys.getlocale("LC_TIME")
+					Sys.setlocale("LC_TIME", "C")
 					val <- sapply(getNodeSet(node, "//pubDate"), xmlValue)
-					val <- substr(val, regexpr("\\s", val)+1, nchar(val))
-					strptime(val,format = "%d %b %Y %H:%M:%S",tz = "GMT")
+					time <- strptime(val,format = "%a, %d %b %Y %H:%M:%S",tz = "GMT")
+					Sys.setlocale("LC_TIME", loc)
+					time
 				}),
 		Origin = list("node", "//link"),
-		Description = list("node", "//item/description"),
+		Description = list("function", function(node){
+					val <- sapply(getNodeSet(node, "//item/description"), xmlValue)
+					extractHTMLStrip(val, asText = TRUE)
+				}),
 		ID = list("node",  "//guid")),
 	extractFUN = ArticleExtractor,
 	doc = PlainTextDocument())
@@ -165,9 +191,12 @@ readGoogleFinance <- readWebXML(spec = list(
 readYahoo <- readWebXML(spec = list(
 		Heading = list("node", "//title"),
 		DateTimeStamp = list("function", function(node){
+					loc <- Sys.getlocale("LC_TIME")
+					Sys.setlocale("LC_TIME", "C")
 					val <- sapply(getNodeSet(node, "//pubDate"), xmlValue)
-					val <- substr(val, regexpr("\\s", val)+1, nchar(val))
-					strptime(val,format = "%d %b %Y %H:%M:%S",tz = "GMT")
+					time <- strptime(val,format = "%a, %d %b %Y %H:%M:%S",tz = "GMT")
+					Sys.setlocale("LC_TIME", loc)
+					time
 				}),
 		Origin = list("node", "//link"),
 		Description = list("node", "//item/description"),
@@ -184,9 +213,12 @@ readYahoo <- readWebXML(spec = list(
 readGoogleBlogSearch <- readWebXML(spec=list(
 		Heading = list("node", "//title"),
 		DateTimeStamp = list("function", function(node){
+					loc <- Sys.getlocale("LC_TIME")
+					Sys.setlocale("LC_TIME", "C")
 					val <- sapply(getNodeSet(node, "//dc:date"), xmlValue)
-					val <- substr(val, regexpr("\\s", val)+1, nchar(val))
-					strptime(val,format = "%d %b %Y %H:%M:%S",tz = "GMT")
+					time <- strptime(val,format = "%a, %d %b %Y %H:%M:%S",tz = "GMT")
+					Sys.setlocale("LC_TIME", loc)
+					time
 				}),
 		Origin = list("node", "//link"),
 		Description = list("node", "//item/description"),
@@ -227,3 +259,28 @@ readBing <- readWebXML(spec = list(Heading = list("node", "/*/news:Title"),
 	extractFUN = ArticleExtractor,
 	doc = PlainTextDocument())
 
+
+#' Read content from GoogleFinanceSource
+#' @export
+#' @importFrom XML getNodeSet
+#' @importFrom XML xmlValue
+#' @importFrom boilerpipeR ArticleExtractor
+readReutersNews <- readWebXML(spec = list(
+				Heading = list("node", "//title"),
+				DateTimeStamp = list("function", function(node){
+							loc <- Sys.getlocale("LC_TIME")
+							Sys.setlocale("LC_TIME", "C")
+							val <- sapply(getNodeSet(node, "//pubDate"), xmlValue)
+							time <- strptime(val,format = "%a, %d %b %Y %H:%M:%S",tz = "GMT")
+							Sys.setlocale("LC_TIME", loc)
+							time
+						}),
+				Origin = list("node", "//link"),
+				Description = list("function", function(node){
+							val <- sapply(getNodeSet(node, "//item/description"), xmlValue)
+							extractHTMLStrip(val, asText = TRUE)
+						}),
+				ID = list("node",  "//guid"),
+				Category = list("node", "//category")),
+		extractFUN = ArticleExtractor,
+		doc = PlainTextDocument())

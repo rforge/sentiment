@@ -43,9 +43,6 @@ function(contentsrc, extractor = "extractContentDOM", verbose = FALSE, ...){
 #' @param asText specifies if url parameter is a \code{character}, defaults to TRUE
 #' @param ... Additional parameters for \code{\link{htmlTreeParse}} 
 #' @seealso \code{\link{xmlNode}}
-#' @references 	\url{http://www.elias.cn/En/ExtMainText}, 
-#' 				\url{http://ai-depot.com/articles/the-easy-way-to-extract-useful-text-from-arbitrary-html/}
-#' 				\cite{Gupta et al., DOM-based Content Extraction of HTML Documents},\url{http://www2003.org/cdrom/papers/refereed/p583/p583-gupta.html}
 #' @importFrom XML htmlTreeParse
 #' @importFrom XML toString.XMLNode
 #' @importFrom XML xmlChildren
@@ -66,6 +63,7 @@ function(url, asText = TRUE, ...){
 	
 	return(xmlValue(html))
 }
+
 
 #' Extract Main HTML Content from DOM
 #' Function extracts main HTML Content using its Document Object Model.

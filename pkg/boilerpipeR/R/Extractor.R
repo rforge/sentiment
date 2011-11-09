@@ -16,6 +16,8 @@
 #' @param asText should content specifed be treated as actual text to be extracted or url (from which HTML document is first downloaded and extracted afterwards), defaults to TRUE
 #' @param ... additional parameters
 #' @references \url{http://code.google.com/p/boilerpipe/}
+#' @importFrom rJava .jnew
+#' @importFrom rJava .jcall
 #' @export 
 Extractor <- function(exname, content, asText = TRUE, ...){
 	

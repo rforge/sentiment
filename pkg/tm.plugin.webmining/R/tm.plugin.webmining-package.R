@@ -23,8 +23,8 @@
 #' be extracted.
 #' }}
 #' 
-#' @name tm.plugin.webcorpus-package
-#' @aliases tm.plugin.webcorpus webcorpus
+#' @name tm.plugin.webmining-package
+#' @aliases tm.plugin.webmining webmining
 #' @docType package
 #' @title Retrieve structured, textual data from various web sources
 #' @author Mario Annau \email{mario.annau@@gmail}
@@ -41,6 +41,23 @@
 #' test7corp <- Corpus(BingSource("Microsoft", appid = bing_appid))
 #' test8corp <- Corpus(YahooNewsSource("Microsoft"))
 #' }
-
-
 NULL
+
+#' This is data to be included in my package
+#'
+#' @name baracktwitter
+#' @docType data
+#' @author Mario Annau
+#' @references \url{search.twitter.com}
+#' @keywords data
+#' @examples
+#' #Data set has been generated as follows:
+#' \dontrun{
+#' baracktwitter <- Corpus(TwitterSource("#BarackObama"))
+#' baracktwitter <- tm_map(baracktwitter, function(x) iconv(x,from="UTF-8", to = "ASCII"))
+#' baracktwitter <- tm_map(baracktwitter, function(x) {meta(x, "Author") <- iconv(meta(x, "Author"),from="UTF-8", to = "ASCII");x})
+#' baracktwitter <- tm_map(baracktwitter, function(x) {meta(x, "AuthorURI") <- iconv(meta(x, "AuthorURI"),from="UTF-8", to = "ASCII");x})
+#' baracktwitter <- tm_map(baracktwitter, function(x) {meta(x, "Source") <- iconv(meta(x, "Source"),from="UTF-8", to = "ASCII");x})
+#' }
+NULL
+

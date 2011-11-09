@@ -1,8 +1,7 @@
 \name{TwitterSource}
 \alias{TwitterSource}
 \title{Get Feed Meta Data from Twitter...}
-\usage{TwitterSource(query, n=1500, params=list(q = query, rpp = 100, page = seq(1,
-    ceiling(n/100), by = 1)), ...)
+\usage{TwitterSource(query, n=1500, params=list(lang = "en"), ...)
 }
 \description{Get Feed Meta Data from Twitter}
 \author{Mario Annau}

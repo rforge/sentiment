@@ -51,7 +51,7 @@ WebSource <- function(feedurls, parser, linkreader, getLinkContent = !missing(li
 #' @param params, additional query parameters
 #' @param ... additional parameters to \code{\link{WebSource}}
 #' @return WebXMLSource
-#' @seealso \code{\link{WebSource}}, \code{\link{readGoogleFinance}}
+#' @seealso \code{\link{WebSource}}, \code{\link{readGoogle}}
 #' @export
 #' @examples
 #' \dontrun{
@@ -77,7 +77,7 @@ GoogleFinanceSource <- function(query, params =
 	
 	fq <- feedquery(feed, params)
 	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader, ...)
-	ws$DefaultReader = readGoogleFinance
+	ws$DefaultReader = readGoogle
 	class(ws) <- c("WebXMLSource", "Source")
 	ws
 }
@@ -123,7 +123,7 @@ YahooFinanceSource <- function(query, params =
 #' @param params, additional query parameters
 #' @param ... additional parameters to \code{\link{WebSource}}
 #' @return WebXMLSource
-#' @seealso \code{\link{WebSource}}, \code{\link{readGoogleBlogSearch}} 
+#' @seealso \code{\link{WebSource}}, \code{\link{readGoogle}} 
 #' @export
 #' @examples
 #' \dontrun{
@@ -156,6 +156,82 @@ GoogleBlogSearchSource <- function(query, params =
 	ws
 }
 
+
+#' Get Feed Meta Data from Google News Search \url{http://news.google.com/}
+#' @author Mario Annau
+#' @param query Google News Search query
+#' @param params, additional query parameters
+#' @param ... additional parameters to \code{\link{WebSource}}
+#' @return WebXMLSource
+#' @seealso \code{\link{WebSource}}, \code{\link{readGoogle}} 
+#' @export
+#' @examples
+#' \dontrun{
+#' corpus <- Corpus(GoogleNewsSource("Microsoft"))
+#' }
+#' @importFrom XML xmlInternalTreeParse
+#' @importFrom XML xpathSApply
+#' @importFrom XML getNodeSet
+#' @importFrom XML xmlValue
+GoogleNewsSource <- function(query, params = 
+				list(	hl= 'en', 
+						q = query, 
+						ie='utf-8', 
+						num = 100, 
+						output='rss'), ...){
+	feed <- "http://news.google.com/news"
+	
+	fq <- feedquery(feed, params)
+	parser <- function(cr){
+		tree <- xmlInternalTreeParse(cr, asText = TRUE)
+		nodes <- xpathSApply(tree, path = "//item")
+		xmlns1 <- lapply(nodes, newXMLNamespace, "http://purl.org/dc/elements/1.1/", "dc")
+		nodes
+	}
+	linkreader <- function(tree) getNodeSet(tree, ".//link", fun = xmlValue)
+	
+	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader, ...)
+	ws$DefaultReader = readGoogle
+	class(ws) <- c("WebXMLSource", "Source")
+	ws
+}
+
+#' Get Feed Meta Data from Reuters News RSS Feeds
+#' @author Mario Annau
+#' @param query Reuters News RSS Feed, see \url{http://www.reuters.com/tools/rss} for a list of all feeds provided. Note that only string after 'http://feeds.reuters.com/reuters/' must be given. Defaults to 'businessNews'.
+#' @param ... additional parameters to \code{\link{WebSource}}
+#' @return WebXMLSource
+#' @seealso \code{\link{WebSource}}, \code{\link{readReutersNews}} 
+#' @export
+#' @examples
+#' \dontrun{
+#' corpus <- Corpus(ReutersNewsSource("businessNews"))
+#' }
+#' @importFrom XML xmlInternalTreeParse
+#' @importFrom XML xpathSApply
+#' @importFrom XML getNodeSet
+#' @importFrom XML xmlValue
+ReutersNewsSource <- function(query = 'businessNews', ...){
+	feed <- "http://feeds.reuters.com/reuters"
+	
+	fq <- paste(feed, query, sep = "/")
+	#fq <- feedquery(feed, params)
+	parser <- function(cr){
+		tree <- xmlInternalTreeParse(cr, asText = TRUE)
+		nodes <- xpathSApply(tree, path = "//item")
+		xmlns1 <- lapply(nodes, newXMLNamespace, "http://rssnamespace.org/feedburner/ext/1.0", "feedburner")
+		nodes
+	}
+	linkreader <- function(tree) getNodeSet(tree, ".//link", fun = xmlValue)
+	
+	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader, ...)
+	ws$DefaultReader = readReutersNews
+	class(ws) <- c("WebXMLSource", "Source")
+	ws
+}
+
+
+
 #' Get Feed Meta Data from Twitter
 #' @author Mario Annau
 #' @param query Google Blog Search query
@@ -174,12 +250,14 @@ GoogleBlogSearchSource <- function(query, params =
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
 TwitterSource <- function(query, n = 1500, params = 
-				list( 	q = query,
-						rpp = 100,
-						page=seq(1,ceiling(n/100), by = 1)),...){
+				list(lang = 'en'),...){
 	
 	feed <- "http://search.twitter.com/search.atom"
-	
+
+	if(is.null(params[["q"]])) params[["q"]] <- query
+	if(is.null(params[["rpp"]])) params[["rpp"]] <- 100
+	if(is.null(params[["page"]])) params[["page"]] <- seq(1,ceiling(n/params[["rpp"]]), by = 1)
+
 	parser <- function(cr){
 		namespaces = c(	"google" = "http://base.google.com/ns/1.0", 
 				"openSearch" = "http://a9.com/-/spec/opensearch/1.1/",  
@@ -201,6 +279,8 @@ TwitterSource <- function(query, n = 1500, params =
 	class(ws) <- c("WebXMLSource", "Source")
 	ws
 }
+
+
 
 #' Get Feed Meta Data from Yahoo News
 #' @author Mario Annau
@@ -356,8 +436,10 @@ YahooInplaySource <- function(){
 
 
 
+
 #' @S3method getElem WebXMLSource
 #' @S3method getElem WebHTMLSource
+#' @importFrom tm getElem eoi
 #' @nord
 #' ...
 getElem.WebXMLSource <- 

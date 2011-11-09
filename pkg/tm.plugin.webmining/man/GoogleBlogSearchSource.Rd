@@ -7,7 +7,7 @@
 \description{Get Feed Meta Data from Google Blog Search \url{http://www.google.com/blogsearch}}
 \author{Mario Annau}
 \value{WebXMLSource}
-\seealso{\code{\link{WebSource}}, \code{\link{readGoogleBlogSearch}}}
+\seealso{\code{\link{WebSource}}, \code{\link{readGoogle}}}
 \arguments{\item{query}{Google Blog Search query}
 \item{params,}{additional query parameters}
 \item{...}{additional parameters to \code{\link{WebSource}}}
