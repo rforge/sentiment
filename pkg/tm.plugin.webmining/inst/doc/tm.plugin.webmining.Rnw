@@ -1,0 +1,435 @@
+\documentclass[a4paper]{article}
+\usepackage{Sweave}
+\usepackage[margin=2cm]{geometry}
+\usepackage[round]{natbib}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{listings}
+
+\newcommand{\acronym}[1]{\textsc{#1}}
+\newcommand{\class}[1]{\mbox{\textsf{#1}}}
+\newcommand{\code}[1]{\mbox{\texttt{#1}}}
+\newcommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\newcommand{\proglang}[1]{\textsf{#1}}
+\newcommand{\fkt}[1]{\code{#1()}}
+\newcommand{\todo}[1]{\begin{center}\code{<TODO: #1>}\end{center}}    
+\newcommand{\field}[1]{\code{\$#1}} 
+ 
+\sloppy
+%% \VignetteIndexEntry{Introduction to the tm.plugin.webmining Package}
+\SweaveOpts{prefix.string=webmining} 
+\SweaveOpts{include=FALSE}
+
+
+\begin{document}
+
+<<Init_hidden,echo=FALSE,results=hide>>=
+library(tm.plugin.webmining)
+data(baracktwitter)
+options(width = 95)
+@
+ 
+\title{Introduction to \pkg{tm.plugin.webmining}}
+\author{Mario Annau\\
+		\texttt{mario.annau@gmail.com}}
+
+\maketitle
+   
+\abstract{
+This vignette gives an introduction to \pkg{tm.plugin.webmining}, 
+an add-on package to \pkg{tm} which facilitates the retrieval of textual 
+data from the web. The main focus of \pkg{tm.plugin.webmining} is the retrieval
+of web content from structured news feeds in the \proglang{XML} (\proglang{RSS}, \proglang{ATOM}) and
+\proglang{JSON} format. Furthermore, the direct retrieval through  \proglang{HTML}
+documents is implemented. Numerous data sources are supported, including Google--,Yahoo!-- and 
+Bing News, Reuters, New York Times, Twitter, etc. In addition to simple feed content retrieval,
+also the complete source articles can be downloaded and extracted through \pkg{RCurl} and
+\pkg{boilerpipeR}.
+}
+
+\tableofcontents
+\newpage  
+  
+\section{Introduction}
+In recent years the research discipline known as \textit{text mining}\footnote{Text
+mining can be defined as the statistical analysis of large collections of text
+to gather valuable information.} has seen a tremendous growth not only in the
+academic area but also in fields such as business intelligence, customer
+relationship management (CRM), marketing and financial research. Text mining
+applications have been fuelled by the enormous growth of the largest text
+corpus of all---the Internet---with over one trillion unique URLs \citep{AlpertHajaj:GoogleBigWeb}.
+Developments in web technology, typically referred to as \textit{Web 2.0},
+including online review sites, personal blogs or even short, text messages
+called \textit{tweets} further accelerated the growth of user generated online
+content. In most cases web content is easily accessible through standard web browsers.
+However, the systematic download of web content, including relevant
+meta data, and the provision to statistical analysis--/text--mining software
+like \proglang{R} is non--trivial. Generally speaking, there are two
+approaches to retrieve and update a collection of text documents from the web:
+\begin{enumerate}
+\item Retrieval through web \textit{crawlers}, also known as
+\textit{spiders} or \textit{robots}
+\item Retrieval of content through provided news \textit{feeds} 
+\end{enumerate}
+The implementation of a web crawler is the most general retrieval
+approach that can be taken. Given a set of seed web pages, a web crawler
+recursively retrieves the content of documents, analyzes their link structure
+and follows the parsed links. The complexity and size of crawlers ranges from
+\textit{topical crawlers} (e.g. extraction of customer reviews from vendor
+sites) to \textit{universal crawlers} which index web documents of the entire
+(visible) Internet, as implemented by search engines like Google, Yahoo! and
+Bing. Although the implementation of (topical) crawlers can be facilitated by
+specialized  frameworks, like the \proglang{Python} open--source project
+\pkg{Scrapy} \citep{?}, programming a web crawler includes complex tasks like the
+maintenance of a page repository, efficient page retrieval through concurrent
+programming and the provision and maintenance of required hardware/cloud
+infrastructure.
+\\
+Fortunately, by the introduction of \textit{Web 2.0} technologies, most
+information providers offer content updates in form of structured news
+feeds. Most popular feed formats are either based on the
+\textit{Extensible Markup Language} \citep[\proglang{XML}, see][]{XML} or
+\proglang{JavaScript} \citep{JavaScript}. The \proglang{XML} category consists
+of the \textit{Really Simple Syndication} \citep[\proglang{RSS},
+see][]{RSS} and the  \textit{Atom Syndication Format} \citep[\proglang{ATOM},
+see][]{ATOM} which are very popular feed formats among content providers. The 
+\textit{JavaScript Object Notation} \citep[\proglang{JSON}, see][]{JSON} is a
+\proglang{JavaScript} based content description language which has already
+gained a lot of traction among feed providers.
+\\
+\pkg{tm.plugin.webcorpus} supports the retrieval of web documents
+based on news feeds in all of the above mentioned standardized data. Additionally, the direct 
+retrieval from \proglang{HTML} pages is possible. Built on
+the \pkg{tm} text mining infrastructure package
+\citep{hornik:Feinerer+Hornik+Meyer:2008} it integrates numerous \class{Source}
+and \class{Reader} classes for web content retrieval. Major supported feed
+providers include search engines like Google, Microsoft Bing and Yahoo! or
+newswires like the New York Times or Thomson Reuters. The feeds available can
+be highly customized through user specified parameters and deliver important
+meta information. Provided meta information supplied by the feed
+includes, e.g., the author of the news text, links to the original text or the
+publishing date--/timestamp. Since hardly any feed delivers complete articles, full 
+document content can be downloaded and extracted by
+\pkg{tm.plugin.webmining} if the link to the main content is provided.
+Please note that all presented \proglang{R}--code examples in this vignette
+require that the \pkg{tm.plugin.webmining} has been loaded.
+
+<<Init_shown,echo=TRUE, eval=F>>=
+library(tm.plugin.webmining)
+@ 
+
+\section{Package Overview}
+<<dependenceplot, fig=T,echo=F>>=
+library(diagram)
+lables <- c("tm.plugin.webmining", "tm", "boilerpipeR",  "RCurl" ,"XML", "RJSONIO")
+par(mar=c(0,0,0,0))
+plot.new()
+elpos<-coordinates (c(1,5))
+treearrow(from=elpos[1,],to=elpos[2:3,],arr.side=2,arr.pos=0.7,path="H")
+treearrow(from=elpos[1,],to=elpos[3:6,],arr.side=2,arr.pos=0.7,path="H", lty = 2)
+textrect (elpos[1,],0.2,0.05,lab=lables[1],cex=1, , shadow.size = 0, font = 2)
+for ( i in 2:6){
+	textrect (elpos[i,],0.1,0.05,lab=lables[i],cex=1, shadow.size = 0)
+} 
+@
+\begin{figure}[tbp]
+\centering
+\includegraphics[width = 8cm]{webmining-dependenceplot}
+\caption{	Illustration of the \pkg{tm.plugin.webmining} package dependencies. Solid lines 
+			indicate dependencies, dashed lines imports (as indicated by the package DESCRIPTION file).
+			Figure created using \pkg{diagram}.
+}
+\label{fig:schema_tm.plugin.webmining}
+\end{figure}
+
+To enable a wide range of web data retrieval use cases \pkg{tm.plugin.webmining} uses functions
+from numerous packges. All package dependencies (\pkg{tm}, \pkg{boilerpipeR}) and imports 
+(\pkg{RCurl}, \pkg{XML}, \pkg{RJSONIO}) are available through \proglang{CRAN}.\\
+In the context of \pkg{tm.plugin.webmining} these packages are used as follows:
+
+\begin{itemize}
+\item \pkg{tm}: Text mining infrastructure package \citep{hornik:Feinerer+Hornik+Meyer:2008}, 
+	providing data structures and functions for text corpus storage, preprocessing (e.g. stop word removal)
+	and document--term--matrix generation. 
+\item \pkg{boilerpipeR}: Provision of functions to extract the main content from \proglang{HTML} files
+	through the boilerpipe \proglang{Java} library \citep{kohlschuetter:webextract}.
+\item \pkg{RCurl}: For web data retrieval the \pkg{RCurl} package is imported.
+	Especially the function \fkt{getURLAsynchronous} is used (through \fkt{getURL})
+	as it implements a fast, multithreaded way to download web pages from the Internet.
+\item \pkg{XML}: To parse \proglang{RSS} Feeds, \proglang{ATOM} Feeds, \proglang{XML}-- or \proglang{HTML}
+	Trees from the web, the package \pkg{XML} \citep{RPack:XML} provides all
+	necessary functions and interfaces. It builds upon the popular \pkg{libxml}
+	\proglang{C} library.
+\item \pkg{RJSONIO}: \proglang{JSON} feeds are supported and can be
+parsed using the \pkg{RJSONIO} package.
+\end{itemize}
+
+\newpage
+\section{Content Retrieval}
+The complexity of feed--based web content retrieval depends on the required text document
+length. Apart from the delivered meta data most news feeds only deliver a fraction 
+of the original news article. An example of a feed item from the Google News data
+feed for the query words \code{"Barack+Obama"} is shown below:
+
+
+%\lstset{language=XML,caption={Descriptive Caption Text},label=DescriptiveLabel}
+\begin{lstlisting}
+...
+<item>
+  <title>Obama ups pressure on Congress over veterans job aid ...</title>
+  <link>http://news.google.com/news/url?sa=t&amp;fd=R&amp...</link>
+  <guid isPermaLink="false">tag:news.google.com,2005:cluster=...</guid>
+  <pubDate>Mon, 07 Nov 2011 18:48:28 GMT</pubDate>
+  <description>&lt;table border="0" ...</description>
+</item>
+...
+\end{lstlisting}
+
+Each feed item includes the following meta information:
+\begin{itemize}
+  \item \code{<title>} Title of the news item
+  \item \code{<link>} External link where actual content resides
+  \item \code{<guid>} Internal Google News id
+  \item \code{<pubDate>} Date when news item has been published
+  \item \code{<description>} Short description of news item
+\end{itemize} 
+
+If full--text articles need to be downloaded the retrieval
+procedure includes the download and extraction of the original news article
+source, as indicated by the \textit{link} meta data field. Therefore, the 
+download of text documents from news feeds, including the full article text
+requires the following retrieval steps:
+\begin{enumerate}
+\item Download data feed of interest.
+\item Download source articles, specified in link tag of feed items.
+\item Extract complete meta data from news feeds.
+\item Extract main content from source articles.
+\end{enumerate}
+
+These retrieval tasks are implemented by \pkg{tm.plugin.webmining} to retrieve and extract articles
+from news feeds. Since \pkg{tm.plugin.webmining} extends the \pkg{tm} package theses steps
+have been incorporated into \pkg{tm}'s defined \class{Source}--\class{Reader} concept.
+In this context, the \class{Source} defines the access to the text items of interest.
+The \class{Reader} includes the extraction/mapping logic from the raw data to the \class{Corpus}.
+We have therefore decided to map the entire download--part to the \class{Source} (retrieval steps 1--2) and leave the
+data extraction to the \class{Reader} (steps 3--4).
+
+\subsection{\fkt{WebSource}}
+For the purposes of feed retrieval, \pkg{tm.plugin.webmining} introduces the \fkt{WebSource} function.
+It represents a generic way of downloading feeds and source articles and returns a \class{WebSource} object,
+derived from \pkg{tm}'s \class{Source}. The definition of \fkt{WebSource} is shown below.
+<<>>=
+args(WebSource)
+@ 
+The main ingredients for the definition of a \class{WebSource} are the arguments \code{feedurls},
+\code{parser} and \code{linkreader}. 
+
+\begin{itemize}
+\item \code{feedurls}: Character vector of of feed urls to be downloaded.
+\item \code{parser}: Function which retrieves feed content and list of feed items. It therefore acts
+as a feed item chunker.
+\item \code{linkreader}: Function which takes a single item (as obtained from list of parsed items) and
+extracts the link of the source document. \fkt{WebSource} downloads source articles in a second step.
+\end{itemize}
+All defined \fkt{<Provider>Source} functions like \fkt{GoogleNewsSource} or \fkt{TwitterSource} are simply calls to
+\fkt{WebSource} with specific parameter settings for \code{feedurls}, \code{parser} and \code{linkreader}.
+Each feed provider has a specific logic how the actual feed URL is organized. Fortunately, most feed URLs
+follow the following, standardized form:
+\begin{center}
+\code{<feedURL> ? <param1> = <value1> \& ... \& <paramN> = <valueN>}
+\end{center}
+
+The integrated \fkt{feedquery} function generates complete feed  URLs and is very helpful if multiple
+URLs with slightly different parameter settings need to be created. The most frequent use 
+case is the generation of various result pages for a common search term (in case of \textit{paginated} result pages).\\
+For our Google News example with the search terms \code{"Barack+Obama"} and various parameter settings,
+the feed URL can be created as follows:
+<<echo=T,eval=T>>=
+params = list(	hl= 'en', 
+				q = 'Barack+Obama', 
+				ie='utf-8', 
+				num = 100, 
+				output='rss')
+feed <- "http://news.google.com/news"
+fq <- feedquery(feed, params)
+fq
+@
+Additionally, we need a definition of a parser function which chunks different news article items into
+a \class{list}. For example, the Google News feed content needs to be chunked by the \code{<item>} tag.
+Therefore, the definition of the Google News parser function is as follows:
+<<echo=T,eval=F>>=
+parser <- function(cr){
+		tree <- xmlInternalTreeParse(cr, asText = TRUE)
+		nodes <- xpathSApply(tree, path = "//item")
+		xmlns1 <- lapply(nodes, newXMLNamespace, "http://purl.org/dc/elements/1.1/", "dc")
+		nodes
+	}
+@
+After the generation of the \proglang{XML} tree through \fkt{xmlInternalTreeParse} we extract the feed
+items using \fkt{xpathSApply}. Please note that the ex--post addition of \proglang{XML} 
+namespaces is currently needed to surpress warning messages in the \class{Reader}.\\
+Finally, the \code{linkparser} function needs to be defined to retrieve the link of the source document from the 
+news item.
+
+<<echo=T,eval=F>>=
+linkreader <- function(tree) getNodeSet(tree, ".//link", fun = xmlValue)
+@
+
+Now we have all important \fkt{WebSource} parameters at hand to complete the definition of our
+\fkt{GoogleNewsSource} function, as implemented in \pkg{tm.plugin.webmining}:
+<<echo=T,eval=F>>=
+GoogleNewsSource <- function(query, params = 
+				list(	hl= 'en', 
+						q = query, 
+						ie='utf-8', 
+						num = 100, 
+						output='rss'), ...){
+	feed <- "http://news.google.com/news"
+	
+	fq <- feedquery(feed, params)
+	parser <- function(cr){
+		tree <- xmlInternalTreeParse(cr, asText = TRUE)
+		nodes <- xpathSApply(tree, path = "//item")
+		xmlns1 <- lapply(nodes, newXMLNamespace, "http://purl.org/dc/elements/1.1/", "dc")
+		nodes
+	}
+	linkreader <- function(tree) getNodeSet(tree, ".//link", fun = xmlValue)
+	
+	ws <- WebSource(feedurls = fq, parser = parser, linkreader = linkreader, ...)
+	ws$DefaultReader = readGoogle
+	class(ws) <- c("WebXMLSource", "Source")
+	ws
+}
+@
+This function retrieves all required feed-- and news article contents through \fkt{WebSource}.
+To test \fkt{GoogleNewsSource}, we again will consider the \code{"Barack+Obama"} search query.
+\todo{insert example here}
+%<<>>=
+%gns <- GoogleNewsSource("Barack+Obama")
+%summary(gns)
+%@
+From the summary we can see, that the retrieved \class{Source} object contains the fields
+\field{Content} and \field{LinkContent}, where feed meta data items and source article contents are
+stored. These data fields are extracted by the specified (default) reader \fkt{readGoogle}, which
+is described in the next section. The default reader has already been specified in \fkt{GoogleNewsSource} 
+and is stored in \field{DefaultReader}. Futhermore, the class of the retrieved \class{Source} object 
+has been set to \class{WebXMLSource}. The specification of an according \class{Web<type>Source}--class
+is necessary for the retrieval of single elements in the \fkt{Corpus}--constructor. The class needs
+to be derived from \pkg{tm}'s \class{Source} and can be one of the following:
+\begin{itemize}
+\item \class{WebXMLSource}: \proglang{XML} based feed source for, e.g., \proglang{XML}, \proglang{RSS} 
+and \proglang{ATOM} feeds.
+\item \class{WebHTMLSource}: \proglang{HTML} based feed source
+\item \class{WebJSONSource}: Feed source based on the \proglang{JSON} format.
+\end{itemize}
+
+
+\subsection{\fkt{readWeb}}
+Once the \fkt{WebSource} function has been defined, we need a function to extract retrieved content from
+the \field{Content} and \field{LinkContent} fields and make it available to \pkg{tm}'s \fkt{Corpus}
+constructor. Similar to the implementation of \pkg{tm}'s \fkt{readXML}, \pkg{tm.plugin.webmining} implements a 
+generic \class{FunctionGenerator} \fkt{readWeb}, which handles the extraction of Web--\class{Source}s.
+
+<<>>=
+args(readWeb)
+@
+
+Typically, \fkt{readWeb} is only called through the following customization functions, which specify
+the parameters \code{parser}, \code{contentparser} and \code{freeFUN} depending on the data format:
+
+\begin{itemize}
+\item \fkt{readWebXML}: Read contents from \class{WebXMLSource}
+\item \fkt{readWebHTML}: Read contents from \class{WebHTMLSource}
+\item \fkt{readWebJSON}: Read contents from \class{WebJSONSource}
+\end{itemize}
+
+The remaining parameters \code{spec}, \code{doc} and \code{extractFUN} need to be specified by the
+according \fkt{read<Provider>} function and can be described as follows:
+\begin{itemize}
+\item \code{spec}: List--of--lists, specification of mapping and extraction rules, similar to \fkt{readXML} in \pkg{tm}.
+\item \code{doc}: Document type, see \pkg{tm} for available document types.
+\item \code{extractFUN}: Extraction function to be used to content of interest from document. Takes source
+document as \class{character} and returns extracted content as \class{character}. For example, \pkg{boilerpipeR} 
+integrates various functions to retrieve the main content from \proglang{HTML} documents.
+\end{itemize}
+
+The \fkt{readGoogle} reader function can therefore be written as follows (as specified in \pkg{tm.plugin.webmining}):
+<<echo=T,eval=F>>=
+readGoogle <- readWebXML(spec = list(
+		Heading = list("node", "//title"),
+		DateTimeStamp = list("function", function(node){
+					loc <- Sys.getlocale("LC_TIME")
+					Sys.setlocale("LC_TIME", "C")
+					val <- sapply(getNodeSet(node, "//pubDate"), xmlValue)
+					time <- strptime(val,format = "%a, %d %b %Y %H:%M:%S",tz = "GMT")
+					Sys.setlocale("LC_TIME", loc)
+					time
+				}),
+		Origin = list("node", "//link"),
+		Description = list("function", function(node){
+					val <- sapply(getNodeSet(node, "//item/description"), xmlValue)
+					extractHTMLStrip(val, asText = TRUE)
+				}),
+		ID = list("node",  "//guid")),
+	extractFUN = ArticleExtractor,
+	doc = PlainTextDocument()
+)
+@
+The definition for our Google News \class{WebXMLSource} class and the according \fkt{readGoogle} function
+is now finished, and we can retrieve a \pkg{tm} \class{Corpus} for the search terms \code{"Barack+Obama"} by simply
+typing:
+<<echo=T,eval=F>>=
+Corpus(GoogleNewsSource("Barack+Obama"), readerControl = list(reader = readGoogle, language = "en"))
+@
+Since the \field{DefaultReader} has also been set, we could also type simply:
+<<echo=T,eval=F>>=
+Corpus(GoogleNewsSource("Barack+Obama"))
+@
+
+
+\section{Examples}
+
+
+\subsection{Twitter}
+To retrieve, e.g., all twitter messages including the hashtag
+\code{\#BarackObama}, assuming the package \pkg{tm.plugin.webmining} is
+loaded, we can simply type:
+%include twitter-#BarackObama example
+<<eval=F>>=
+baracktwitter <- Corpus(TwitterSource("#BarackObama"))
+@
+This command retrieves (at most) the latest 1,500 tweets for the search term \code{\#BarackObama}. 
+The content of the first retrieved message is shown below:
+<<>>=
+baracktwitter[[1]]
+@
+Additionaly, the meta data of the first message can be inspected by using \fkt{meta}
+<<>>=
+meta(baracktwitter[[1]])
+@
+We can see, that all meta data tags have correctly been retrieved.
+
+\subsection{Reuters}
+For the retrieval o
+
+
+\subsection{New York Times}
+
+
+\section{Conclusion and Outlook}
+The presented package \pkg{tm.plugin.webmining} integrates various functions to conveniently
+retrieve and extract text documents from numerous web data sources. Some news feeds
+already deliver a large number of feed items, like the Twitter Search API with up to 1,500 messages.
+However, histograms of the retrieved feed--item Date--Timestamps reveal that most feeds
+only cover a quite short period of time. Therefore, an update function for the retrieved
+text--\class{Corpus} is needed to grow the retrieved text collection further over time.
+
+
+%\bibliographystyle{abbrvnat}
+%\bibliography{references}
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+
+
+\end{document}
