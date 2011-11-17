@@ -1,5 +1,5 @@
 Package: tm.plugin.webmining
-Imports: RCurl ,XML, RJSONIO
+Imports: XML, RJSONIO
 Maintainer: Mario Annau <mario.annau@gmail.com>
 License: GPL-3
 Title: Retrieve structured, textual data from various web sources
@@ -12,6 +12,6 @@ Description: tm.plugin.webmining facilitates text retrieval
     extracts the text of the original text source.
 Version: 0.1
 Date: 2010-09-13
-Depends: tm, boilerpipeR
+Depends: tm, boilerpipeR, RCurl
 Collate: 'extractContent.R' 'feedquery.R' 'getURLPart.R' 'reader.R'
     'source.R' 'tm.plugin.webmining-package.R' 'trimWhiteSpaces.R'

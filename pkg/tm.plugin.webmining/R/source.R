@@ -18,7 +18,13 @@
 #' @importFrom XML xmlValue
 #' @importFrom RCurl curlOptions
 WebSource <- function(feedurls, parser, linkreader, getLinkContent = !missing(linkreader), encoding = "UTF-8", vectorized = FALSE, 
-						curlOpts = curlOptions(followlocation = TRUE, maxconnects = 20)){
+						curlOpts = curlOptions(	followlocation = TRUE, 
+												maxconnects = 20,
+												maxredirs = 20,
+												timeout.ms = 30000,
+												connecttimeout.ms = 30000)
+
+				){
 	#TODO: implement "save url retrieval with retries"
 	#cat("Retrieving ", feedurls, "\n")
 	# retrieve feeds using RCurl
