@@ -5,49 +5,27 @@
 
 #' Read content from Web...Source
 #' Generic function to read content from \code{\link{WebSource}}
+#' @param spec specification of content reader
+#' @param doc document to be parsed
+#' @param parser parser function to be used
+#' @param contentparser content parser function to be used, see also \code{tm:::xml_content} or \code{\link{json_content}}
+#' @param freeFUN function to free memory from parsed object (actually only relevant for XML and HTML trees)
 #' @return FunctionGenerator
 #' @export
-readWeb <- FunctionGenerator(function(spec, doc, extractFUN = NULL, parser, contentparser, freeFUN = NULL,...) {
+readWeb <- FunctionGenerator(function(spec, doc, parser, contentparser, freeFUN = NULL) {
 			
 	parser <- parser
 	contentparser <- contentparser
 	freeFUN <- freeFUN
 	spec <- spec
 	doc <- doc
-	extractFUN <- extractFUN
-	extractFUNargs <- list()
-	
-	if(length(extractFUN) == 2){
-		extractFUNargs <- extractFUN[[2]]
-		extractFUN <- extractFUN[[1]]
-	}
-	
-	
+
 	function(elem, language, id) {
 		tree <- parser(elem$content)
 	
 		###Set Content
 		Content(doc) <- if ("Content" %in% names(spec)){
 							content <- contentparser(tree, spec[["Content"]])
-							if(!is.null(extractFUN))
-								tryCatch(do.call(extractFUN, c(content, extractFUNargs)),
-										error = function(e){
-											#cat("An Error occured at Content Extraction, index ", i, "\n")
-											print(e)
-											character(0)
-										})
-						}
-						else if(!is.null(elem$linkcontent)){
-							if(!is.null(extractFUN))
-								tryCatch(do.call(extractFUN, c(elem$linkcontent, extractFUNargs)),
-									error = function(e){
-										#cat("An Error occured at Content Extraction, index ", i, "\n")
-										print(e)
-										character(0)
-									})
-							else{
-								elem$linkcontent
-							}	
 						}
 						else{
 							character(0)
@@ -112,15 +90,18 @@ function (doc, spec)
 		spec[[2]]
 	else if (identical(type, "function") && is.function(spec[[2]])) 
 		spec[[2]](doc)
-	else as.character(sapply(doc[[spec[[2]]]], 
+	else{
+		as.character(sapply(doc[[spec[[2]]]], 
 						fun))
+	} 
 }
 
 #' Read content from NYTimesSource
-#' @export
 #' @importFrom boilerpipeR ArticleExtractor
+#' @noRd
+#' @export
 readNYTimes <- readWebJSON(spec = list(
-		Author = list("field", "byline"),
+#		Author = list("field", "byline"),
 		Description = list("field", "body"),
 		DateTimeStamp = list("function", function(node)
 					strptime(node[["date"]],
@@ -128,16 +109,16 @@ readNYTimes <- readWebJSON(spec = list(
 							tz = "GMT")),
 		Heading = list("field", "title"),
 		Origin = list("field", "url"),
-		Language = list("unevaluated", "en")),
-#				ID = list("node",  "//id")),
-	extractFUN = ArticleExtractor,
+		Language = list("unevaluated", "en"),
+		ID = list("field", "url")),
 	doc = PlainTextDocument())
 
 
 #' Read content from TwitterSource
-#' @export
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
+#' @noRd
+#' @export
 readTwitter <- readWebXML(spec = list(
 		Author = list("node", "//author/name"),
 		AuthorURI = list("node", "//author/uri"),
@@ -154,15 +135,15 @@ readTwitter <- readWebXML(spec = list(
 		Language = list("node", "//twitter:lang"),
 		Geo = list("node", "//twitter:geo"),
 		ID = list("node",  "//id")),
-	extractFUN = list("extractHTMLStrip", list(encoding="UTF-8")),
 	doc = PlainTextDocument())
 
 
 #' Read content from GoogleFinanceSource
-#' @export
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
 #' @importFrom boilerpipeR ArticleExtractor
+#' @noRd
+#' @export
 readGoogle <- readWebXML(spec = list(
 		Heading = list("node", "//title"),
 		DateTimeStamp = list("function", function(node){
@@ -179,15 +160,15 @@ readGoogle <- readWebXML(spec = list(
 					extractHTMLStrip(val, asText = TRUE)
 				}),
 		ID = list("node",  "//guid")),
-	extractFUN = ArticleExtractor,
 	doc = PlainTextDocument())
 
 #' Read content from Yahoo RSS Source
-#' @export
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
 #' @importFrom boilerpipeR ArticleExtractor
 #' @seealso \code{\link{YahooFinanceSource}} \code{\link{YahooNewsSource}}
+#' @noRd
+#' @export
 readYahoo <- readWebXML(spec = list(
 		Heading = list("node", "//title"),
 		DateTimeStamp = list("function", function(node){
@@ -201,15 +182,33 @@ readYahoo <- readWebXML(spec = list(
 		Origin = list("node", "//link"),
 		Description = list("node", "//item/description"),
 		ID = list("node",  "//guid")),
-	extractFUN = ArticleExtractor,
 	doc = PlainTextDocument())
 
 
+#readSECEdgar <- readWebXML(spec = list(
+#				Heading = list("node", "//title"),
+#				DateTimeStamp = list("function", function(node)
+#							strptime(sapply(getNodeSet(node, "//updated"), xmlValue),
+#									format = "%Y-%m-%dT%H:%M:%S",
+#									tz = "GMT")),
+#				Origin = list("attribute", "//link/@href"),
+#				Description = list("function", function(node){
+#							val <- sapply(getNodeSet(node, "//summary"), xmlValue)
+#							extractHTMLStrip(val, asText = TRUE)
+#						}),
+#				ID = list("node",  "//id")),
+#		doc = PlainTextDocument())
+#
+
+
+
+
 #' Read content from GoogleBlogSearchSource
-#' @export
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
 #' @importFrom boilerpipeR ArticleExtractor
+#' @noRd
+#' @export
 readGoogleBlogSearch <- readWebXML(spec=list(
 		Heading = list("node", "//title"),
 		DateTimeStamp = list("function", function(node){
@@ -221,32 +220,34 @@ readGoogleBlogSearch <- readWebXML(spec=list(
 					time
 				}),
 		Origin = list("node", "//link"),
+		ID = list("node", "//link"),
 		Description = list("node", "//item/description"),
 		Publisher = list("node","//dc:publisher"),
 		Author = list("node","//dc:creator")),
-	extractFUN = ArticleExtractor,
 	doc = PlainTextDocument())
 
 
 #' Read content from GoogleFinanceSource
-#' @export
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
+#' @noRd
+#' @export
 readYahooInplay <- readWebHTML(spec = list(
 		Heading = list("node", "//b[1]"),
+		ID = list("node", "//b[1]"),
 		Content = list("node", "//p"),
 		DateTimeStamp = list("function", function(node){
 					val <- unlist(getNodeSet(node, "//b[1]", fun = xmlValue))
 					substr(val, 1, regexpr("\\s", val)-1)
 				}),
 		Ticker  = list("node", "//p/b/a")),
-	extractFUN = identity,
 	doc = PlainTextDocument())
 
 #' Read content from BingSource
-#' @export
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
+#' @noRd
+#' @export
 readBing <- readWebXML(spec = list(Heading = list("node", "/*/news:Title"),
 		Origin = list("node", "/*/news:Url"),
 		DateTimeStamp = list("function", function(node)
@@ -255,16 +256,17 @@ readBing <- readWebXML(spec = list(Heading = list("node", "/*/news:Title"),
 							tz = "GMT")),
 		Author = list("node", "/*/news:Source"),
 		Description = list("node", "/*/news:Snippet"),
-		BreakingNews = list("node", "/*/news:BreakingNews")),
-	extractFUN = ArticleExtractor,
+		BreakingNews = list("node", "/*/news:BreakingNews"),
+		ID = list("node", "/*/news:Url")),
 	doc = PlainTextDocument())
 
 
 #' Read content from GoogleFinanceSource
-#' @export
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
 #' @importFrom boilerpipeR ArticleExtractor
+#' @noRd
+#' @export
 readReutersNews <- readWebXML(spec = list(
 				Heading = list("node", "//title"),
 				DateTimeStamp = list("function", function(node){
@@ -282,5 +284,4 @@ readReutersNews <- readWebXML(spec = list(
 						}),
 				ID = list("node",  "//guid"),
 				Category = list("node", "//category")),
-		extractFUN = ArticleExtractor,
 		doc = PlainTextDocument())

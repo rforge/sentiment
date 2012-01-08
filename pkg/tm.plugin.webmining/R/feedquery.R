@@ -8,9 +8,10 @@
 #' @importFrom RCurl curlEscape
 feedquery <-
 function(url, params){
-	els <- sapply(names(params), function(n) {		
+	els <- lapply(names(params), function(n) {		
 		paste(n, curlEscape(params[[n]]), sep = "=")
 	})
+	names(els) <- names(params)
 	
 	feeds <- ""
 	for(i in names(els)){
