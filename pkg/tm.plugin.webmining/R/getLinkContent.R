@@ -91,7 +91,7 @@ getLinkContent <- function(corpus, links = sapply(corpus, meta, "Origin"),timeou
 								#setTimeLimit(cpu=timeout, elapsed=timeout, transient=TRUE)
 								getURL(links, .opts = curlOpts, ...)
 							},error = function(f) {
-												  cat(f,"\n")
+												  print(f)
 												  ""})
 					}
 					#cat("Done\n")
