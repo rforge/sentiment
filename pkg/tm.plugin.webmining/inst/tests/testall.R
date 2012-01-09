@@ -22,34 +22,59 @@ meta(test1corp[[1]])
 
 
 #### retrieve corpus from Twitter Search API for the search Term 'Microsoft'
-test2corp <- Corpus(TwitterSource("Microsoft"))
+#update ok, strange warning
+test2corp <- WebCorpus(TwitterSource("Microsoft"))
+test2corp <- test2corp[1:10]
+test2corp <- corpus.update(test2corp)
 
-#inspect first 3 elements of retrieved corpus
-inspect(test2corp[1:3])
 
 #check meta data of first element in the corpus
 meta(test1corp[[1]])
 
 
 #test error
-test3corp <- Corpus(NYTimesSource("Microsoft", appid = nytimes_appid))
+test3corp <- WebCorpus(NYTimesSource("Microsoft", appid = nytimes_appid))
+test3corp <- test3corp[1:10]
+test3corp <- corpus.update(test3corp)
 
-#test ok, update will not work <- 
-test4corp <- Corpus(YahooInplaySource())
-
-#test ok
-test5corp <- Corpus(YahooFinanceSource("MSFT"))
 
 #test ok
-test6corp <- Corpus(GoogleBlogSearchSource("Microsoft"))
+test4corp <- WebCorpus(YahooInplaySource())
+test4corp <-  test4corp[1:10]
+test4corp <- corpus.update(test4corp)
 
-test7corp <- Corpus(BingSource("Microsoft", appid = bing_appid))
-
-#test ok
-test8corp <- Corpus(YahooNewsSource("Microsoft"))
 
 #test ok
-test9corp <- Corpus(GoogleNewsSource("Microsoft"))
+test5corp <- WebCorpus(YahooFinanceSource("MSFT"))
+test5corp <-  test5corp[1:10]
+test5corp <- corpus.update(test5corp)
+
 
 #test ok
-test10corp <- Corpus(ReutersNewsSource("businessNews"))
+test6corp <- WebCorpus(GoogleBlogSearchSource("Microsoft"))
+test6corp <-  test6corp[1:10]
+test6corp <- corpus.update(test6corp)
+
+#test ok
+test7corp <- WebCorpus(BingSource("Microsoft", appid = bing_appid))
+test7corp <-  test7corp[1:10]
+test7corp <- corpus.update(test7corp)
+
+
+#test ok
+test8corp <- WebCorpus(YahooNewsSource("Microsoft"))
+test8corp <-  test8corp[1:10]
+test8corp <- corpus.update(test8corp)
+
+
+#test ok
+test9corp <- WebCorpus(GoogleNewsSource("Microsoft"))
+test9corp <-  test9corp[1:10]
+test9corp <- corpus.update(test9corp)
+
+
+#test ok
+test10corp <- WebCorpus(ReutersNewsSource("businessNews"))
+test10corp <-  test10corp[1:5]
+test10corp <- corpus.update(test10corp)
+
