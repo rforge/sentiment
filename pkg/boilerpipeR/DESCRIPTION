@@ -8,6 +8,6 @@ Description: Extraction of main text content from HTML files using the
     boilerpipe JAVA library. The extraction heuristics of boilerpipe
     show a good performance for a wide range of web sites.
 Version: 0.1
-Date: 2010-08-09
+Date: 2012-03-12
 Depends: rJava
 Collate: 'Extractor.R' 'onload.R'

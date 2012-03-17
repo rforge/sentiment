@@ -9,7 +9,7 @@ Description: tm.plugin.sentiment supports sentiment analysis of text
     series in xts and charting using facilities of quantmod are
     supported.
 Version: 0.0.1
-Date: 2010-08-09
+Date: 2012-03-17
 Depends: tm, quantmod
 Collate: 'OHCLSent.transformations.R' 'addSentiment.R'
     'chartSentiment.R' 'corpus.R' 'data.R' 'getRelevant.R' 'metaXTS.R'

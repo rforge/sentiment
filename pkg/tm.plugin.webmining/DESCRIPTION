@@ -12,7 +12,7 @@ Description: tm.plugin.webmining facilitates text retrieval from feed
     fractions of the original text tm.plugin.webmining even retrieves
     and extracts the text of the original text source.
 Version: 0.1
-Date: 2010-09-13
+Date: 2012-03-17
 Depends:
     tm,
     boilerpipeR,
