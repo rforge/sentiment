@@ -6,12 +6,12 @@
 \usepackage{hyperref}
 \usepackage{listings}
 
+\let\code=\texttt
 \newcommand{\acronym}[1]{\textsc{#1}}
 \newcommand{\class}[1]{\mbox{\textsf{#1}}}
-\newcommand{\code}[1]{\mbox{\texttt{#1}}}
 \newcommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
 \newcommand{\proglang}[1]{\textsf{#1}}
-\newcommand{\fkt}[1]{\code{#1()}}
+\newcommand{\fkt}[1]{\code{#1}}
 \newcommand{\todo}[1]{\begin{center}\code{<TODO: #1>}\end{center}}    
 \newcommand{\field}[1]{\code{\$#1}} 
  
@@ -80,7 +80,7 @@ sites) to \textit{universal crawlers} which index web documents of the entire
 (visible) Internet, as implemented by search engines like Google, Yahoo! and
 Bing. Although the implementation of (topical) crawlers can be facilitated by
 specialized  frameworks, like the \proglang{Python} open--source project
-\pkg{Scrapy} \citep{?}, programming a web crawler includes complex tasks like the
+\pkg{Scrapy} \url{http://scrapy.org/}, programming a web crawler includes complex tasks like the
 maintenance of a page repository, efficient page retrieval through concurrent
 programming and the provision and maintenance of required hardware/cloud
 infrastructure.
@@ -119,22 +119,9 @@ library(tm.plugin.webmining)
 @ 
 
 \section{Package Overview}
-<<dependenceplot, fig=T,echo=F>>=
-library(diagram)
-lables <- c("tm.plugin.webmining", "tm", "boilerpipeR",  "RCurl" ,"XML", "RJSONIO")
-par(mar=c(0,0,0,0))
-plot.new()
-elpos<-coordinates (c(1,5))
-treearrow(from=elpos[1,],to=elpos[2:3,],arr.side=2,arr.pos=0.7,path="H")
-treearrow(from=elpos[1,],to=elpos[3:6,],arr.side=2,arr.pos=0.7,path="H", lty = 2)
-textrect (elpos[1,],0.2,0.05,lab=lables[1],cex=1, , shadow.size = 0, font = 2)
-for ( i in 2:6){
-	textrect (elpos[i,],0.1,0.05,lab=lables[i],cex=1, shadow.size = 0)
-} 
-@
 \begin{figure}[tbp]
 \centering
-\includegraphics[width = 8cm]{webmining-dependenceplot}
+\includegraphics[width = 8cm]{figures/dependenceplot}
 \caption{	Illustration of the \pkg{tm.plugin.webmining} package dependencies. Solid lines 
 			indicate dependencies, dashed lines imports (as indicated by the package DESCRIPTION file).
 			Figure created using \pkg{diagram}.
@@ -214,7 +201,7 @@ The \class{Reader} includes the extraction/mapping logic from the raw data to th
 We have therefore decided to map the entire download--part to the \class{Source} (retrieval steps 1--2) and leave the
 data extraction to the \class{Reader} (steps 3--4).
 
-\subsection{\fkt{WebSource}}
+\subsection{WebSource}
 For the purposes of feed retrieval, \pkg{tm.plugin.webmining} introduces the \fkt{WebSource} function.
 It represents a generic way of downloading feeds and source articles and returns a \class{WebSource} object,
 derived from \pkg{tm}'s \class{Source}. The definition of \fkt{WebSource} is shown below.
@@ -324,7 +311,7 @@ and \proglang{ATOM} feeds.
 \end{itemize}
 
 
-\subsection{\fkt{readWeb}}
+\subsection{readWeb}
 Once the \fkt{WebSource} function has been defined, we need a function to extract retrieved content from
 the \field{Content} and \field{LinkContent} fields and make it available to \pkg{tm}'s \fkt{Corpus}
 constructor. Similar to the implementation of \pkg{tm}'s \fkt{readXML}, \pkg{tm.plugin.webmining} implements a 

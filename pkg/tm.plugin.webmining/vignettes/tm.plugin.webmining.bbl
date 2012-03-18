@@ -1,0 +1,64 @@
+\begin{thebibliography}{9}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Alpert and Hajaj(2008)]{AlpertHajaj:GoogleBigWeb}
+Jesse Alpert and Nissan Hajaj.
+\newblock We knew the web was big... - the official google blog., 7 2008.
+\newblock URL
+  \url{http://googleblog.blogspot.com/2008/07/we-knew-web-was-big.html}.
+
+\bibitem[Board(2002)]{RSS}
+RSS~Advisory Board.
+\newblock Rss 2.0 specification, 2002.
+\newblock URL \url{http://www.rssboard.org/rss-specification}.
+
+\bibitem[Crockford(2002)]{JSON}
+Douglas Crockford.
+\newblock Introducing json, 2002.
+\newblock URL \url{http://www.json.org}.
+
+\bibitem[Feinerer et~al.(2008)Feinerer, Hornik, and
+  Meyer]{hornik:Feinerer+Hornik+Meyer:2008}
+Ingo Feinerer, Kurt Hornik, and David Meyer.
+\newblock Text mining infrastructure in {R}.
+\newblock \emph{Journal of Statistical Software}, 25\penalty0 (5):\penalty0
+  1--54, 2 2008.
+\newblock ISSN 1548-7660.
+\newblock URL \url{http://www.jstatsoft.org/v25/i05}.
+
+\bibitem[IETF(2005)]{ATOM}
+IETF.
+\newblock The atom syndication format, 2005.
+\newblock URL \url{http://tools.ietf.org/html/rfc4287}.
+
+\bibitem[Kohlsch\"{u}tter et~al.(2010)Kohlsch\"{u}tter, Fankhauser, and
+  Nejdl]{kohlschuetter:webextract}
+Christian Kohlsch\"{u}tter, Peter Fankhauser, and Wolfgang Nejdl.
+\newblock {Boilerplate detection using shallow text features}.
+\newblock In \emph{Proceedings of the third ACM international conference on Web
+  search and data mining}, WSDM '10, pages 441--450, New York, NY, USA, 2010.
+  ACM.
+\newblock ISBN 978-1-60558-889-6.
+\newblock \doi{10.1145/1718487.1718542}.
+\newblock URL \url{http://code.google.com/p/boilerpipe/}.
+
+\bibitem[Lang()]{RPack:XML}
+Duncan~Temple Lang.
+\newblock Xml: Tools for parsing and generating xml within r and s-plus.
+\newblock URL \url{http://www.omegahat.org/RSXML}.
+
+\bibitem[Mozilla(2011)]{JavaScript}
+Mozilla.
+\newblock Javascript, 2011.
+\newblock URL \url{https://developer.mozilla.org/en/JavaScript#Documentation}.
+
+\bibitem[W3C(2008)]{XML}
+W3C.
+\newblock Extensible markup language (xml) 1.0 (fifth edition), 11 2008.
+\newblock URL \url{http://www.w3.org/TR/REC-xml/}.
+
+\end{thebibliography}
