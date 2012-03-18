@@ -410,7 +410,6 @@ meta(baracktwitter[[1]])
 We can see, that all meta data tags have correctly been retrieved.
 
 \subsection{Reuters}
-For the retrieval o
 
 
 \subsection{New York Times}

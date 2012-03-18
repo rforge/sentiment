@@ -1,6 +1,5 @@
 Package: tm.plugin.webmining
 Imports:
-    XML,
     RJSONIO
 Maintainer: Mario Annau <mario.annau@gmail.com>
 License: GPL-3
@@ -16,7 +15,8 @@ Date: 2012-03-17
 Depends:
     tm,
     boilerpipeR,
-    RCurl
+    RCurl,
+    XML
 Collate:
     'corpus.R'
     'extractContent.R'
