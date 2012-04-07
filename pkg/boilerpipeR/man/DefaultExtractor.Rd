@@ -1,10 +1,15 @@
 \name{DefaultExtractor}
 \alias{DefaultExtractor}
-\title{quite generic full-text extractor.}
-\usage{DefaultExtractor(content, ...)
+\title{A quite generic full-text extractor.}
+\usage{
+  DefaultExtractor(content, ...)
 }
-\description{quite generic full-text extractor.}
-\arguments{\item{content}{Text content as character}
-\item{...}{additional parameters}
+\arguments{
+  \item{content}{Text content as character}
+
+  \item{...}{additional parameters}
+}
+\description{
+  A quite generic full-text extractor.
 }
 
