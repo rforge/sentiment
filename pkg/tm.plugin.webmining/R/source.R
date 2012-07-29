@@ -100,7 +100,7 @@ GoogleFinanceSource <- function(query, params =
 	ws$DefaultReader <- readGoogle
 	ws$PostFUN <- function(x){
 		x <- getLinkContent(x)
-		tm_map(x, extract, extractor = ArticleExtractor)
+		#tm_map(x, extract, extractor = ArticleExtractor)
 	}
 	ws
 }
@@ -139,7 +139,7 @@ YahooFinanceSource <- function(query, params =
 	ws$DefaultReader <- readYahoo
 	ws$PostFUN <- function(x){
 		x <- getLinkContent(x)
-		tm_map(x, extract, extractor = ArticleExtractor)
+		#tm_map(x, extract, extractor = ArticleExtractor)
 	}
 	ws
 }
@@ -181,7 +181,7 @@ GoogleBlogSearchSource <- function(query, params =
 	ws$DefaultReader <- readGoogleBlogSearch
 	ws$PostFUN = function(x){
 		x <- getLinkContent(x)
-		tm_map(x, extract, extractor = ArticleExtractor)
+		#tm_map(x, extract, extractor = ArticleExtractor)
 	}
 	ws
 }
@@ -223,7 +223,7 @@ GoogleNewsSource <- function(query, params =
 	ws$DefaultReader <- readGoogle
 	ws$PostFUN = function(x){
 		x <- getLinkContent(x)
-		tm_map(x, extract, extractor = ArticleExtractor)
+		#tm_map(x, extract, extractor = ArticleExtractor)
 	}
 	ws
 }
@@ -260,7 +260,7 @@ ReutersNewsSource <- function(query = 'businessNews', ...){
 	ws$DefaultReader <- readReutersNews
 	ws$PostFUN = function(x){
 		x <- getLinkContent(x)
-		tm_map(x, extract, extractor = ArticleExtractor)
+		#tm_map(x, extract, extractor = ArticleExtractor)
 	}
 	
 	ws
@@ -353,7 +353,7 @@ YahooNewsSource <- function(query, params =
 	ws$DefaultReader = readYahoo
 	ws$PostFUN = function(x){
 		x <- getLinkContent(x)
-		tm_map(x, extract, extractor = ArticleExtractor)
+		#tm_map(x, extract, extractor = ArticleExtractor)
 	}
 	ws
 }
@@ -444,7 +444,7 @@ BingSource <- function(query, n = 100, count = 10, appid,  sources = "news", par
 	ws$DefaultReader <- readBing
 	ws$PostFUN = function(x){
 		x <- getLinkContent(x)
-		tm_map(x, extract, extractor = ArticleExtractor)
+		#tm_map(x, extract, extractor = ArticleExtractor)
 	}
 	ws
 }
@@ -488,7 +488,7 @@ NYTimesSource <- function(query, n = 100, count = 10, appid, params =
 	ws$DefaultReader <- readNYTimes
 	ws$PostFUN = function(x){
 		x <- getLinkContent(x)
-		tm_map(x, extract, extractor = ArticleExtractor)
+		#tm_map(x, extract, extractor = ArticleExtractor)
 	}
 	ws
 }

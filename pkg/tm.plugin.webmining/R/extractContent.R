@@ -60,8 +60,9 @@ function(url, asText = TRUE, ...){
 	childlen <- sapply(xmlChildren(tree), function(x) nchar(toString.XMLNode(x)))
 	childidx <- which(childlen == max(childlen))
 	html <- xmlChildren(tree)[[childidx]]
-	
-	return(xmlValue(html))
+	val <- xmlValue(html)
+	XML:::free(tree)
+	return(val)
 }
 
 

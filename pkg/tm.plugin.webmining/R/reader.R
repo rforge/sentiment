@@ -280,7 +280,8 @@ readReutersNews <- readWebXML(spec = list(
 				Origin = list("node", "//link"),
 				Description = list("function", function(node){
 							val <- sapply(getNodeSet(node, "//item/description"), xmlValue)
-							extractHTMLStrip(val, asText = TRUE)
+							val
+							#extractHTMLStrip(val, asText = TRUE)
 						}),
 				ID = list("node",  "//guid"),
 				Category = list("node", "//category")),

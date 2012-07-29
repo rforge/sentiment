@@ -46,74 +46,18 @@ also the complete source articles can be downloaded and extracted through \pkg{R
 \newpage  
   
 \section{Introduction}
-In recent years the research discipline known as \textit{text mining}\footnote{Text
-mining can be defined as the statistical analysis of large collections of text
-to gather valuable information.} has seen a tremendous growth not only in the
-academic area but also in fields such as business intelligence, customer
-relationship management (CRM), marketing and financial research. Text mining
-applications have been fuelled by the enormous growth of the largest text
-corpus of all---the Internet---with over one trillion unique URLs \citep{AlpertHajaj:GoogleBigWeb}.
-Developments in web technology, typically referred to as \textit{Web 2.0},
-including online review sites, personal blogs or even short, text messages
-called \textit{tweets} further accelerated the growth of user generated online
-content. In most cases web content is easily accessible through standard web browsers.
-However, the systematic download of web content, including relevant
-meta data, and the provision to statistical analysis--/text--mining software
-like \proglang{R} is non--trivial. Generally speaking, there are two
-approaches to retrieve and update a collection of text documents from the web:
-\begin{enumerate}
-\item Retrieval through web \textit{crawlers}, also known as
-\textit{spiders} or \textit{robots}
-\item Retrieval of content through provided news \textit{feeds} 
-\end{enumerate}
-The implementation of a web crawler is the most general retrieval
-approach that can be taken. Given a set of seed web pages, a web crawler
-recursively retrieves the content of documents, analyzes their link structure
-and follows the parsed links. The complexity and size of crawlers ranges from
-\textit{topical crawlers} (e.g. extraction of customer reviews from vendor
-sites) to \textit{universal crawlers} which index web documents of the entire
-(visible) Internet, as implemented by search engines like Google, Yahoo! and
-Bing. Although the implementation of (topical) crawlers can be facilitated by
-specialized  frameworks, like the \proglang{Python} open--source project
-\pkg{Scrapy} \url{http://scrapy.org/}, programming a web crawler includes complex tasks like the
-maintenance of a page repository, efficient page retrieval through concurrent
-programming and the provision and maintenance of required hardware/cloud
-infrastructure.
-\\
-Fortunately, by the introduction of \textit{Web 2.0} technologies, most
-information providers offer content updates in form of structured news
-feeds. Most popular feed formats are either based on the
-\textit{Extensible Markup Language} \citep[\proglang{XML}, see][]{XML} or
-\proglang{JavaScript} \citep{JavaScript}. The \proglang{XML} category consists
-of the \textit{Really Simple Syndication} \citep[\proglang{RSS},
-see][]{RSS} and the  \textit{Atom Syndication Format} \citep[\proglang{ATOM},
-see][]{ATOM} which are very popular feed formats among content providers. The 
-\textit{JavaScript Object Notation} \citep[\proglang{JSON}, see][]{JSON} is a
-\proglang{JavaScript} based content description language which has already
-gained a lot of traction among feed providers.
-\\
-\pkg{tm.plugin.webcorpus} supports the retrieval of web documents
-based on news feeds in all of the above mentioned standardized data. Additionally, the direct 
-retrieval from \proglang{HTML} pages is possible. Built on
-the \pkg{tm} text mining infrastructure package
-\citep{hornik:Feinerer+Hornik+Meyer:2008} it integrates numerous \class{Source}
-and \class{Reader} classes for web content retrieval. Major supported feed
-providers include search engines like Google, Microsoft Bing and Yahoo! or
-newswires like the New York Times or Thomson Reuters. The feeds available can
-be highly customized through user specified parameters and deliver important
-meta information. Provided meta information supplied by the feed
-includes, e.g., the author of the news text, links to the original text or the
-publishing date--/timestamp. Since hardly any feed delivers complete articles, full 
-document content can be downloaded and extracted by
-\pkg{tm.plugin.webmining} if the link to the main content is provided.
-Please note that all presented \proglang{R}--code examples in this vignette
-require that the \pkg{tm.plugin.webmining} has been loaded.
+\pkg{tm.plugin.webmining} facilitates the retrieval of web content through news feeds. Feeds typically provide
+up--to--date information from content providers in a standardized format for easy parsing. The main advantage
+of using content from news feeds is that it already provides meta data like the Date--/Timestamp, Author and other
+useful information. Since all new information is only published through the news feed, it is also easier to track
+changes of a
 
-\begin{Schunk}
-\begin{Sinput}
-> library(tm.plugin.webmining)
-\end{Sinput}
-\end{Schunk}
+
+
+ in stan \proglang{RSS}, \proglang{}
+
+
+
 
 \section{Package Overview}
 \begin{figure}[tbp]
@@ -209,9 +153,7 @@ derived from \pkg{tm}'s \class{Source}. The definition of \fkt{WebSource} is sho
 \begin{Soutput}
 function (feedurls, class = "WebXMLSource", parser, encoding = "UTF-8", 
     vectorized = FALSE, curlOpts = curlOptions(followlocation = TRUE, 
-        maxconnects = 20, maxredirs = 10, timeout = 30, connecttimeout = 30), 
-    content_parsed = NULL, content_raw = NULL, feedurlFUN = NULL, 
-    verbose = getOption("verbose"), ...) 
+        maxconnects = 20, maxredirs = 10, timeout = 30, connecttimeout = 30)) 
 NULL
 \end{Soutput}
 \end{Schunk}
@@ -340,8 +282,7 @@ generic \class{FunctionGenerator} \fkt{readWeb}, which handles the extraction of
 > args(readWeb)
 \end{Sinput}
 \begin{Soutput}
-function (spec, doc = NULL, parser, contentparser, freeFUN = NULL, 
-    namespaces = NULL) 
+function (spec, doc, parser, contentparser, freeFUN = NULL) 
 NULL
 \end{Soutput}
 \end{Schunk}

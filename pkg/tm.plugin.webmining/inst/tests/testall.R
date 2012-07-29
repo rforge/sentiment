@@ -32,7 +32,7 @@ test2corp <- corpus.update(test2corp)
 meta(test1corp[[1]])
 
 
-#test error
+#test ok
 test3corp <- WebCorpus(NYTimesSource("Microsoft", appid = nytimes_appid))
 test3corp <- test3corp[1:10]
 test3corp <- corpus.update(test3corp)

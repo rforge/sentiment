@@ -5,9 +5,15 @@
 #' sapply(corpus, meta, "Origin")
 #' @param timeout.request timeout (in seconds) to be used for connections/requests, defaults to 30
 #' @param curlOpts curl options to be passed to \code{\link{getURL}}
+#' @param chunksize Size of download chunks to be used for parallel retrieval, defaults to 20
+#' @param verbose Specifies if retrieval info should be printed, defaults to getOption("verbose")
+#' @param retry.empty Specifies number of times empty content sites should be retried, defaults to 3
+#' @param sleep.time Sleep time to be used between chunked download, defaults to 3 (seconds)
+#' @param extractor Extractor to be used for content extraction, defaults to extractContentDOM
 #' @param ... additional parameters to \code{\link{getURL}}
+#' @return corpus including downloaded link content
 #' @export
-getLinkContent <- function(corpus, links = meta(corpus, "Origin"),
+getLinkContent <- function(corpus, links = sapply(corpus, meta, "Origin"),
 		timeout.request = 30, chunksize = 20, verbose = getOption("verbose"),
 		curlOpts = curlOptions(	verbose = FALSE,
 				followlocation = TRUE, 
@@ -19,13 +25,13 @@ getLinkContent <- function(corpus, links = meta(corpus, "Origin"),
 				ssl.verifypeer = FALSE,
 				useragent = "R"),  
 		#write.disk = F, 
-		tdir = tempdir(), 
+		#tdir = tempdir(), 
 		retry.empty = 3, 
-		delete.tempdir = F, 
+		#delete.tempdir = F, 
 		sleep.time = 3, 
-		extractor = ArticleExtractor, ...){
+		extractor = extractContentDOM, ...){
 	
-	if(nrow(corpus) != length(links))
+	if(length(corpus) != length(links))
 		stop("Corpus length not equal to links length\n")
 	
 	#content_urls <- unlist(sapply(content_parsed, linkreader))
@@ -36,11 +42,11 @@ getLinkContent <- function(corpus, links = meta(corpus, "Origin"),
 	retries <- 0
 	#allcontent <- rep("", length(links))
 	
-	while(any((tlength <- textlength(corpus))[,1] < 1) & (retries <= retry.empty)){
+	while(any(empty <- sapply(corpus, function(x) identical(Content(x), character(0)))) & (retries <= retry.empty)){
 		# Avoid memory leakages through parallel processing
-		p <- parallel({
+		#p <- parallel({
 			retries <- retries + 1
-			emptycontent.ids <- as.numeric(row.names(tlength)[tlength[,1] < 1])
+			emptycontent.ids <- which(empty)
 			
 			if(verbose){
 				cat("Run ", retries, ", retrieving ", length(emptycontent.ids), " content items\n")
@@ -68,7 +74,7 @@ getLinkContent <- function(corpus, links = meta(corpus, "Origin"),
 						},
 						error=function(e){
 							print(e)
-							# TODO: Check if really necessary
+							# TODO: Check if single retrieval part is really necessary
 							cat("\nError on retrieval, single retrieval fallback... \n")
 							content <- list()
 							for(i in 1:length(chunk)){
@@ -90,8 +96,14 @@ getLinkContent <- function(corpus, links = meta(corpus, "Origin"),
 				# Escape '
 				#extract <- gsub("'", "", extract)	
 				
-				# Put Content Into Database
-				Content(corpus[chunk.ids,]) <- extract
+				# Put Content Into Corpus
+				for(i in 1:length(chunk.ids)){
+					cid <- chunk.ids[i]
+					Content(corpus[[cid]]) <- extract[i]
+					
+				}
+
+				#Content(corpus[chunk.ids,]) <- extract
 				
 				
 				#allcontent[chunk.ids] <- content
@@ -100,12 +112,12 @@ getLinkContent <- function(corpus, links = meta(corpus, "Origin"),
 					progress <- floor(cend/length(links)*100)
 					cat(paste(progress, "% (",cend,"/",length(emptycontent.ids), ") ", Sys.time(), "\n",sep = ""))
 				}
-				closeAllConnections()
+				#closeAllConnections()
 				
 			}
-			TRUE
-		})
-		success <- collect(p)
+			#TRUE
+		#})
+		#success <- collect(p)
 	}
 #	if(length(corpus) != length(allcontent)){
 #		stop("Length mismatch: length(Corpus) != length(allcontent)")
