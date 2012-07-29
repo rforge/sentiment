@@ -11,10 +11,9 @@ Description: tm.plugin.webmining facilitates text retrieval from feed
     fractions of the original text tm.plugin.webmining even retrieves
     and extracts the text of the original text source.
 Version: 0.1
-Date: 2012-03-20
+Date: 2012-03-17
 Depends:
     tm,
-    boilerpipeR,
     RCurl,
     XML
 Collate:
@@ -27,3 +26,5 @@ Collate:
     'tm.plugin.webmining-package.R'
     'trimWhiteSpaces.R'
     'extract.R'
+
+    

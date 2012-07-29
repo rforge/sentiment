@@ -97,7 +97,6 @@ function (doc, spec)
 }
 
 #' Read content from NYTimesSource
-#' @importFrom boilerpipeR ArticleExtractor
 #' @noRd
 #' @export
 readNYTimes <- readWebJSON(spec = list(
@@ -141,7 +140,6 @@ readTwitter <- readWebXML(spec = list(
 #' Read content from GoogleFinanceSource
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
-#' @importFrom boilerpipeR ArticleExtractor
 #' @noRd
 #' @export
 readGoogle <- readWebXML(spec = list(
@@ -165,7 +163,6 @@ readGoogle <- readWebXML(spec = list(
 #' Read content from Yahoo RSS Source
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
-#' @importFrom boilerpipeR ArticleExtractor
 #' @seealso \code{\link{YahooFinanceSource}} \code{\link{YahooNewsSource}}
 #' @noRd
 #' @export
@@ -206,7 +203,6 @@ readYahoo <- readWebXML(spec = list(
 #' Read content from GoogleBlogSearchSource
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
-#' @importFrom boilerpipeR ArticleExtractor
 #' @noRd
 #' @export
 readGoogleBlogSearch <- readWebXML(spec=list(
@@ -264,7 +260,6 @@ readBing <- readWebXML(spec = list(Heading = list("node", "/*/news:Title"),
 #' Read content from GoogleFinanceSource
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
-#' @importFrom boilerpipeR ArticleExtractor
 #' @noRd
 #' @export
 readReutersNews <- readWebXML(spec = list(

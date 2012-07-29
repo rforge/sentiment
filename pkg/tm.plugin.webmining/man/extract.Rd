@@ -9,7 +9,7 @@
   \item{x}{PlainTextDocument}
 
   \item{extractor}{default extraction function to be used,
-  defaults to \code{\link{ArticleExtractor}}}
+  defaults to \code{\link{extractContentDOM}}}
 
   \item{...}{additional parameters to extractor function}
 }
