@@ -63,7 +63,7 @@ corpus.update <- function(x, ...){
 #' @param ... additional parameters to \code{\link{Corpus}} function
 #' @noRd
 corpus.update.WebCorpus <- 
-function(x, fieldname = "ID", retryempty = T, ...) {
+function(x, fieldname = "ID", retryempty = T, verbose = F, ...) {
 	cm <- CMetaData(x)
 	
 	newsource <- source.update(cm$MetaData$Source)
@@ -95,7 +95,10 @@ function(x, fieldname = "ID", retryempty = T, ...) {
 		corpus <- getEmpty(corpus)
 	}
 	
-	cat(length(newcorpus), " corpus items added.\n")
+	if(verbose){
+		cat(length(newcorpus), " corpus items added.\n")
+	}
+		
 	corpus
 }
 

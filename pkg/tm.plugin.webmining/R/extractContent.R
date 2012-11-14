@@ -183,7 +183,6 @@ function(xml, threshold = 0.5){
 #' @export
 #' @importFrom XML getNodeSet
 #' @importFrom XML removeNodes
-
 removeTags <-
 function(xmldoc, tags){
 	#remove scripts tags
