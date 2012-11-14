@@ -29,7 +29,7 @@ getLinkContent <- function(corpus, links = sapply(corpus, meta, "Origin"),
 		retry.empty = 3, 
 		#delete.tempdir = F, 
 		sleep.time = 3, 
-		extractor = extractContentDOM, ...){
+		extractor = ArticleExtractor, ...){
 	
 	if(length(corpus) != length(links))
 		stop("Corpus length not equal to links length\n")

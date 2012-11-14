@@ -6,7 +6,7 @@
 context("TwitterSource")
 
 test_that("TwitterSource",{
-	lengthcorp <- 20
+	lengthcorp <- 100
 		
 	testcorp <- WebCorpus(TwitterSource("Microsoft"))
 	# Check Corpus object

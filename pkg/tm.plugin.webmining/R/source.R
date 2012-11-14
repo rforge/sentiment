@@ -180,7 +180,7 @@ GoogleBlogSearchSource <- function(query, params =
 	ws <- WebSource(feedurls = fq, class = "WebXMLSource", parser = parser, ...)
 	ws$DefaultReader <- readGoogleBlogSearch
 	ws$PostFUN = function(x){
-		x <- getLinkContent(x)
+		x <- getLinkContent(x, extractor = DefaultExtractor)
 		#tm_map(x, extract, extractor = ArticleExtractor)
 	}
 	ws

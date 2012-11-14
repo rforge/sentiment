@@ -3,26 +3,22 @@
 # Author: mario
 ###############################################################################
 
-context("GoogleBlogSearchSource")
+context("GoogleNewsSource")
 
-test_that("GoogleBlogSearchSource",{
+test_that("GoogleNewsSource",{
 	
 	lengthcorp <- 100
-	
-	#FIXME: Error at Retrieval
-	testcorp <- WebCorpus(GoogleBlogSearchSource("Microsoft"))
+		
+	testcorp <- WebCorpus(GoogleNewsSource("Microsoft"))
 	# Check Corpus object
 	expect_that(length(testcorp), equals(lengthcorp))
 	expect_that(class(testcorp), equals(c("WebCorpus","VCorpus","Corpus","list")))
 	
 	# Check Content
-	expect_that(all(sapply(testcorp, nchar) > 0), is_true())
+	contentratio <- length(which(sapply(testcorp, nchar) > 0)) / length(testcorp)
+	expect_that(contentratio > 0.5, is_true())
 	
 	# Check Meta Data
-	author <- lapply(testcorp, function(x) meta(x, "Author"))
-	expect_that(all(sapply(author, function(x) class(x)[1] == "character")), is_true())
-	expect_that(all(sapply(author, nchar) > 0), is_true())
-			
 	datetimestamp <- lapply(testcorp, function(x) meta(x, "DateTimeStamp"))
 	expect_that(all(sapply(datetimestamp, function(x) class(x)[1] == "POSIXlt")), is_true())
 	

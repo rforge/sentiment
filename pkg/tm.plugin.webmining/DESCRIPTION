@@ -15,7 +15,8 @@ Date: 2012-03-17
 Depends:
     tm,
     RCurl,
-    XML
+    XML,
+    boilerpipeR
 Collate:
     'corpus.R'
     'extractContent.R'
