@@ -1,6 +1,6 @@
 Package: boilerpipeR
 Maintainer: Mario Annau <mario.annau@gmail.com>
-License: GPL-3
+License: Apache License (== 2.0)
 Title: Interface to the boilerpipe library by Christian Kohlschutter
     (http://code.google.com/p/boilerpipe/)
 Author: Mario Annau <mario.annau@gmail.com>
