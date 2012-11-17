@@ -40,11 +40,10 @@ This vignette gives an introduction to \pkg{tm.plugin.webmining},
 an add-on package to \pkg{tm} which facilitates the retrieval of textual 
 data from the web. The main focus of \pkg{tm.plugin.webmining} is the retrieval
 of web content from structured news feeds in the \proglang{XML} (\proglang{RSS}, \proglang{ATOM}) and
-\proglang{JSON} format. Furthermore, the direct retrieval through  \proglang{HTML}
-documents is implemented. Numerous data sources are supported, including Google--,Yahoo!-- and 
-Bing News, Reuters, New York Times, Twitter, etc. In addition to simple feed content retrieval,
-also the complete source articles can be downloaded and extracted through \pkg{RCurl} and
-\pkg{boilerpipeR}.
+\proglang{JSON} format. Additionally, the direct retrieval and extraction of 
+\proglang{HTML} documents is implemented. Numerous data sources are
+currently supported through APIs, including Google-- and Yahoo! News, Reuters,
+New York Times, and Twitter.
 }
 
 \tableofcontents
@@ -53,8 +52,15 @@ also the complete source articles can be downloaded and extracted through \pkg{R
 \section{Introduction}
 \pkg{tm.plugin.webmining} facilitates the retrieval of web content through news feeds. Feeds typically provide
 up--to--date information from content providers in a standardized format for easy parsing. The main advantage
-of using content from news feeds is that it already provides meta data like the Date--/Timestamp, Author and other
-useful information. Since all new information is only published through the news feed, it is also easier to track
+of using content from news feeds is that they already provide meta data like
+the Date--/Timestamp, Author and other useful information. 
+
+
+
+
+
+
+Since all new information is only published through the news feed, it is also easier to track
 changes of a
 
 

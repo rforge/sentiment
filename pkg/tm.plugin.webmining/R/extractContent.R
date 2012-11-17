@@ -57,9 +57,11 @@ function(url, asText = TRUE, ...){
 	
 	parseerror <- capture.output(tree <- htmlTreeParse(url, asText = asText, useInternalNodes = TRUE, ...))
 	
-	childlen <- sapply(xmlChildren(tree), function(x) nchar(toString.XMLNode(x)))
-	childidx <- which(childlen == max(childlen))
-	html <- xmlChildren(tree)[[childidx]]
+	children <- xmlChildren(tree)
+	childlen <- sapply(children, function(x) nchar(toString.XMLNode(x)))
+	childidx <- max(which(childlen == max(childlen)))
+	#childidx <- min(childidx, length(children))
+	html <- children[[childidx]]
 	val <- xmlValue(html)
 	XML:::free(tree)
 	return(val)

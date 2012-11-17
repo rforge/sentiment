@@ -10,8 +10,8 @@ Description: tm.plugin.webmining facilitates text retrieval from feed
     HTML is supported. As most (news) feeds only incorporate small
     fractions of the original text tm.plugin.webmining even retrieves
     and extracts the text of the original text source.
-Version: 0.1
-Date: 2012-03-17
+Version: 0.9
+Date: 2012-11-17
 Depends:
     tm,
     RCurl,
@@ -27,5 +27,3 @@ Collate:
     'tm.plugin.webmining-package.R'
     'trimWhiteSpaces.R'
     'extract.R'
-
-    

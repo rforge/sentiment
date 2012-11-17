@@ -40,5 +40,7 @@ test_that("GoogleNewsSource",{
 	testcorp <- testcorp[1:10]
 	testcorp <- corpus.update(testcorp)
 	expect_that(length(testcorp) >= lengthcorp, is_true())
+	
+	cat(" | Contentratio: ", sprintf("%.0f%%", contentratio * 100))
 })
 
