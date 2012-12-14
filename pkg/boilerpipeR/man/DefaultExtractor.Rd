@@ -9,7 +9,20 @@
 
   \item{...}{additional parameters}
 }
+\value{
+  extracted text as character
+}
 \description{
   A quite generic full-text extractor.
+}
+\examples{
+data(content)
+extract <- DefaultExtractor(content)
+}
+\author{
+  Mario Annau
+}
+\seealso{
+  \code{\link{Extractor}}
 }
 

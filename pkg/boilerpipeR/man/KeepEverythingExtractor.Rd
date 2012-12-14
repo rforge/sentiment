@@ -9,7 +9,20 @@
 
   \item{...}{additional parameters}
 }
+\value{
+  extracted text as character
+}
 \description{
   Marks everything as content.
+}
+\examples{
+data(content)
+extract <- KeepEverythingExtractor(content)
+}
+\author{
+  Mario Annau
+}
+\seealso{
+  \code{\link{Extractor}}
 }
 

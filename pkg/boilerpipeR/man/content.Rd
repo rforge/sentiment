@@ -1,9 +1,12 @@
 \docType{data}
 \name{content}
 \alias{content}
-\title{This is data to be included in my package}
+\title{Wordpress generated Webpage (retrieved from Quantivity Blog \url{http://quantivity.wordpress.com}).
+Content is saved as character and ready to be extracted.}
 \description{
-  This is data to be included in my package
+  Wordpress generated Webpage (retrieved from Quantivity
+  Blog \url{http://quantivity.wordpress.com}). Content is
+  saved as character and ready to be extracted.
 }
 \examples{
 #Data set has been generated as follows:

@@ -10,9 +10,22 @@ it achieves higher accuracy than \code{\link{DefaultExtractor}}.}
 
   \item{...}{additional parameters}
 }
+\value{
+  extracted text as character
+}
 \description{
   A full-text extractor which is tuned towards news
   articles. In this scenario it achieves higher accuracy
   than \code{\link{DefaultExtractor}}.
+}
+\examples{
+data(content)
+extract <- ArticleExtractor(content)
+}
+\author{
+  Mario Annau
+}
+\seealso{
+  \code{\link{Extractor}}
 }
 

@@ -1,6 +1,7 @@
 \name{LargestContentExtractor}
 \alias{LargestContentExtractor}
-\title{A full-text extractor which extracts the largest text component of a page.
+\title{FIXME: Some issues with kMin Parameter
+A full-text extractor which extracts the largest text component of a page.
 For news articles, it may perform better than the \code{\link{DefaultExtractor}},
 but usually worse than \code{\link{ArticleExtractor}}.}
 \usage{
@@ -11,10 +12,24 @@ but usually worse than \code{\link{ArticleExtractor}}.}
 
   \item{...}{additional parameters}
 }
+\value{
+  extracted text as character
+}
 \description{
-  A full-text extractor which extracts the largest text
-  component of a page. For news articles, it may perform
-  better than the \code{\link{DefaultExtractor}}, but
-  usually worse than \code{\link{ArticleExtractor}}.
+  FIXME: Some issues with kMin Parameter A full-text
+  extractor which extracts the largest text component of a
+  page. For news articles, it may perform better than the
+  \code{\link{DefaultExtractor}}, but usually worse than
+  \code{\link{ArticleExtractor}}.
+}
+\examples{
+data(content)
+extract <- LargestContentExtractor(content)
+}
+\author{
+  Mario Annau
+}
+\seealso{
+  \code{\link{Extractor}}
 }
 

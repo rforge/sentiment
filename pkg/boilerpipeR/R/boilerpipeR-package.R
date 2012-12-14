@@ -10,7 +10,7 @@
 #'
 #' \pkg{boilerpipeR} interfaces the boilerpipe Java library, created by Christian
 #' Kohlschutter \url{http://code.google.com/p/boilerpipe/}. It implements robust heuristics
-#' to extract the main content of HTML files, removing unessecary
+#' to extract the main content from HTML files, removing unessecary
 #' elements like ads, banners and headers/footers.
 #' 
 #' @name boilerpipeR-package
@@ -28,8 +28,8 @@
 #' }
 NULL
 
-#' This is data to be included in my package
-#'
+#' Wordpress generated Webpage (retrieved from Quantivity Blog \url{http://quantivity.wordpress.com}).
+#' Content is saved as character and ready to be extracted.
 #' @name content
 #' @docType data
 #' @author Mario Annau

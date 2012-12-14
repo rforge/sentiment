@@ -1,28 +1,31 @@
 \name{Extractor}
 \alias{Extractor}
-\title{Generic extraction function to call boilerpipe extractors}
+\title{Generic extraction function which calls boilerpipe extractors. It is the actual
+workhorse which directly calls the boilerpipe Java library. Typically called through
+functions as listed for parameter \code{exname}.}
 \usage{
   Extractor(exname, content, asText = TRUE, ...)
 }
 \arguments{
   \item{exname}{character specifying the extractor to be
-  used. It can take one of the following values: \describe{
-  \item{ArticleExtractor}{A full-text extractor which is
-  tuned towards news articles.}
-  \item{ArticleSentencesExtractor}{A full-text extractor
-  which is tuned towards extracting sentences from news
-  articles.} \item{CanolaExtractor}{A full-text extractor
-  trained on a \href{http://krdwrd.org/}{krdwrd}.}
-  \item{DefaultExtractor}{A quite generic full-text
-  extractor.} \item{KeepEverythingExtractor}{Marks
+  used. It can take one of the following values: \itemize{
+  \item{\code{\link{ArticleExtractor}}}{A full-text
+  extractor which is tuned towards news articles.}
+  \item{\code{\link{ArticleSentencesExtractor}}}{A
+  full-text extractor which is tuned towards extracting
+  sentences from news articles.}
+  \item{\code{\link{CanolaExtractor}}}{A full-text
+  extractor trained on a
+  \href{http://krdwrd.org/}{krdwrd}.}
+  \item{\code{\link{DefaultExtractor}}}{A quite generic
+  full-text extractor.}
+  \item{\code{\link{KeepEverythingExtractor}}}{Marks
   everything as content.}
-  \item{KeepEverythingWighMinKWordsExtractor}{A full-text
+  \item{\code{\link{LargestContentExtractor}}}{A full-text
   extractor which extracts the largest text component of a
-  page.} \item{LargestContentExtractor}{A full-text
-  extractor which extracts the largest text component of a
-  page.} \item{NumWordsRulesExtractor}{A quite generic
-  full-text extractor solely based upon the number of words
-  per block.} }}
+  page.} \item{\code{\link{NumWordsRulesExtractor}}}{A
+  quite generic full-text extractor solely based upon the
+  number of words per block.} }}
 
   \item{content}{Text content or URL as character}
 
@@ -33,8 +36,17 @@
 
   \item{...}{additional parameters}
 }
+\value{
+  extracted text as character
+}
 \description{
-  Generic extraction function to call boilerpipe extractors
+  Generic extraction function which calls boilerpipe
+  extractors. It is the actual workhorse which directly
+  calls the boilerpipe Java library. Typically called
+  through functions as listed for parameter \code{exname}.
+}
+\author{
+  Mario Annau
 }
 \references{
   \url{http://code.google.com/p/boilerpipe/}
