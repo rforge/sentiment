@@ -7,7 +7,7 @@ context("YahooInPlaySource")
 
 test_that("YahooInPlaySource",{
 	
-	minlengthcorp <- 10
+	minlengthcorp <- 1
 		
 	testcorp <- WebCorpus(YahooInplaySource())
 	lengthcorp <- length(testcorp)
@@ -33,7 +33,7 @@ test_that("YahooInPlaySource",{
 	expect_that(all(sapply(id, function(x) class(x)[1] == "character")), is_true())
 	expect_that(all(sapply(id, nchar) > 0), is_true())
 	
-	testcorp <- testcorp[1:10]
+	testcorp <- testcorp[1:length(minlengthcorp)]
 	testcorp <- corpus.update(testcorp)
 	expect_that(length(testcorp) >= lengthcorp, is_true())
 	

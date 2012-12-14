@@ -5,8 +5,7 @@ Function extracts main HTML Content using its Document Object Model.
 Idea comes basically from the fact, that main content of an HTML Document
 is in a subnode of the HTML DOM Tree with a high text to tag - ratio.}
 \usage{
-  extractContentDOM(url, threshold = 0.5, asText = TRUE,
-    ...)
+  extractContentDOM(url, threshold, asText = TRUE, ...)
 }
 \arguments{
   \item{url}{character, url or filename}

@@ -1,20 +1,48 @@
 \name{metaXTS}
 \alias{metaXTS}
-\title{Calculate xts from scored corpus...}
-\usage{metaXTS(corpus, fieldnames, period="days", k=1, aggFUN=mean, symbol,
-    prefix="SEMNT", join="inner", na.omit=TRUE)
+\title{Calculate xts from scored corpus}
+\usage{
+  metaXTS(corpus, fieldnames, period = "days", k = 1,
+    aggFUN = mean, symbol, prefix = "SEMNT",
+    join = "inner", na.omit = TRUE)
 }
-\description{Calculate xts from scored corpus}
-\author{Mario Annau}
-\seealso{\code{\link{score}} \code{endpoints} (in package \code{xts})}
-\arguments{\item{corpus}{Scored corpus from which \code{xts} object should be generated, see \code{\link{score}}}
-\item{fieldnames}{Fieldnames to be used from \code{DMetaData(corpus)}, defaults to DMetaData(corpus)}
-\item{period}{Period unit of xts time series object to be returned, defaults to "days", see \code{endpoints}}
-\item{k,}{Period length of xts time series object to be returned, defaults to 1, see \code{endpoints}}
-\item{aggFUN}{Aggregation function to be used for meta fields, defaults to mean}
-\item{symbol}{\code{xts} object to be merged with sentiment time series, preferably \code{OHLC} time series}
-\item{prefix}{Character string specifying prefix of resulting sentiment time series column names}
-\item{join}{Join which should be performed if symbol is specified}
-\item{na.omit}{remove NA's from resulting time series, see \code{\link{na.omit}}}
+\arguments{
+  \item{corpus}{Scored corpus from which \code{xts} object
+  should be generated, see \code{\link{score}}}
+
+  \item{fieldnames}{Fieldnames to be used from
+  \code{DMetaData(corpus)}, defaults to DMetaData(corpus)}
+
+  \item{period}{Period unit of xts time series object to be
+  returned, defaults to "days", see \code{endpoints}}
+
+  \item{k,}{Period length of xts time series object to be
+  returned, defaults to 1, see \code{endpoints}}
+
+  \item{aggFUN}{Aggregation function to be used for meta
+  fields, defaults to mean}
+
+  \item{symbol}{\code{xts} object to be merged with
+  sentiment time series, preferably \code{OHLC} time
+  series}
+
+  \item{prefix}{Character string specifying prefix of
+  resulting sentiment time series column names}
+
+  \item{join}{Join which should be performed if symbol is
+  specified}
+
+  \item{na.omit}{remove NA's from resulting time series,
+  see \code{\link{na.omit}}}
+}
+\description{
+  Calculate xts from scored corpus
+}
+\author{
+  Mario Annau
+}
+\seealso{
+  \code{\link{score}} \code{endpoints} (in package
+  \code{xts})
 }
 

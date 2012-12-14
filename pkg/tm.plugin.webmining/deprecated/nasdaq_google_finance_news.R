@@ -2,6 +2,8 @@
 # 
 # Author: mario
 ###############################################################################
+
+
 library(tm.plugin.webmining)
 outdir <- "/data/Research/google_large_scale"
 constituents.nasdaq.yahoo <- 

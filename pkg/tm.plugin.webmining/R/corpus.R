@@ -1,8 +1,3 @@
-# TODO: Add comment
-# 
-# Author: mario
-###############################################################################
-
 #' Customized WebCorpus function
 #' Constructs a derived class of \code{\link{Corpus}} 
 #' @param x object of type Source, see also \code{\link{Corpus}}

@@ -1,4 +1,3 @@
-
 #' Get Corpus link content
 #' @param corpus corpus for which link content should be downloaded
 #' @param links character vector specifyinig links to be used for download, defaults to 
@@ -15,7 +14,7 @@
 #' @export
 getLinkContent <- function(corpus, links = sapply(corpus, meta, "Origin"),
 		timeout.request = 30, chunksize = 20, verbose = getOption("verbose"),
-		curlOpts = curlOptions(	verbose = FALSE,
+		curlOpts = curlOptions(verbose = FALSE,
 				followlocation = TRUE, 
 				maxconnects = 5,
 				maxredirs = 10,

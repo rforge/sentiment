@@ -1,8 +1,3 @@
-# TODO: Add comment
-# 
-# Author: mario
-###############################################################################
-
 #' Read Web Content and respective Link Content from feedurls
 #' @author Mario Annau
 #' @param feedurls urls from feeds to be retrieved
@@ -26,7 +21,10 @@ WebSource <- function(feedurls, class = "WebXMLSource", parser, encoding = "UTF-
 	#cat("Retrieving ", feedurls, "\n")
 	# retrieve feeds using RCurl
 	content_raw <- getURL(feedurls, .opts = curlOpts)
+	
 	content_parsed <- unlist(lapply(content_raw, parser), recursive = FALSE)
+	#FIXME: the slooow approach
+	#content_parsed <- unlist(lapply(feedurls, parser), recursive = FALSE)
 	
 	# generate source object
 	s <- tm:::.Source(NULL, encoding, length(content_parsed), FALSE, NULL, 0, vectorized, class = class)
@@ -59,6 +57,7 @@ source.update.WebJSONSource <-
 function(x) {
 	content_raw <- getURL(x$Feedurls, .opts = x$CurlOpts)
 	content_parsed <- unlist(lapply(content_raw, x$Parser), recursive = FALSE)
+	#content_parsed <- unlist(lapply(x$Feedurls, x$Parser), recursive = FALSE)
 	x$Content <- content_parsed
 	x$Position <- 0
 	x
@@ -91,7 +90,7 @@ GoogleFinanceSource <- function(query, params =
 						output='rss'),...){
 	feed <- "http://www.google.com/finance/company_news"
 	parser <- function(cr){
-		tree <- xmlInternalTreeParse(cr, asText = TRUE)
+		tree <- parse(cr, type = "XML")
 		xpathSApply(tree, path = "//item")
 	}
 	
@@ -129,7 +128,7 @@ YahooFinanceSource <- function(query, params =
 	
 	fq <- feedquery(feed, params)
 	parser <- function(cr){
-		tree <- xmlInternalTreeParse(cr, asText = TRUE)
+		tree <- parse(cr, type = "XML")
 		xpathSApply(tree, path = "//item")
 	}
 	
@@ -171,7 +170,7 @@ GoogleBlogSearchSource <- function(query, params =
 
 	fq <- feedquery(feed, params)
 	parser <- function(cr){
-		tree <- xmlInternalTreeParse(cr, asText = TRUE)
+		tree <- parse(cr, type = "XML")
 		nodes <- xpathSApply(tree, path = "//item")
 		xmlns1 <- lapply(nodes, newXMLNamespace, "http://purl.org/dc/elements/1.1/", "dc")
 		nodes
@@ -213,7 +212,7 @@ GoogleNewsSource <- function(query, params =
 	
 	fq <- feedquery(feed, params)
 	parser <- function(cr){
-		tree <- xmlInternalTreeParse(cr, asText = TRUE)
+		tree <- parse(cr, type = "XML")
 		nodes <- xpathSApply(tree, path = "//item")
 		xmlns1 <- lapply(nodes, newXMLNamespace, "http://purl.org/dc/elements/1.1/", "dc")
 		nodes
@@ -250,7 +249,7 @@ ReutersNewsSource <- function(query = 'businessNews', ...){
 	fq <- paste(feed, query, sep = "/")
 	#fq <- feedquery(feed, params)
 	parser <- function(cr){
-		tree <- xmlInternalTreeParse(cr, asText = TRUE)
+		tree <- parse(cr, type = "XML")
 		nodes <- xpathSApply(tree, path = "//item")
 		xmlns1 <- lapply(nodes, newXMLNamespace, "http://rssnamespace.org/feedburner/ext/1.0", "feedburner")
 		nodes
@@ -301,7 +300,7 @@ TwitterSource <- function(query, n = 1500, params =
 				"a" = "http://www.w3.org/2005/Atom", 
 				"twitter"="http://api.twitter.com/")
 		
-		tree <- xmlInternalTreeParse(cr, asText = TRUE)
+		tree <- parse(cr, type = "XML")
 		nodes <- xpathSApply(tree, path = "///a:entry", namespaces = namespaces)
 		#to surpress namespace warnings while parsing
 		xmlns1 <- lapply(nodes, newXMLNamespace, "http://api.twitter.com/", "twitter")
@@ -313,12 +312,18 @@ TwitterSource <- function(query, n = 1500, params =
 	ws <- WebSource(feedurls = fq, class = "WebXMLSource", parser = parser, ...)
 	ws$DefaultReader <- readTwitter
 	#TODO: error with extractHTMLStrip, need tryCatch or whatever
+	enc <- switch(.Platform$OS.type,
+						unix = "UTF-8", 
+						windows = "latin1")
+			
 	ws$PostFUN <- function(x){
-		tm_map(x, extract, extractor = extractHTMLStrip, encoding = "UTF-8")
+		x <- tm_map(x, encloseHTML)
+		tm_map(x, extract, extractor = extractHTMLStrip, encoding = enc)
 	}
 	
 	ws
 }
+
 
 
 #' Get Feed Meta Data from Yahoo News
@@ -345,7 +350,7 @@ YahooNewsSource <- function(query, params =
 	
 	fq <- feedquery(feed, params)
 	parser <- function(cr){
-		tree <- xmlInternalTreeParse(cr, asText = TRUE)
+		tree <- parse(cr, type = "XML")
 		xpathSApply(tree, path = "//item")
 	}
 	
@@ -383,21 +388,31 @@ NYTimesSource <- function(query, n = 100, count = 10, appid, params =
 				query = query,
 				offset=seq(0, n-count, by = count),
 				"api-key" = appid),...){
-	#importDefaults("getMeta.nytimes.articlesearch")
 	feed <- "http://api.nytimes.com/svc/search/v1/article"
 	fq <- feedquery(feed, params)
 	
 	parser <- function(cr){
-		json <- fromJSON(cr)
+		json <- parse(cr, type = "JSON")
 		json$results
 	}
+	
+	# Changing number of maxredirs to 20 for better contentratio
+	curlOpts = curlOptions(	verbose = FALSE,
+			followlocation = TRUE, 
+			maxconnects = 5,
+			maxredirs = 20,
+			timeout = 30,
+			connecttimeout = 30,
+			ssl.verifyhost=FALSE,
+			ssl.verifypeer = FALSE,
+			useragent = "R")
 	
 	linkreader <- function(tree) tree[["url"]]
 	
 	ws <- WebSource(feedurls = fq, class = "WebJSONSource", parser = parser, ...)
 	ws$DefaultReader <- readNYTimes
-	ws$PostFUN = function(x){
-		x <- getLinkContent(x)
+	ws$PostFUN <- function(x){
+		x <- getLinkContent(x, extractor = ArticleExtractor, curlOpts = curlOpts)
 		#tm_map(x, extract, extractor = ArticleExtractor)
 	}
 	ws
@@ -420,7 +435,7 @@ NYTimesSource <- function(query, n = 100, count = 10, appid, params =
 YahooInplaySource <- function(...){
 	url <- "http://finance.yahoo.com/marketupdate/inplay"
 	parser <- function(cr){
-		tree <- htmlTreeParse(cr, useInternalNodes = T)
+		tree <- parse(cr, useInternalNodes = T, type = "HTML")
 		xp_expr = "//div[@class= 'yfitmbdy']/p"
 		paragraphs = xpathSApply(tree, xp_expr)
 	}
@@ -430,6 +445,83 @@ YahooInplaySource <- function(...){
 	ws
 }
 
+#' Retrieve feeds through Google Reader
+#' This function utilizes the (unofficial) Google Reader API to retrieve RSS
+#' feeds. The advantage of access RSS feeds through the Google Reader API is that
+#' you are not limited by the number of entries a website may included in their
+#' feed. That is, Google maintains generally maintains a complete history of
+#' entries from the RSS feed.
+#' Code was partly taken from Jason Bryer 
+#' \url{http://bryer.org/2012/retrieving-rss-feeds-using-google-reader}
+#' 
+#' Note that the contents of the results will be limited by what the website
+#' provides in their feeds. That is, Google does not contain more information
+#' per entry then what the website originally provided. If the initial feed
+#' contained only excerpts of the article, the feed from Google will too only
+#' contain excerpts. Be aware though that for sites that do provide the complete
+#' contents of posts will result in potentially very large downloads.
+#' @param feed url of feed to be retrieved through the Google Reader API
+#' @param auth.token Authentification token as retrieved from \code{\link{auth.google.reader}}
+#' @param params Additional parameters for Google Reader API, n (number of items) is already set to 100 (see also note).
+#' @param curlOpts RCurl options (as generated by \code{\link{curlOptions}}). Defaults to NULL (are therefore auto-generated).
+#' @param ... additional parameters to be used in \code{\link{WebSource}}
+#' @note Number of items (n, through params) can be set to a much larger number (>1000), depending on the number 
+#' of feed items cached in Google Reader. However, large request can take a lot of time/memory.
+#' @author Mario Annau
+#' @author Mario Annau
+#' @aliases readGoogleReader
+#' @export 
+GoogleReaderSource <- function(feed, auth.token = auth.google.reader(), params = list(n = 100), curlOpts = NULL, ...){
+	google.auth <- paste("GoogleLogin auth=", auth.token, sep='')
+	
+	google.reader.feed <- "http://www.google.com/reader/atom/feed/"
+	feed.combined <- paste(google.reader.feed, feed, sep = "")
+	
+	ns <- c(rep(1000, floor(params[["n"]] / 1000)), params[["n"]] %% 1000)
+	ns <- ns[ns > 0]
+	params[["n"]] <- ns
+	
+	fq <- feedquery(feed.combined, params)
+	
+	if(is.null(curlOpts)){
+		if(!is.null(google.auth)){
+			curlOpts <- curlOptions(	
+					followlocation = TRUE, 
+					httpheader=c("Authorization"=google.auth),
+					maxconnects = 1,
+					maxredirs = 10,
+					timeout = 120,
+					connecttimeout = 30,
+					ssl.verifyhost=FALSE, 
+					ssl.verifypeer=FALSE)
+		}else{
+			stop("Either Parameter google.auth or curlOpts must be specified for Google Reader Source.")	
+		}
+	}
+	
+	parser <- function(cr){
+		namespaces = c(	"media" = "http://search.yahoo.com/mrss/", 
+				"gr" = "http://www.google.com/schemas/reader/atom/",  
+				"idx"="urn:atom-extension:indexing", 
+				"index" = "no", 
+				"dir"="ltr",
+				"a"="http://www.w3.org/2005/Atom")
+
+		tree <- parse(cr, type = "XML")
+		nodes <- xpathSApply(tree, path = "///a:entry", namespaces = namespaces)
+		#to surpress namespace warnings while parsing
+		xmlns1 <- lapply(nodes, newXMLNamespace, "http://www.w3.org/2005/Atom", "a")
+		xmlns2 <- lapply(nodes, newXMLNamespace, "http://www.google.com/schemas/reader/atom/", "gr")
+		nodes
+	}
+	
+	ws <- WebSource(feedurls = fq, class = "WebXMLSource", parser = parser, curlOpts = curlOpts, ...)
+	ws$DefaultReader <- readGoogleReader
+	ws$PostFUN <- function(x){
+		x <- getLinkContent(x, extractor = ArticleExtractor)
+	}
+	ws
+}
 
 #' @S3method getElem WebXMLSource
 #' @S3method getElem WebHTMLSource
@@ -438,11 +530,11 @@ YahooInplaySource <- function(...){
 getElem.WebXMLSource <- 
 getElem.WebHTMLSource <-
 function(x) {
-	virtual.file <- character(0)
-	con <- textConnection("virtual.file", "w", local = TRUE)
-	XML::saveXML(x$Content[[x$Position]], con)
-	close(con)
-	list(content = virtual.file, linkcontent = x$LinkContent[[x$Position]], uri = x$URI[[x$Position]])
+#	virtual.file <- character(0)
+#	con <- textConnection("virtual.file", "w", local = TRUE)
+#	XML::saveXML(x$Content[[x$Position]], con)
+#	close(con)
+	list(content = XML::saveXML(x$Content[[x$Position]]), linkcontent = x$LinkContent[[x$Position]], uri = x$URI[[x$Position]])
 }
 
 #' @S3method getElem WebJSONSource
@@ -461,5 +553,53 @@ eoi.WebHTMLSource <-
 eoi.WebJSONSource <- 
 function(x) length(x$Content) <= x$Position
 
+
+
+
+#' @importFrom tm stepNext
+#' @S3method stepNext GoogleReaderSource
+#' @noRd
+stepNext.GoogleReaderSource <- function(x) {
+	verbose = getOption("verbose")
+	
+	x$Position <- x$Position + 1
+	
+	if(verbose){
+		cat("Retrieving", x$Feedurls[x$Position], " ...\n")
+	}
+	
+	url.content <- getURL(x$Feedurls[x$Position], .opts = x$CurlOpts, .encoding = x$Encoding)
+	
+	if(!is.null(x$Content)){
+		XML:::free(x$Content)	
+	}
+	
+	x$Content <- parse(url.content, type = "XML")
+	continue <- unlist(getNodeSet(x$Content,  "//gr:continuation", x$Namespaces, xmlValue))
+	
+	if(is.null(continue)){
+		x$Length <- x$Position
+		x$Feedurls <- x$Feedurls[1:x$Length]
+	}
+	
+	if(x$Position < x$Length){
+		x$Feedurls[x$Position+1] <- paste(x$Feedurls[x$Position+1], "&c=", continue, sep = "")
+	}
+	x
+}
+
+#' @S3method eoi GoogleReaderSource
+#' @noRd
+eoi.GoogleReaderSource <- 
+		function(x){
+	x$Position >= x$Length
+}
+
+#' @S3method getElem GoogleReaderSource
+#' @noRd
+getElem.GoogleReaderSource <- 
+		function(x){
+	list(content = x$Content)
+}
 
 

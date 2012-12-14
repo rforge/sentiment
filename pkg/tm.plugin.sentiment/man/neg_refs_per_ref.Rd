@@ -1,11 +1,19 @@
 \name{neg_refs_per_ref}
 \alias{neg_refs_per_ref}
-\title{Calculate neg_refs_per_ref from Matrix...}
-\usage{neg_refs_per_ref(x, negative)
+\title{Calculate neg_refs_per_ref from Matrix}
+\usage{
+  neg_refs_per_ref(x, negative)
 }
-\description{Calculate neg_refs_per_ref from Matrix}
-\author{Mario Annau}
-\arguments{\item{x}{TermDocumentMatrix}
-\item{negative}{character vector specifying negative terms to be used, defaults to  \code{\link{negterms_GI}}}
+\arguments{
+  \item{x}{TermDocumentMatrix}
+
+  \item{negative}{character vector specifying negative
+  terms to be used, defaults to \code{\link{negterms_GI}}}
+}
+\description{
+  Calculate neg_refs_per_ref from Matrix
+}
+\author{
+  Mario Annau
 }
 

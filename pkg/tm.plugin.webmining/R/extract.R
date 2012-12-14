@@ -1,8 +1,3 @@
-# TODO: Add comment
-# 
-# Author: mario
-###############################################################################
-
 #' Extract Main Content from Text Documents
 #' @param x PlainTextDocument
 #' @param extractor default extraction function to be used, defaults to \code{\link{extractContentDOM}}

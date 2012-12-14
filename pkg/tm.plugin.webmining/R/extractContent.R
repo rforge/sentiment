@@ -41,6 +41,7 @@ function(contentsrc, extractor = "extractContentDOM", verbose = FALSE, ...){
 #' @author Mario Annau
 #' @param url character, url or filename
 #' @param asText specifies if url parameter is a \code{character}, defaults to TRUE
+#' @param encoding specifies local encoding to be used, depending on platform
 #' @param ... Additional parameters for \code{\link{htmlTreeParse}} 
 #' @seealso \code{\link{xmlNode}}
 #' @importFrom XML htmlTreeParse
@@ -49,13 +50,18 @@ function(contentsrc, extractor = "extractContentDOM", verbose = FALSE, ...){
 #' @importFrom XML xmlValue
 #' @export
 extractHTMLStrip <-
-function(url, asText = TRUE, ...){
-	
+function(url, asText = TRUE, encoding, ...){
+	if(missing(encoding)){
+		encoding <- switch(.Platform$OS.type,
+				unix = "UTF-8",
+				windows = "latin1")
+	}	
+
 	if(url == ""){
 		return("")
 	}
-	
-	parseerror <- capture.output(tree <- htmlTreeParse(url, asText = asText, useInternalNodes = TRUE, ...))
+
+	parseerror <- capture.output(tree <- htmlTreeParse(url, asText = asText, useInternalNodes = TRUE, encoding = encoding, ...))
 	
 	children <- xmlChildren(tree)
 	childlen <- sapply(children, function(x) nchar(toString.XMLNode(x)))
@@ -86,7 +92,12 @@ function(url, asText = TRUE, ...){
 #' @importFrom XML htmlTreeParse
 #' @export
 extractContentDOM <-
-function(url, threshold = 0.5, asText = TRUE, ...){
+function(url, threshold, asText = TRUE, ...){
+		
+		# FIXME: Hack because of roxygen2 bug (dot replaced by comma):
+		if(missing(threshold)){
+			threshold <- 0.5
+		}
 
 		if(url == ""){
 			return("")
@@ -129,17 +140,23 @@ function(xn, annotate = TRUE){
 #' @param FUN Function to be executed
 #' @param threshold maximum threshold needed to step down the tree, defaults to 0.5
 #' @param attribname Name of used attribute, defaults to "attrib"
-# TODO rewrite funtion to be more general and remove attribname???
 #' @param recursive should tree be recursively annotated?, defaults to TRUE
 #' @param mintextlen minimum textlength needed to step down the tree
 #' @param ... additional arguments for FUN
 #' @seealso \code{\link{extractContentDOM}}, \code{\link{xmlNode}}
 #' @importFrom XML xmlApply
 assignValues <-
-function(t, FUN, threshold = 0.5, attribname = "attrib", recursive = TRUE, mintextlen = 10, ...){
+function(t, FUN, threshold, attribname = "attrib", recursive = TRUE, mintextlen = 10, ...){
+	
+	# FIXME: Hack because of roxygen2 bug (dot replaced by comma):
+	if(missing(threshold)){
+		threshold <- 0.5
+	}
+
 	dens <- xmlApply(t, FUN)
 	dens <- do.call("rbind", dens)
 	#dens <- as.data.frame(dens)
+	
 	
 	if(!recursive){
 		return(t)
@@ -158,7 +175,12 @@ function(t, FUN, threshold = 0.5, attribname = "attrib", recursive = TRUE, minte
 #' @importFrom XML xpathSApply
 #' @importFrom XML xmlValue
 getMainText <-
-function(xml, threshold = 0.5){
+function(xml, threshold){
+	# FIXME: Hack because of roxygen2 bug (dot replaced by comma):
+	if(missing(threshold)){
+		threshold <- 0.5
+	}
+
 	textlen <- as.numeric( xpathSApply(xml, path = "//attribute::textlen"))
 	dens <- as.numeric( xpathSApply(xml, path = "//attribute::dens"))
 	

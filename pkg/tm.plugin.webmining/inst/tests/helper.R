@@ -3,12 +3,14 @@
 # Author: mario
 ###############################################################################
 
-file.appid <- system.file("appid.R", package = "tm.plugin.webmining")
+require(tm.plugin.webmining)
 
-if(file.exists(file.appid)){
-	source(file.appid)
-	cat("appid.R File provided.\n")
-}else{
-	cat("No appid.R File provided.\n")
-}
-
+#file.appid <- system.file("keys.R", package = "tm.plugin.webmining")
+#
+#if(file.exists(file.appid)){
+#	source(file.appid)
+#	cat("keys.R File provided.\n")
+#}else{
+#	cat("No keys.R File provided.\n")
+#}
+#

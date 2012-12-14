@@ -1,8 +1,3 @@
-# TODO: Add comment
-# 
-# Author: mario
-###############################################################################
-
 #' Read content from Web...Source
 #' Generic function to read content from \code{\link{WebSource}}
 #' @param spec specification of content reader
@@ -48,8 +43,12 @@ readWeb <- FunctionGenerator(function(spec, doc, parser, contentparser, freeFUN 
 #' @importFrom XML xmlInternalTreeParse
 #' @importFrom XML free
 readWebXML <- function(...){
-	parser <- function(x) XML::xmlInternalTreeParse(x, asText = TRUE)
-	contentparser <- function(x, cspec) tm:::.xml_content(x, cspec)
+	parser <- function(x){
+		#XML::xmlInternalTreeParse(x, asText = TRUE)
+		parse(x, type = "XML")
+	} 
+	#contentparser <- function(x, cspec) tm:::.xml_content(x, cspec)
+	contentparser <- tm:::.xml_content
 	freeFUN <- XML:::free
 	readWeb(parser = parser, contentparser = contentparser, freeFUN = freeFUN, ...)
 }
@@ -60,7 +59,8 @@ readWebXML <- function(...){
 #' @importFrom XML htmlTreeParse
 #' @importFrom XML free
 readWebHTML <- function(...){
-	parser <- function(x) XML::htmlTreeParse(x, asText = TRUE, useInternalNodes = TRUE)
+	#parser <- function(x) XML::htmlTreeParse(x, asText = TRUE, useInternalNodes = TRUE)
+	parser <- function(x) parse(x, type = "HTML", useInternalNodes = TRUE)
 	contentparser <- function(x, cspec) tm:::.xml_content(x, cspec)
 	freeFUN <- XML:::free
 	readWeb(parser = parser, contentparser = contentparser, freeFUN = freeFUN, ...)
@@ -137,7 +137,7 @@ readTwitter <- readWebXML(spec = list(
 	doc = PlainTextDocument())
 
 
-#' Read content from GoogleFinanceSource
+#' Read content from Google...Source
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
 #' @noRd
@@ -155,7 +155,7 @@ readGoogle <- readWebXML(spec = list(
 		Origin = list("node", "//link"),
 		Description = list("function", function(node){
 					val <- sapply(getNodeSet(node, "//item/description"), xmlValue)
-					extractHTMLStrip(val, asText = TRUE)
+					extractHTMLStrip(sprintf("<html>%s</html>", val), asText = T)
 				}),
 		ID = list("node",  "//guid")),
 	doc = PlainTextDocument())
@@ -205,7 +205,7 @@ readGoogleBlogSearch <- readWebXML(spec=list(
 	doc = PlainTextDocument())
 
 
-#' Read content from GoogleFinanceSource
+#' Read content from YahooInplaySource
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
 #' @noRd
@@ -224,7 +224,7 @@ readYahooInplay <- readWebHTML(spec = list(
 
 
 
-#' Read content from GoogleFinanceSource
+#' Read content from ReutersNewsSource
 #' @importFrom XML getNodeSet
 #' @importFrom XML xmlValue
 #' @noRd
@@ -242,10 +242,34 @@ readReutersNews <- readWebXML(spec = list(
 				Origin = list("node", "//link"),
 				Description = list("function", function(node){
 							val <- sapply(getNodeSet(node, "//item/description"), xmlValue)
-							val
-							#extractHTMLStrip(val, asText = TRUE)
+							extractHTMLStrip(sprintf("<html>%s</html>", val), asText = T)
 						}),
 				ID = list("node",  "//guid"),
 				Category = list("node", "//category")),
 		doc = PlainTextDocument())
+
+
+#' Read content from GoogleReaderSource
+#' @importFrom XML getNodeSet
+#' @importFrom XML xmlValue
+#' @noRd
+#' @export
+readGoogleReader <- readWebXML(spec = list(
+				Heading = list("node", "//entry/title"),
+				DateTimeStamp = list("function", function(node){
+							val <- sapply(getNodeSet(node, "//entry/published"), xmlValue)
+							time <- strptime(val,format = "%Y-%m-%dT%H:%M:%S",tz = "GMT")
+							time
+						}),
+				Author = list("node", "//entry/author/name"),
+				Origin = list("attribute", "//entry/link[@rel='alternate']/@href"),
+				Description = list("function", function(node){
+							val <- sapply(getNodeSet(node, "//entry/content"), xmlValue)
+							extractHTMLStrip(sprintf("<html>%s</html>", val), asText = T)
+						}),
+				Source = list("node", "//entry/source/title"),
+				ID = list("node",  "//entry/id")),
+		doc = PlainTextDocument())
+
+
 

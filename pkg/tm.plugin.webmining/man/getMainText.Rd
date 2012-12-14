@@ -4,7 +4,7 @@
 Main Text is obtained from Tree -Subnode where threshold > threshold and
 textlength is at maximum}
 \usage{
-  getMainText(xml, threshold = 0.5)
+  getMainText(xml, threshold)
 }
 \arguments{
   \item{xml}{object of class xmlNode}

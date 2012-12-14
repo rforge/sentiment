@@ -2,8 +2,8 @@
 #' \tabular{ll}{
 #' Package: \tab tm.plugin.webmining\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.1\cr
-#' Date: \tab 201009-13\cr
+#' Version: \tab 1.0\cr
+#' Date: \tab 2012-12-13\cr
 #' License: \tab GPL-3\cr
 #' LazyLoad: \tab yes\cr
 #' }
@@ -29,23 +29,29 @@
 #' @title Retrieve structured, textual data from various web sources
 #' @author Mario Annau \email{mario.annau@@gmail}
 #' @keywords package
-#' @seealso \code{\link{WebSource}} \code{\link{readWeb}}
+#' @seealso \code{\link{WebCorpus}} \code{\link{readWeb}}
 #' @examples
 #' \dontrun{
-#' test1corp <- Corpus(GoogleFinanceSource("NASDAQ:MSFT"))
-#' test2corp <- Corpus(TwitterSource("Microsoft"))
-#' test3corp <- Corpus(NYTimesSource("Microsoft", appid = nytimes_appid))
-#' test4corp <- Corpus(YahooInplaySource())
-#' test5corp <- Corpus(YahooFinanceSource("MSFT"))
-#' test6corp <- Corpus(GoogleBlogSearchSource("Microsoft"))
-#' test7corp <- Corpus(BingSource("Microsoft", appid = bing_appid))
-#' test8corp <- Corpus(YahooNewsSource("Microsoft"))
+#' googleblogsearch <- WebCorpus(GoogleBlogSearchSource("Microsoft"))
+#' googlefinance <- WebCorpus(GoogleFinanceSource("NASDAQ:MSFT"))
+#' googlenews <- WebCorpus(GoogleNewsSource("Microsoft"))
+#' nytimes <- WebCorpus(NYTimesSource("Microsoft", appid = nytimes_appid))
+#' reutersnews <- WebCorpus(ReutersNewsSource("businessNews"))
+#' twitter <- WebCorpus(TwitterSource("Microsoft"))
+#' yahoofinance <- WebCorpus(YahooFinanceSource("MSFT"))
+#' yahooinplay <- WebCorpus(YahooInplaySource())
+#' yahoonews <- WebCorpus(YahooNewsSource("Microsoft"))
+#' 
+#' token <- auth.google.reader()
+#' feed <- "http://feeds.feedburner.com/RBloggers"
+#' test <- WebCorpus(GoogleReaderSource(feed, auth.token = token, params = list(n = 100)))
+
 #' }
 NULL
 
 #' This is data to be included in my package
 #'
-#' @name baracktwitter
+#' @name yahoonews
 #' @docType data
 #' @author Mario Annau
 #' @references \url{search.twitter.com}
@@ -53,11 +59,7 @@ NULL
 #' @examples
 #' #Data set has been generated as follows:
 #' \dontrun{
-#' baracktwitter <- Corpus(TwitterSource("#BarackObama"))
-#' baracktwitter <- tm_map(baracktwitter, function(x) iconv(x,from="UTF-8", to = "ASCII"))
-#' baracktwitter <- tm_map(baracktwitter, function(x) {meta(x, "Author") <- iconv(meta(x, "Author"),from="UTF-8", to = "ASCII");x})
-#' baracktwitter <- tm_map(baracktwitter, function(x) {meta(x, "AuthorURI") <- iconv(meta(x, "AuthorURI"),from="UTF-8", to = "ASCII");x})
-#' baracktwitter <- tm_map(baracktwitter, function(x) {meta(x, "Source") <- iconv(meta(x, "Source"),from="UTF-8", to = "ASCII");x})
+#' yahoonews <- WebCorpus(YahooNewsSource("Microsoft"))
 #' }
 NULL
 

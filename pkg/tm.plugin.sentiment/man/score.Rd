@@ -1,32 +1,41 @@
 \name{score}
 \alias{score}
-\title{Score Corpus...}
-\usage{score(corpus, control, scoreFUNS, replace=TRUE)
-}
-\description{Score Corpus
+\title{Score Corpus
 Annotate corpus with scores using various functions
 Implementation generates a \code{TermDocumentMatrix} as a first step and applies specified functions to it in order to generate score.}
-\author{Mario Annau}
-\seealso{\code{TermDocumentMatrix}}
-\arguments{\item{corpus}{Text corpus to be annotated}
-\item{control}{Paramter to control \code{TermDocumentMatrix} generation, if missing default to
-\code{control = list( 
-tolower = TRUE, 
-removePunctuation = TRUE, 
-removeNumbers = TRUE, 
-removeWords = list(stopwords("english")),
-stripWhitespace = TRUE,
-stemDocument = TRUE, 
-minWordLength = 3,
-weighting = weightTf)}}
-\item{scoreFUNS}{scoring functions to be used on \code{TermDocumentMatrix}, if missing defaults to 
-\code{scoreFUNS = list(
-polarity = list(),
-subjectivity = list(),
-pos_refs_per_ref = list(),
-neg_refs_per_ref = list(),
-senti_diffs_per_ref = list()
-)}}
-\item{replace}{Specifies if existing corpus meta data.frame should be replaced, defaults to TRUE}
+\usage{
+  score(corpus, control, scoreFUNS, replace = TRUE)
+}
+\arguments{
+  \item{corpus}{Text corpus to be annotated}
+
+  \item{control}{Paramter to control
+  \code{TermDocumentMatrix} generation, if missing default
+  to \code{control = list( tolower = TRUE,
+  removePunctuation = TRUE, removeNumbers = TRUE,
+  removeWords = list(stopwords("english")), stripWhitespace
+  = TRUE, stemDocument = TRUE, minWordLength = 3, weighting
+  = weightTf)}}
+
+  \item{scoreFUNS}{scoring functions to be used on
+  \code{TermDocumentMatrix}, if missing defaults to
+  \code{scoreFUNS = list( polarity = list(), subjectivity =
+  list(), pos_refs_per_ref = list(), neg_refs_per_ref =
+  list(), senti_diffs_per_ref = list() )}}
+
+  \item{replace}{Specifies if existing corpus meta
+  data.frame should be replaced, defaults to TRUE}
+}
+\description{
+  Score Corpus Annotate corpus with scores using various
+  functions Implementation generates a
+  \code{TermDocumentMatrix} as a first step and applies
+  specified functions to it in order to generate score.
+}
+\author{
+  Mario Annau
+}
+\seealso{
+  \code{TermDocumentMatrix}
 }
 

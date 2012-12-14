@@ -1,0 +1,126 @@
+\documentclass[a4paper]{article}
+\usepackage{Sweave}
+\usepackage[margin=2cm]{geometry}
+\usepackage[round]{natbib}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{listings}
+
+\let\code=\texttt
+\newcommand{\acronym}[1]{\textsc{#1}}
+\newcommand{\class}[1]{\mbox{\textsf{#1}}}
+\newcommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\newcommand{\proglang}[1]{\textsf{#1}}
+\newcommand{\fkt}[1]{\code{#1()}}
+\newcommand{\todo}[1]{\begin{center}\code{<TODO: #1>}\end{center}}    
+\newcommand{\field}[1]{\code{\$#1}} 
+ 
+\sloppy
+%% \VignetteIndexEntry{Introduction to the tm.plugin.webmining Package}
+\SweaveOpts{prefix.string=webmining} 
+\SweaveOpts{include=FALSE}
+
+
+\begin{document}
+
+<<Init_hidden,echo=FALSE,eval=T, results=hide>>=
+library(boilerpipeR)
+data(content)
+options(width = 60)
+@
+ 
+\title{Short Introduction to \pkg{boilerpipeR}}
+\author{Mario Annau\\
+		\texttt{mario.annau@gmail.com}}
+
+\maketitle
+   
+\abstract{
+This vignette gives a short introduction to \pkg{boilerpipeR}, a package which
+interfaces the boilerpipe \proglang{Java} library, created by Christian
+Kohlschutter\cite{kohlschuetter:webextract}. It implements robust heuristics
+to extract the main content of \proglang{HTML} files, removing unessecary
+elements like ads, banners and headers/footers.
+}
+
+  
+\section{Getting Started}
+\pkg{boilerpipeR} provides an \proglang{R} interface to Christian Kohlschutter's
+\proglang{Java} library for the extraction of main text content from HTML files.
+For a quick start, we first need to retrieve a webpage. After loading the 
+packages for page extraction and retrieval
+<<eval=F, echo = T>>=
+library(boilerpipeR)
+library(RCurl)
+@
+we can retrieve the content of a webpage with \pkg{RCurl} using
+<<eval=F, echo = T>>=
+url <- "http://quantivity.wordpress.com/2012/11/09/multi-asset-market-regimes/"
+content <- getURL(url)
+@
+
+The code above retrieves the posting of a quite popular finance blog hosted on
+Wordpress. An inspection of the content string reveals a lot of \proglang{HTML}
+markup, including sidebars, headers, etc. 
+<<eval=T, echo = T>>=
+cat(substr(content, 1, 80))
+@
+
+A simple extraction of the
+\proglang{HTML}--body element while dropping all markup would still include a
+lot of unnecessary content which can be quite disturbing for
+text mining algorithms. We can therefore use one of our default extractors from
+\pkg{boilerpipeR}:
+
+<<eval=T, echo = T>>=
+extract <- DefaultExtractor(content)
+cat(substr(extract, 1, 120))
+@
+
+\section{Implemented Extractors}
+The list below describes all currently implemented extractors in
+\pkg{boilerpipeR}. 
+
+\begin{description}
+   	\item[ArticleExtractor]{A full-text extractor which is tuned towards news
+   articles.}
+	\item[ArticleSentencesExtractor]{A full-text extractor which is tuned towards
+extracting sentences from news articles.}
+ 	\item[CanolaExtractor]{A full-text extractor trained on a
+ \href{http://krdwrd.org/}{krdwrd}.}
+ 	\item[DefaultExtractor]{A quite generic full-text extractor.}
+ 	\item[KeepEverythingExtractor]{Marks everything as content.}
+ 	\item[KeepEverythingWighMinKWordsExtractor]{A full-text extractor which
+ extracts the largest text component of a page.}
+ 	\item[LargestContentExtractor]{A full-text extractor which extracts the
+ largest text component of a page.}
+ 	\item[NumWordsRulesExtractor]{A quite generic full-text extractor solely based
+ upon the number of words per block.}
+\end{description}
+
+The following commands show, how to use the above mentioned extractors. 
+
+<<echo=T, eval=T>>=
+articleextract <- ArticleExtractor(content)
+articlesentencesextract <- ArticleSentencesExtractor(content)
+canolaextract <- CanolaExtractor(content)
+defaultextract <- DefaultExtractor(content)
+keepeverythingextract <- KeepEverythingExtractor(content)
+#keepeverythingwithminkwordsextract <- KeepEverythingWighMinKWordsExtractor(content, kMin = 20)
+largestcontentextract <- LargestContentExtractor(content)
+numwordsrulesextract <- NumWordsRulesExtractor(content)
+@
+
+\section{Conclusion}
+This vignette has given a short introduction to \pkg{boilerpipeR}, a
+package to extract the main content from \proglang{HTML} pages. Although the
+\fkt{DefaultExtractor} fits quite well for most purposes and web pages, each
+page template may require specialized extraction algorithms or some time to fine
+tune existing ones. Provided the presented package, the user now has a nice
+playground to experiment with extraction algorithms from within \proglang{R}.
+
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

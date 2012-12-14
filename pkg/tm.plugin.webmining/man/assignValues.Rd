@@ -2,9 +2,8 @@
 \alias{assignValues}
 \title{Assign Values as Attributes to xmlNode}
 \usage{
-  assignValues(t, FUN, threshold = 0.5,
-    attribname = "attrib", recursive = TRUE,
-    mintextlen = 10, ...)
+  assignValues(t, FUN, threshold, attribname = "attrib",
+    recursive = TRUE, mintextlen = 10, ...)
 }
 \arguments{
   \item{t}{object of class xmlNode}

@@ -29,21 +29,21 @@ data(baracktwitter)
 options(width = 95)
 @
  
-\title{Introduction to \pkg{tm.plugin.webmining}}
+\title{Short Introduction to \pkg{tm.plugin.webmining}}
 \author{Mario Annau\\
 		\texttt{mario.annau@gmail.com}}
 
 \maketitle
    
 \abstract{
-This vignette gives an introduction to \pkg{tm.plugin.webmining}, 
+This vignette gives a short introduction to \pkg{tm.plugin.webmining}, 
 an add-on package to \pkg{tm} which facilitates the retrieval of textual 
 data from the web. The main focus of \pkg{tm.plugin.webmining} is the retrieval
 of web content from structured news feeds in the \proglang{XML} (\proglang{RSS}, \proglang{ATOM}) and
 \proglang{JSON} format. Additionally, the direct retrieval and extraction of 
 \proglang{HTML} documents is implemented. Numerous data sources are
-currently supported through APIs, including Google-- and Yahoo! News, Reuters,
-New York Times, and Twitter.
+currently supported through public APIs, including Google-- and Yahoo! News,
+Reuters, New York Times, and Twitter.
 }
 
 \tableofcontents
