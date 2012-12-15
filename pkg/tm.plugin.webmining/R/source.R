@@ -499,14 +499,14 @@ GoogleReaderSource <- function(feed, auth.token = auth.google.reader(), params =
 		}
 	}
 	
+	namespaces <- c(	"media" = "http://search.yahoo.com/mrss/", 
+			"gr" = "http://www.google.com/schemas/reader/atom/",  
+			"idx"="urn:atom-extension:indexing", 
+			"index" = "no", 
+			"dir"="ltr",
+			"a"="http://www.w3.org/2005/Atom")
+	
 	parser <- function(cr){
-		namespaces = c(	"media" = "http://search.yahoo.com/mrss/", 
-				"gr" = "http://www.google.com/schemas/reader/atom/",  
-				"idx"="urn:atom-extension:indexing", 
-				"index" = "no", 
-				"dir"="ltr",
-				"a"="http://www.w3.org/2005/Atom")
-
 		tree <- parse(cr, type = "XML")
 		nodes <- xpathSApply(tree, path = "///a:entry", namespaces = namespaces)
 		#to surpress namespace warnings while parsing
@@ -515,12 +515,33 @@ GoogleReaderSource <- function(feed, auth.token = auth.google.reader(), params =
 		nodes
 	}
 	
-	ws <- WebSource(feedurls = fq, class = "WebXMLSource", parser = parser, curlOpts = curlOpts, ...)
-	ws$DefaultReader <- readGoogleReader
-	ws$PostFUN <- function(x){
+	
+	content <- list()
+	for(i in 1:length(fq)){
+		url.content <- getURL(fq[i], .opts = curlOpts)
+		tree <- parse(url.content, type = "XML")
+		elements <- parser(XML:::saveXML(tree))
+		content <- c(content, elements)
+		
+		continue <- unlist(getNodeSet(tree,  "//gr:continuation", namespaces, xmlValue))
+		if(is.null(continue)){
+			break
+		}
+		if(i < length(fq)){
+			fq[i+1] <- paste(fq[i+1], "&c=", continue, sep = "")
+		}
+	}
+	
+	s <- tm:::.Source(NULL, encoding = "UTF-8", length(content), FALSE, NULL, 0, vectorized = FALSE, class = "WebXMLSource")
+	s$Content <- content
+	s$Feedurls <- fq
+	s$Parser <- parser
+	s$CurlOpts <- curlOpts
+	s$DefaultReader <- readGoogleReader
+	s$PostFUN <- function(x){
 		x <- getLinkContent(x, extractor = ArticleExtractor)
 	}
-	ws
+	s
 }
 
 #' @S3method getElem WebXMLSource
@@ -552,54 +573,3 @@ eoi.WebXMLSource <-
 eoi.WebHTMLSource <- 
 eoi.WebJSONSource <- 
 function(x) length(x$Content) <= x$Position
-
-
-
-
-#' @importFrom tm stepNext
-#' @S3method stepNext GoogleReaderSource
-#' @noRd
-stepNext.GoogleReaderSource <- function(x) {
-	verbose = getOption("verbose")
-	
-	x$Position <- x$Position + 1
-	
-	if(verbose){
-		cat("Retrieving", x$Feedurls[x$Position], " ...\n")
-	}
-	
-	url.content <- getURL(x$Feedurls[x$Position], .opts = x$CurlOpts, .encoding = x$Encoding)
-	
-	if(!is.null(x$Content)){
-		XML:::free(x$Content)	
-	}
-	
-	x$Content <- parse(url.content, type = "XML")
-	continue <- unlist(getNodeSet(x$Content,  "//gr:continuation", x$Namespaces, xmlValue))
-	
-	if(is.null(continue)){
-		x$Length <- x$Position
-		x$Feedurls <- x$Feedurls[1:x$Length]
-	}
-	
-	if(x$Position < x$Length){
-		x$Feedurls[x$Position+1] <- paste(x$Feedurls[x$Position+1], "&c=", continue, sep = "")
-	}
-	x
-}
-
-#' @S3method eoi GoogleReaderSource
-#' @noRd
-eoi.GoogleReaderSource <- 
-		function(x){
-	x$Position >= x$Length
-}
-
-#' @S3method getElem GoogleReaderSource
-#' @noRd
-getElem.GoogleReaderSource <- 
-		function(x){
-	list(content = x$Content)
-}
-
-

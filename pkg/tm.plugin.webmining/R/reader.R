@@ -265,7 +265,7 @@ readGoogleReader <- readWebXML(spec = list(
 				Origin = list("attribute", "//entry/link[@rel='alternate']/@href"),
 				Description = list("function", function(node){
 							val <- sapply(getNodeSet(node, "//entry/content"), xmlValue)
-							extractHTMLStrip(sprintf("<html>%s</html>", val), asText = T)
+							tryCatch(extractHTMLStrip(sprintf("<html>%s</html>", val), asText = T), error = function(e) "")
 						}),
 				Source = list("node", "//entry/source/title"),
 				ID = list("node",  "//entry/id")),

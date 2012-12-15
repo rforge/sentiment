@@ -10,6 +10,7 @@
 #' @param sleep.time Sleep time to be used between chunked download, defaults to 3 (seconds)
 #' @param extractor Extractor to be used for content extraction, defaults to extractContentDOM
 #' @param ... additional parameters to \code{\link{getURL}}
+#' @param .encoding encoding to be used for \code{\link{getURL}}, defaults to integer() (=autodetect)
 #' @return corpus including downloaded link content
 #' @export
 getLinkContent <- function(corpus, links = sapply(corpus, meta, "Origin"),
@@ -28,7 +29,9 @@ getLinkContent <- function(corpus, links = sapply(corpus, meta, "Origin"),
 		retry.empty = 3, 
 		#delete.tempdir = F, 
 		sleep.time = 3, 
-		extractor = ArticleExtractor, ...){
+		extractor = ArticleExtractor, 
+		.encoding = integer(),
+		...){
 	
 	if(length(corpus) != length(links))
 		stop("Corpus length not equal to links length\n")
@@ -68,8 +71,9 @@ getLinkContent <- function(corpus, links = sapply(corpus, meta, "Origin"),
 				content <- tryCatch({
 							#cat("Get ", length(links), "Links...")
 							#timeout = timeout.request * length(links)
-							#setTimeLimit(cpu=timeout, elapsed=timeout, transient=TRUE)
-							getURL(chunk, .opts = curlOpts, ...)
+							#setTimeLimit(cpu=timeout, elapsed=timeout, transient=TRUE
+							#FIXME: Bug in getURL
+							getURL(chunk, .opts = curlOpts, .encoding = .encoding, ...)
 						},
 						error=function(e){
 							print(e)
@@ -80,7 +84,7 @@ getLinkContent <- function(corpus, links = sapply(corpus, meta, "Origin"),
 								content[[i]] <- tryCatch({
 											#timeout = timeout.request * length(links)
 											#setTimeLimit(cpu=timeout, elapsed=timeout, transient=TRUE)
-											getURL(chunk[i], .opts = curlOpts, ...)
+											getURL(chunk[i], .opts = curlOpts, .encoding = .encoding, ...)
 										},error = function(f) {
 											print(f)
 											""})
@@ -90,7 +94,7 @@ getLinkContent <- function(corpus, links = sapply(corpus, meta, "Origin"),
 				
 				
 				# Extract Content
-				extract <- sapply(content, extractor, ...)
+				extract <- sapply(content, extractor)
 				
 				# Escape '
 				#extract <- gsub("'", "", extract)	
