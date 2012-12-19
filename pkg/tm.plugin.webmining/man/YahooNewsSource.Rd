@@ -1,6 +1,8 @@
 \name{YahooNewsSource}
 \alias{YahooNewsSource}
-\title{Get Feed Meta Data from Yahoo News}
+\title{Get feed data from Yahoo! News (\url{http://news.yahoo.com/}).
+Yahoo! News is a large news aggregator and provides a customizable RSS feed.
+Only a maximum of 20 items can be retrieved.}
 \usage{
   YahooNewsSource(query,
     params = list(p = query, n = 20, ei = "UTF-8"), ...)
@@ -19,7 +21,10 @@
   WebXMLSource
 }
 \description{
-  Get Feed Meta Data from Yahoo News
+  Get feed data from Yahoo! News
+  (\url{http://news.yahoo.com/}). Yahoo! News is a large
+  news aggregator and provides a customizable RSS feed.
+  Only a maximum of 20 items can be retrieved.
 }
 \examples{
 \dontrun{

@@ -1,8 +1,11 @@
-#' Authentification with the Google Reader Web Service
+#' Authentification and token retrieval from the Google Reader web service
+#' Function to retrieve token string for the Google Reader web service. 
+#' String can subsequently be used with \code{\link{GoogleReaderSource}} 
 #' @param email email address, e.g. <firstname.lastname@@gmail.com>
 #' @param password password for Google Account
 #' @param get.curl.opts determines if RCurl options object (\code{\link{curlOptions}}) should be returned.
 #' @return Character if get.curl.opts is FALSE or curlOpts if get.curl.opts is TRUE
+#' @seealso \code{\link{GoogleReaderSource}}
 #' @export 
 auth.google.reader <- function(email = readline("Email:"), password= readline("Password:"), get.curl.opts = F){
 	curlHandle = getCurlHandle(cookiefile="rcookies", ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)

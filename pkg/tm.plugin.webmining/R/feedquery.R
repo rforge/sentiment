@@ -1,9 +1,18 @@
-#' Buildup string for feedquery. Function has partly been taken from getForm function in
-#' \code{XML} package (Duncan Temple Lang)
+#' Buildup string for feedquery. Function has partly been taken from 
+#' \code{\link[RCurl]{getForm}} function. Generally, a feed query is a string
+#' built up as follows: \cr
+#' \code{<url>?<param1=value1>&<param2=value2>&...&<paramN=valueN>} \cr
+#' By specifying a feed url and parameter--value pairs (as list) we can easily
+#' generate a feed query in R.
 #' @author Mario Annau
-#' @param url character
-#' @param params list which contains feed parameters
-#' @seealso \code{\link{xmlNode}}
+#' @param url character specifying feed url
+#' @param params list which contains feed parameters, e.g. list(param1="value1", param2="value2")
+#' @seealso \code{\link{xmlNode}} \code{\link{getForm}}
+#' @examples
+#' \dontrun{
+#' feedquery(url = "http://dummy.com", 
+#' params = list(param1 = "value1", param2 = "value2"))
+#' } 
 #' @export 
 #' @importFrom RCurl curlEscape
 feedquery <-

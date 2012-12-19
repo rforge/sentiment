@@ -1,6 +1,7 @@
 \name{getURL}
 \alias{getURL}
-\title{Copy of RCurl:::getURL() including a little bugfix for the .encoding parameter}
+\title{Copy of RCurl:::getURL() including a little bugfix for the .encoding parameter.
+For the full description of getURL refer to \code{\link[RCurl]{getURL}}.}
 \usage{
   getURL(url, ..., .opts = list(),
     write = basicTextGatherer(.mapUnicode = .mapUnicode),
@@ -26,7 +27,8 @@
 }
 \description{
   Copy of RCurl:::getURL() including a little bugfix for
-  the .encoding parameter
+  the .encoding parameter. For the full description of
+  getURL refer to \code{\link[RCurl]{getURL}}.
 }
 \seealso{
   \code{\link[RCurl]{getURL}}

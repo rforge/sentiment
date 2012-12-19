@@ -1,5 +1,10 @@
-#' Customized WebCorpus function
-#' Constructs a derived class of \code{\link{Corpus}} 
+#' WebCorpus constructor function.
+#' \code{WebCorpus} adds further methods and meta data to \code{\link[tm]{Corpus}} and therefore
+#' constructs a derived class of \code{\link[tm]{Corpus}}. Most importantly, \code{WebCorpus}
+#' calls \code{$PostFUN} on the generated \code{WebCorpus}, which retrieves the main content
+#' for most implemented \code{WebSource}s. Thus it enables an efficient retrieval of new feed items
+#' (\code{\link{corpus.update}}). All additional WebCorpus fields are added to \code{\link[tm]{CMetaData}}
+#' like \code{$Source}, \code{$ReaderControl} and \code{$PostFUN}.
 #' @param x object of type Source, see also \code{\link{Corpus}}
 #' @param readerControl specifies reader to be used for \code{Source}, defaults to
 #' list(reader = x$DefaultReader, language = "en"
@@ -50,7 +55,14 @@ corpus.update <- function(x, ...){
 	UseMethod("corpus.update", x)	
 }
 
-#' Update WebCorpus
+#' Update/Extend \code{\link{WebCorpus}} with new feed items.
+#' The \code{corpus.update} method ensures, that the original 
+#' \code{\link{WebCorpus}} feed sources are downloaded and checked against
+#' already included \code{TextDocument}s. Based on the \code{ID} included
+#' in the  \code{TextDocument}'s meta data, only new feed elements are
+#' downloaded and added to the \code{\link{WebCorpus}}.
+#' All relevant information regariding the original source feeds are stored
+#' in the \code{\link{WebCorpus}}' meta data (\code{\link[tm]{CMetaData}}).
 #' @S3method corpus.update WebCorpus
 #' @param x \code{\link{WebCorpus}}
 #' @param fieldname name of \code{\link{Corpus}} field name to be used as ID, defaults to "ID"
@@ -98,10 +110,12 @@ function(x, fieldname = "ID", retryempty = T, verbose = F, ...) {
 }
 
 
-#' Get Empty Corpus Elements
-#' Retrieve content of all empty Corpus elements
+#' Retrieve Empty Corpus Elements through \code{$postFUN}. 
+#' Retrieve content of all empty (textlength equals zero) corpus elements. If 
+#' corpus element is empty, \code{$postFUN} is called (specified in \code{\link{CMetaData}})
 #' @param x object of type \code{\link{WebCorpus}}
 #' @param ... additional parameters to PostFUN
+#' @seealso \code{\link{WebCorpus}}
 #' @export getEmpty
 #' @aliases getEmpty.WebCorpus
 getEmpty <- function(x, ...){

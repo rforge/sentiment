@@ -1,9 +1,12 @@
 \docType{data}
 \name{yahoonews}
 \alias{yahoonews}
-\title{This is data to be included in my package}
+\title{WebCorpus retrieved from Yahoo! News for the search term "Microsoft"
+through the YahooNewsSource. Length of retrieved corpus is 20.}
 \description{
-  This is data to be included in my package
+  WebCorpus retrieved from Yahoo! News for the search term
+  "Microsoft" through the YahooNewsSource. Length of
+  retrieved corpus is 20.
 }
 \examples{
 #Data set has been generated as follows:

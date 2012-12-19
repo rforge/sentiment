@@ -26,6 +26,7 @@
 <<Init_hidden,echo=FALSE,eval=T, results=hide>>=
 library(tm.plugin.webmining)
 data(yahoonews)
+data(rbloggers)
 options(width = 60)
 @
  
@@ -36,13 +37,13 @@ options(width = 60)
 \maketitle
    
 \abstract{
-This vignette gives a short introduction to \pkg{tm.plugin.webmining}, 
-an add-on package to \pkg{tm} which facilitates the retrieval of textual 
-data from the web. The main focus of \pkg{tm.plugin.webmining} is the retrieval
-of web content from structured news feeds in the \proglang{XML} (\proglang{RSS}, \proglang{ATOM}) and
-\proglang{JSON} format. Additionally, the direct retrieval and extraction of 
-\proglang{HTML} documents is implemented. Numerous data sources are
-currently supported through public APIs, including Google-- and Yahoo! News,
+This vignette gives a short introduction to \pkg{tm.plugin.webmining} which
+facilitates the retrieval of textual data from the web. The main focus of
+\pkg{tm.plugin.webmining} is the retrieval of web content from structured news
+feeds in the \proglang{XML} (\proglang{RSS}, \proglang{ATOM}) and
+\proglang{JSON} format. Additionally, retrieval and extraction of
+\proglang{HTML} documents is implemented. Numerous data sources are currently
+supported through public feeds/APIs, including Google-- and Yahoo! News,
 Reuters, New York Times, and Twitter.
 }
 
@@ -56,7 +57,8 @@ library(tm.plugin.webmining)
 @
 
 \pkg{tm.plugin.webmining} depends on numerous packages, most
-importantly \pkg{tm} for text mining capabilities and data structures.
+importantly \pkg{tm} by \cite{hornik:Feinerer+Hornik+Meyer:2008} for text
+mining capabilities and data structures.
 \pkg{RCurl} functions are used for web data retrieval and \pkg{XML} for the 
 extraction of \proglang{XML}/\proglang{HTML} based feeds.
 As a first experiment, we can retrieve a \class{(Web-)Corpus} using data from
@@ -68,36 +70,37 @@ yahoonews <- WebCorpus(YahooNewsSource("Microsoft"))
 
 Users already familiar with \pkg{tm}
 will notice the different function call \fkt{WebCorpus} for corpus construction. Like
-\pkg{tm}'s \fkt{Corpus} function it takes a \class{Source} object as input and
-constructs a \class{Corpus} object, more precisely, a \class{WebCorpus} object.
-Reviewing the \fkt{class} of the object:
+\pkg{tm}'s \fkt{Corpus} constructor it takes a \class{(Web-)Source} object as
+input and constructs a \class{(Web-)Corpus} object.
+A Review of the object's \fkt{class}
 
 <<echo=T, eval=T>>=
 class(yahoonews)
 @ 
 
-shows, that \class{WebCorpus} is directly derived from \class{Corpus} and adds
+reveals, that \class{WebCorpus} is directly derived from \class{Corpus} and adds
 further functionality to it. It can therefore be used like a "normal"
-\class{Corpus} using \pkg{tm}'s text mining functions.
+\class{Corpus} using \pkg{tm}'s text mining capabilities.
 
 <<echo=T, eval=T>>=
 yahoonews
 @ 
 
-Under the hood, a call of \fkt{WebCorpus} retrieves a data feed specified by
-the \class{Source} parameter. \fkt{WebCorpus} not only downloads textual
-(meta--)data from the specified feed---it also downloads and extracts the
-actual main content of the news item (most commonly an
-\proglang{HTML}--Webpage).
+Under the hood, a call of \fkt{YahooNewsSource} retrieves a data feed from
+Yahoo! News and pre--parses its contents.
+Subsequently, \fkt{WebCorpus} extracts (meta--)data from the \class{WebSource}
+object and also downloads and extracts the actual main content
+of the news item (most commonly an \proglang{HTML}--Webpage).
 In effect, it implements a two--step procedure to
 
 \begin{enumerate}
-\item Download meta data from the feed
-\item Download and extract main content for the feed item
+\item Download meta data from the feed (through \class{WebSource})
+\item Download and extract main content for the feed item (through
+\class{WebCorpus})
 \end{enumerate}
 
-These procedures ensure, that the resulting \class{WebCorpus} not only includes
-a rich set of meta data, but also the full main text content for text mining
+These procedures ensure that the resulting \class{WebCorpus} not only includes
+a rich set of meta data but also the full main text content for text mining
 purposes. An examination of the meta data for the first element in the corpus
 is shown below.
 
@@ -128,21 +131,29 @@ Content(yahoonews[[1]]) <-
 yahoonews[[1]]
 @
 
-Also, consider \fkt{inspect} for the output of the complete corpus content
-(output omitted).
+It has been extracted from an unstructured \proglang{HTML} page and freed from
+ads and sidebar content by \pkg{boilerpipeR}'s \fkt{DefaultExtractor}. To view the
+entire corpus main content also consider \fkt{inspect} (output omitted):
 
 <<echo=T, eval=F>>=
 inspect(yahoonews)
 @
 
 \section{Implemented Sources}
-\begin{center}
-  \input{tables/sources}
-\end{center}
+\begin{table}[t]
+  \begin{center}
+    \input{tables/sources}
+  \end{center}
+  \caption{Overview of implemented \class{WebSources} listing the maximum number
+  of items per feed, a descriptive URL, if authentification is necessary (x
+  for yes) and the feed format.}
+  \label{tab:sources}
+\end{table}
 
-All currently implemented (web--)sources are listed on the table above.
-The following commands show, how to use the implemented Sources. If possible,
-the search query/stock ticker \code{Microsoft} has been used.
+All currently implemented (web--)sources are listed on Table~\ref{tab:sources}.
+The following commands show, how to use the implemented Sources. If available,
+the search query/stock ticker \code{Microsoft} has been used. Since Reuters News
+only offers a predefined number of channels we selected \code{businessNews}. 
 
 <<echo=T, eval=F>>=
 googleblogsearch <- WebCorpus(GoogleBlogSearchSource("Microsoft"))
@@ -157,56 +168,111 @@ yahoonews <- WebCorpus(YahooNewsSource("Microsoft"))
 @
 
 \section{Extending/Updating Corpora}
-Most data feeds only contain 20--100 feed items. This number of text documents
-may not be sufficient for text mining purposes. For that reason,
-\fkt{corpus.update} has been implemented. In a nutshell, it first downloads the
-feed's meta data, checks which items are new by the meta--data ID and finally
-downloads the main content for new web documents. Since most time is spend
-downloading the main content of corpus items, this procedures ensures a more
-efficient and faster \class{WebCorpus}--update. The Yahoo! News corpus can
-simply be updated with the command:
+Most data feeds only contain 20--100 feed items. A text corpus of such a small
+size may not be sufficient for text mining purposes. For that reason,
+the \fkt{corpus.update} method has been implemented. In a nutshell, it first
+downloads a feed's meta data, checks which items are new (as determined by the meta--data
+ID field) and finally downloads the main content of new web documents. Since
+most time of \class{WebCorpus} construction is spend downloading the main content of
+corpus items, this procedures ensures a more efficient and faster
+\class{WebCorpus}--update. \\
+The Yahoo! News corpus can now simply be updated:
 
 <<echo=T, eval=F>>=
 yahoonews <- corpus.update(yahoonews)
 @
 
-For continously updating a \class{WebCorpus} a script/cron job can be set up.
+To continously update a \class{WebCorpus} a scheduled task/cron job could be set
+up which runs \fkt{corpus.update} in a script.
+\newpage
 
 \section{Google Reader for more data}
 A main limitation of most data feeds is the little number of items per
-feed. 20--100 items are barely enough for more serious text mining experiments.
+feed. 20--100 items are barely enough for more serious text mining research.
 Continously updating corpora (e.g. by using \fkt{corpus.update}) can be a quite
-time consuming task if a lot of history needs to be generated. \\
-Here, the Google Reader API comes into play. Google stores for its Google Reader
-service history for a very large number of feed items. Therefore accessing any
-feed through the Google Reader API can result in a potentially much larger
-amount of content items. To get access to the Google Reader API one first needs
-to retrieve an authentification token from Google (using a standard Google
-Account). 
+time consuming task if a lot of history needs to be generated immediately. \\
+At this point the Google Reader API comes into play. Google stores the histories
+of numerous news feeds for its Google Reader
+application. Accessing any feed through the provided Google
+Reader API can result in a much larger number of content items.  To get access
+to the Google Reader API one first needs to retrieve  an authentification token
+from Google (using a standard Google account):
 
 <<echo=T, eval=F>>=
 token <- auth.google.reader(email="<username>@gmail.com", password="<password>")
 @
-With the retrieved token it is possible to get the content of any web-feed. We
-can retrieve the content of the quite popular R-Bloggers feed with the command:
+With the retrieved token string it is possible to get the content of any
+web-feed through the Google--Reader API.
+We can, for example,  retrieve the content of the R-Bloggers feed with the
+command:
 
 <<echo=T, eval=F>>=
-rbloggers <- GoogleReaderSource("http://feeds.feedburner.com/RBloggers", token)
+rbloggers <- WebCorpus(GoogleReaderSource("http://feeds.feedburner.com/RBloggers", token, 
+				params = list(n = 1000)))
 @
 
 Depending on the internet connection and number of items, this command can take
-quite a while.
+quite a while. For larger requests and richer user feedback it is better
+to set the \code{verbose} option \code{TRUE}. Further we recommend to build
+an empty corpus first, without downloading any main content items. That way we
+can first check if the feed throught the Google Reader API is available and
+makes sense for our research purposes.
+By simply setting the \class{WebSource}'s \code{\$postFUN}\footnote{specifies a
+function to be called after corpus generation. Typically set to retrieve main
+content items.} field to \code{NULL}, we build a corpus only consisting of meta
+data:
+
+<<echo=T, eval=F>>=
+rbloggers <- WebCorpus(GoogleReaderSource("http://feeds.feedburner.com/RBloggers", token, 
+				params = list(n = 1000)), postFUN = NULL)
+@
+
+The number of items retrieved and the histogram of meta--\code{DateTimeStamp}s
+gives us information about the size and the update frequency of the feed. 
+Figure~\ref{fig:rbloggers} shows the histogram for the feed.
+
+<<echo=T, eval=T, fig=T>>=
+length(rbloggers)
+rbloggers.dates <- do.call(c,lapply(rbloggers, meta, "DateTimeStamp"))
+hist(rbloggers.dates, breaks = "weeks", col = "grey", freq=T,
+		main = "Weekly Histogram of R-Bloggers")
+@
+
+\begin{figure}[t!]
+\begin{center}
+  \includegraphics[width=0.5\textwidth]{webmining-016}
+  \caption{Weekly histogram of DateTimeStamps from R-Bloggers corpus metadata.}
+  \label{fig:rbloggers}
+\end{center}
+\end{figure}
+
+We can therefore start to download the
+entire feed with the \code{verbose} option enabled:
+
+<<echo=T, eval=F>>=
+options(verbose = TRUE)
+rbloggers <- WebCorpus(GoogleReaderSource("http://feeds.feedburner.com/RBloggers", token,
+				params = list(n = 1000)))
+@
+
 
 \section{Conclusion}
 This vignette has given a short introduction to \pkg{tm.plugin.webmining}, a
-package to retrieve textual data from the web. It is well suited for the
+package to retrieve textual data from the web. Although
+\pkg{tm.plugin.webmining} has been tested for the retrieval of 10000+ items per
+feed it is generally not recommended to start massive feed downloads due to
+memory-- and \pkg{RCurl} restrictions. For this purpose, web scraping 
+frameworks like Scrapy (\url{scrapy.org}), Heritrix (\url{crawler.archive.org})
+or Nutch (\url{nutch.apache.org}) are much better suited.
+\\
+Keeping these issues in mind, \pkg{tm.plugin.webmining} is well suited for the
 retrieval and processing of small to medium sized text corpora. By using the
 full meta data and textual contents, quite interesting text mining experiments
-can be done using the full capabilities of the \pkg{tm} package.
+can be done using the full capabilities of the \pkg{tm} package. 
 
 
-% \bibliographystyle{plainnat}
-% \bibliography{references}
+\bibliographystyle{plainnat}
+\bibliography{references}
 
 
 

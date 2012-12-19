@@ -1,7 +1,12 @@
 \name{WebCorpus}
 \alias{WebCorpus}
-\title{Customized WebCorpus function
-Constructs a derived class of \code{\link{Corpus}}}
+\title{WebCorpus constructor function.
+\code{WebCorpus} adds further methods and meta data to \code{\link[tm]{Corpus}} and therefore
+constructs a derived class of \code{\link[tm]{Corpus}}. Most importantly, \code{WebCorpus}
+calls \code{$PostFUN} on the generated \code{WebCorpus}, which retrieves the main content
+for most implemented \code{WebSource}s. Thus it enables an efficient retrieval of new feed items
+(\code{\link{corpus.update}}). All additional WebCorpus fields are added to \code{\link[tm]{CMetaData}}
+like \code{$Source}, \code{$ReaderControl} and \code{$PostFUN}.}
 \usage{
   WebCorpus(x,
     readerControl = list(reader = x$DefaultReader, language = "en"),
@@ -25,7 +30,17 @@ Constructs a derived class of \code{\link{Corpus}}}
   (actually Corpus reader)}
 }
 \description{
-  Customized WebCorpus function Constructs a derived class
-  of \code{\link{Corpus}}
+  WebCorpus constructor function. \code{WebCorpus} adds
+  further methods and meta data to \code{\link[tm]{Corpus}}
+  and therefore constructs a derived class of
+  \code{\link[tm]{Corpus}}. Most importantly,
+  \code{WebCorpus} calls \code{$PostFUN} on the generated
+  \code{WebCorpus}, which retrieves the main content for
+  most implemented \code{WebSource}s. Thus it enables an
+  efficient retrieval of new feed items
+  (\code{\link{corpus.update}}). All additional WebCorpus
+  fields are added to \code{\link[tm]{CMetaData}} like
+  \code{$Source}, \code{$ReaderControl} and
+  \code{$PostFUN}.
 }
 

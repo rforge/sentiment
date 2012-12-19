@@ -1,6 +1,10 @@
 \name{getLinkContent}
 \alias{getLinkContent}
-\title{Get Corpus link content}
+\title{Get main content for corpus items, specified by links.
+\code{getLinkContent} downloads and extracts content from weblinks for \code{\link[tm]{Corpus}} objects.
+Typically it is integrated and called as a post-processing function (field:\code{$postFUN}) for most \code{\link{WebSource}}
+objects. \code{getLinkContent} implements content download in chunks which has been proven to be a stabler approach for
+large content requests.}
 \usage{
   getLinkContent(corpus,
     links = sapply(corpus, meta, "Origin"),
@@ -12,8 +16,8 @@
     ...)
 }
 \arguments{
-  \item{corpus}{corpus for which link content should be
-  downloaded}
+  \item{corpus}{object of class \code{\link[tm]{Corpus}}
+  for which link content should be downloaded}
 
   \item{links}{character vector specifyinig links to be
   used for download, defaults to sapply(corpus, meta,
@@ -50,6 +54,17 @@
   corpus including downloaded link content
 }
 \description{
-  Get Corpus link content
+  Get main content for corpus items, specified by links.
+  \code{getLinkContent} downloads and extracts content from
+  weblinks for \code{\link[tm]{Corpus}} objects. Typically
+  it is integrated and called as a post-processing function
+  (field:\code{$postFUN}) for most \code{\link{WebSource}}
+  objects. \code{getLinkContent} implements content
+  download in chunks which has been proven to be a stabler
+  approach for large content requests.
+}
+\seealso{
+  \code{\link{WebSource}} \code{\link[RCurl]{getURL}}
+  \code{\link[boilerpipeR]{Extractor}}
 }
 

@@ -1,7 +1,10 @@
 \name{YahooFinanceSource}
 \alias{readYahoo}
 \alias{YahooFinanceSource}
-\title{Get Feed Meta Data from Yahoo Finance}
+\title{Get feed data from Yahoo! Finance.
+Yahoo! Finance is a popular site which provides financial news and information. It is a large source
+for historical price data as well as financial news. Using the typical Yahoo! Finance ticker
+news items can easily be retrieved. However, the maximum number of items is 20.}
 \usage{
   YahooFinanceSource(query,
     params = list(s = query, n = 20), ...)
@@ -20,7 +23,12 @@
   WebXMLSource
 }
 \description{
-  Get Feed Meta Data from Yahoo Finance
+  Get feed data from Yahoo! Finance. Yahoo! Finance is a
+  popular site which provides financial news and
+  information. It is a large source for historical price
+  data as well as financial news. Using the typical Yahoo!
+  Finance ticker news items can easily be retrieved.
+  However, the maximum number of items is 20.
 }
 \examples{
 \dontrun{

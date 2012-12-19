@@ -1,7 +1,9 @@
 \name{GoogleFinanceSource}
 \alias{GoogleFinanceSource}
 \alias{readGoogle}
-\title{Get Feed Meta Data from Google Finance}
+\title{Get feed Meta Data from Google Finance.
+Google Finance provides business and enterprise headlines for many companies. Coverage is
+particularly strong for US-Markets. However, only up to 20 feed items can be retrieved.}
 \usage{
   GoogleFinanceSource(query,
     params = list(hl = "en", q = query, ie = "utf-8", start = 0, num = 20, output = "rss"),
@@ -13,7 +15,7 @@
   that Google ticker symbols need to be prefixed with the
   exchange name, e.g. NASDAQ:MSFT}
 
-  \item{params,}{additional query parameters}
+  \item{params}{additional query parameters}
 
   \item{...}{additional parameters to
   \code{\link{WebSource}}}
@@ -22,7 +24,11 @@
   WebXMLSource
 }
 \description{
-  Get Feed Meta Data from Google Finance
+  Get feed Meta Data from Google Finance. Google Finance
+  provides business and enterprise headlines for many
+  companies. Coverage is particularly strong for
+  US-Markets. However, only up to 20 feed items can be
+  retrieved.
 }
 \examples{
 \dontrun{

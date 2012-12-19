@@ -1,11 +1,15 @@
-#' Read content from Web...Source
-#' Generic function to read content from \code{\link{WebSource}}
+#' Read content from WebXMLSource/WebHTMLSource/WebJSONSource. 
+#' \code{readWeb} is a FunctionGenerator which specifies content retrieval from a \code{\link{WebSource}} 
+#' content elements. Currently, it is defined for XML, HTML and JSON feeds through \code{readWebXML},
+#' \code{readWebHTML} and \code{readWebJSON}. Also content parsers (\code{tm:::xml_content}, \code{json_content})
+#' need to be defined.
 #' @param spec specification of content reader
 #' @param doc document to be parsed
 #' @param parser parser function to be used
-#' @param contentparser content parser function to be used, see also \code{tm:::xml_content} or \code{\link{json_content}}
+#' @param contentparser content parser function to be used, see also \code{tm:::xml_content} or \code{json_content}
 #' @param freeFUN function to free memory from parsed object (actually only relevant for XML and HTML trees)
 #' @return FunctionGenerator
+#' @aliases readWebXML readWebHTML readWebJSON json_content 
 #' @export
 readWeb <- FunctionGenerator(function(spec, doc, parser, contentparser, freeFUN = NULL) {
 			
@@ -42,6 +46,7 @@ readWeb <- FunctionGenerator(function(spec, doc, parser, contentparser, freeFUN 
 #' @export
 #' @importFrom XML xmlInternalTreeParse
 #' @importFrom XML free
+#' @noRd 
 readWebXML <- function(...){
 	parser <- function(x){
 		#XML::xmlInternalTreeParse(x, asText = TRUE)
@@ -58,6 +63,7 @@ readWebXML <- function(...){
 #' @export
 #' @importFrom XML htmlTreeParse
 #' @importFrom XML free
+#' @noRd 
 readWebHTML <- function(...){
 	#parser <- function(x) XML::htmlTreeParse(x, asText = TRUE, useInternalNodes = TRUE)
 	parser <- function(x) parse(x, type = "HTML", useInternalNodes = TRUE)
@@ -69,6 +75,7 @@ readWebHTML <- function(...){
 #' Read content from WebJSONSource
 #' @param ... additional parameters to \code{\link{readWeb}}
 #' @export
+#' @noRd 
 readWebJSON <- function(...){
 	parser <- function(x) identity(x)
 	contentparser <- function(x, cspec) json_content(x, cspec)
@@ -81,6 +88,7 @@ readWebJSON <- function(...){
 #' @param doc list object from which content should be retrieved
 #' @param spec list field name as character
 #' @export
+#' @noRd 
 json_content <- 
 function (doc, spec) 
 {

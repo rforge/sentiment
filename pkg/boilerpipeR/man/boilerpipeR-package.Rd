@@ -4,12 +4,6 @@
 \alias{boilerpipeR-package}
 \title{Extract the main content from HTML files}
 \description{
-  \tabular{ll}{ Package: \tab boilerpipeR\cr Type: \tab
-  Package\cr Version: \tab 1.0\cr Date: \tab 2012-12-13\cr
-  License: \tab Apache License (== 2.0)\cr LazyLoad: \tab
-  yes\cr }
-}
-\details{
   \pkg{boilerpipeR} interfaces the boilerpipe Java library,
   created by Christian Kohlschutter
   \url{http://code.google.com/p/boilerpipe/}. It implements

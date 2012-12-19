@@ -1,14 +1,20 @@
 \name{GoogleReaderSource}
 \alias{GoogleReaderSource}
 \alias{readGoogleReader}
-\title{Retrieve feeds through Google Reader
+\title{Retrieve feeds through the Google Reader API.
 This function utilizes the (unofficial) Google Reader API to retrieve RSS
 feeds. The advantage of access RSS feeds through the Google Reader API is that
 you are not limited by the number of entries a website may included in their
 feed. That is, Google maintains generally maintains a complete history of
 entries from the RSS feed.
 Code was partly taken from Jason Bryer
-\url{http://bryer.org/2012/retrieving-rss-feeds-using-google-reader}}
+\url{http://bryer.org/2012/retrieving-rss-feeds-using-google-reader}
+Note that the contents of the results will be limited by what the website
+provides in their feeds. That is, Google does not contain more information
+per entry then what the website originally provided. If the initial feed
+contained only excerpts of the article, the feed from Google will too only
+contain excerpts. Be aware though that for sites that do provide the complete
+contents of posts will result in potentially very large downloads.}
 \usage{
   GoogleReaderSource(feed,
     auth.token = auth.google.reader(),
@@ -33,6 +39,15 @@ Code was partly taken from Jason Bryer
   \code{\link{WebSource}}}
 }
 \description{
+  Retrieve feeds through the Google Reader API. This
+  function utilizes the (unofficial) Google Reader API to
+  retrieve RSS feeds. The advantage of access RSS feeds
+  through the Google Reader API is that you are not limited
+  by the number of entries a website may included in their
+  feed. That is, Google maintains generally maintains a
+  complete history of entries from the RSS feed. Code was
+  partly taken from Jason Bryer
+  \url{http://bryer.org/2012/retrieving-rss-feeds-using-google-reader}
   Note that the contents of the results will be limited by
   what the website provides in their feeds. That is, Google
   does not contain more information per entry then what the
@@ -47,10 +62,11 @@ Code was partly taken from Jason Bryer
   larger number (>1000), depending on the number of feed
   items cached in Google Reader. However, large request can
   take a lot of time/memory.
+
+  Currently, \code{\link{corpus.update}} is not supported
+  for GoogleReaderSource
 }
 \author{
-  Mario Annau
-
   Mario Annau
 }
 

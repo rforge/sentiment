@@ -1,8 +1,9 @@
 \name{getEmpty}
 \alias{getEmpty}
 \alias{getEmpty.WebCorpus}
-\title{Get Empty Corpus Elements
-Retrieve content of all empty Corpus elements}
+\title{Retrieve Empty Corpus Elements through \code{$postFUN}.
+Retrieve content of all empty (textlength equals zero) corpus elements. If
+corpus element is empty, \code{$postFUN} is called (specified in \code{\link{CMetaData}})}
 \usage{
   getEmpty(x, ...)
 }
@@ -12,7 +13,13 @@ Retrieve content of all empty Corpus elements}
   \item{...}{additional parameters to PostFUN}
 }
 \description{
-  Get Empty Corpus Elements Retrieve content of all empty
-  Corpus elements
+  Retrieve Empty Corpus Elements through \code{$postFUN}.
+  Retrieve content of all empty (textlength equals zero)
+  corpus elements. If corpus element is empty,
+  \code{$postFUN} is called (specified in
+  \code{\link{CMetaData}})
+}
+\seealso{
+  \code{\link{WebCorpus}}
 }
 

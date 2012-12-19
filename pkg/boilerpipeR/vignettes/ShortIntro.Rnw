@@ -39,8 +39,8 @@ options(width = 60)
 This vignette gives a short introduction to \pkg{boilerpipeR}, a package which
 interfaces the boilerpipe \proglang{Java} library by
 \cite{kohlschuetter:webextract}. It implements robust heuristics to extract the
-main content from \proglang{HTML} files, removing unwanted elements for text
-mining purposes like ads, banners, headers and footers.
+main content from \proglang{HTML} files, removing unwanted elements like ads,
+banners, headers and footers.
 }
 
   
@@ -57,7 +57,7 @@ After loading the packages for page extraction and retrieval
 library(boilerpipeR)
 library(RCurl)
 @
-we can retrieve the content of a webpage using \pkg{RCurl}:
+we can retrieve the content of from a webpage using \pkg{RCurl}:
 <<eval=F, echo = T>>=
 url <- "http://quantivity.wordpress.com/2012/11/09/multi-asset-market-regimes/"
 content <- getURL(url)
@@ -86,7 +86,7 @@ cat(substr(content, 1, 80))
 
 
 A simple extraction of the
-\proglang{HTML}--body element while dropping all markup would still include a
+\proglang{HTML}--body element and dropping all markup would still include a
 lot of unnecessary content which can be disturbing for
 text mining algorithms. We can therefore use one of our default extractors from
 \pkg{boilerpipeR}:

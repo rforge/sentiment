@@ -5,24 +5,18 @@
 \alias{webmining}
 \title{Retrieve structured, textual data from various web sources}
 \description{
-  \tabular{ll}{ Package: \tab tm.plugin.webmining\cr Type:
-  \tab Package\cr Version: \tab 1.0\cr Date: \tab
-  2012-12-13\cr License: \tab GPL-3\cr LazyLoad: \tab
-  yes\cr }
-}
-\details{
-  tm.plugin.webmining facilitates textual data retrieval
-  from various web feed formats like XML and JSON. Also
-  direct retrieval from HTML is supported. As most (news)
-  feeds only incorporate small fractions of the original
-  text tm.plugin.webmining goes a step further and even
-  retrieves and extracts the text of the original text
-  source. Genereally, retrieval procedure can be described
-  as a two--step process: \itemize{ \item{Meta
+  tm.plugin.webmining facilitates the retrieval of textual
+  data through various web feed formats like XML and JSON.
+  Also direct retrieval from HTML is supported. As most
+  (news) feeds only incorporate small fractions of the
+  original text tm.plugin.webmining goes a step further and
+  even retrieves and extracts the text of the original text
+  source. Generally, the retrieval procedure can be
+  described as a two--step process: \describe{ \item{Meta
   Retrieval}{In a first step, all relevant meta feeds are
   retrieved. From these feeds all relevant meta data items
   are extracted. } \item{Content Retrieval}{In a second
-  step all relevant source content is retrieved. Using the
+  step the relevant source content is retrieved. Using the
   \code{boilerpipeR} package even the main content of
   \code{HTML} pages can be extracted. }}
 }
@@ -47,7 +41,17 @@ test <- WebCorpus(GoogleReaderSource(feed, auth.token = token, params = list(n =
   Mario Annau \email{mario.annau@gmail}
 }
 \seealso{
-  \code{\link{WebCorpus}} \code{\link{readWeb}}
+  \code{\link{WebCorpus}}
+  \code{\link{GoogleBlogSearchSource}}
+  \code{\link{GoogleFinanceSource}}
+  \code{\link{GoogleNewsSource}}
+  \code{\link{NYTimesSource}}
+  \code{\link{ReutersNewsSource}}
+  \code{\link{TwitterSource}}
+  \code{\link{YahooFinanceSource}}
+  \code{\link{YahooInplaySource}}
+  \code{\link{YahooNewsSource}}
+  \code{\link{GoogleReaderSource}}
 }
 \keyword{package}
 

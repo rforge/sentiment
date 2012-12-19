@@ -1,6 +1,9 @@
 \name{extractHTMLStrip}
 \alias{extractHTMLStrip}
-\title{Simply strip HTML Tags from Document}
+\title{Simply strip HTML Tags from Document
+\code{extractHTMLStrip} parses an url, character or filename, reads the DOM
+tree, removes all HTML tags in the tree and outputs the source text without
+markup.}
 \usage{
   extractHTMLStrip(url, asText = TRUE, encoding, ...)
 }
@@ -18,11 +21,21 @@
 }
 \description{
   Simply strip HTML Tags from Document
+  \code{extractHTMLStrip} parses an url, character or
+  filename, reads the DOM tree, removes all HTML tags in
+  the tree and outputs the source text without markup.
+}
+\note{
+  Input text should be enclosed in <html>'TEXT'</html> tags
+  to ensure correct DOM parsing (issue especially under
+  .Platform$os.type = 'windows')
 }
 \author{
   Mario Annau
 }
 \seealso{
   \code{\link{xmlNode}}
+
+  \code{\link{htmlTreeParse}} \code{\link{encloseHTML}}
 }
 

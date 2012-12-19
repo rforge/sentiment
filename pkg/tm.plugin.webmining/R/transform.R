@@ -5,6 +5,9 @@
 
 
 #' Enclose Text Content in HTML tags
+#' Simple helper function which encloses text content of character
+#' (or \code{\link[tm]{TextDocument}}) in HTML-tags. That way, HTML
+#' content can be easier parsed by \code{\link[XML]{htmlTreeParse}}
 #' @param x object of PlainTextDocument class
 #' @export
 #' @aliases encloseHTML.PlainTextDocument encloseHTML.character
@@ -19,7 +22,8 @@ encloseHTML.PlainTextDocument <- function(x){
 	x
 } 
 
-#' Remove non-ASCII characters from Text
+#' Remove non-ASCII characters from Text. This is a helper function to generate package data 
+#' without non-ASCII character and omit the warning at R CMD check.
 #' @param x object of PlainTextDocument class
 #' @param fields specifies fields to be converted, defaults to fields = c("Content", "Heading", "Description")
 #' @param from specifies encoding from which conversion should be done, defaults to "UTF-8"
