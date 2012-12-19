@@ -1,10 +1,7 @@
 \name{GoogleBlogSearchSource}
 \alias{GoogleBlogSearchSource}
 \alias{readGoogleBlogSearch}
-\title{Get feed data from Google Blog Search (\url{http://www.google.com/blogsearch}).
-Google Blog Search is a specialized search service/index for web blogs. Since the Googlebots
-are typically just scanning the blog's RSS feeds for updates they are much faster updating than comparable
-general purpose crawlers.}
+\title{Get feed data from Google Blog Search (\url{http://www.google.com/blogsearch}).}
 \usage{
   GoogleBlogSearchSource(query,
     params = list(hl = "en", q = query, ie = "utf-8", num = 100, output = "rss"),
@@ -22,12 +19,10 @@ general purpose crawlers.}
   WebXMLSource
 }
 \description{
-  Get feed data from Google Blog Search
-  (\url{http://www.google.com/blogsearch}). Google Blog
-  Search is a specialized search service/index for web
-  blogs. Since the Googlebots are typically just scanning
-  the blog's RSS feeds for updates they are much faster
-  updating than comparable general purpose crawlers.
+  Google Blog Search is a specialized search service/index
+  for web blogs. Since the Googlebots are typically just
+  scanning the blog's RSS feeds for updates they are much
+  faster updating than comparable general purpose crawlers.
 }
 \examples{
 \dontrun{

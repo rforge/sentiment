@@ -1,6 +1,6 @@
-#' Buildup string for feedquery. Function has partly been taken from 
-#' \code{\link[RCurl]{getForm}} function. Generally, a feed query is a string
-#' built up as follows: \cr
+#' @title Buildup string for feedquery. 
+#' @description Function has partly been taken from \code{\link[RCurl]{getForm}} function. 
+#' Generally, a feed query is a string built up as follows: \cr
 #' \code{<url>?<param1=value1>&<param2=value2>&...&<paramN=valueN>} \cr
 #' By specifying a feed url and parameter--value pairs (as list) we can easily
 #' generate a feed query in R.

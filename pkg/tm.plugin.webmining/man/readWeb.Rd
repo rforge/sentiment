@@ -4,11 +4,7 @@
 \alias{readWebHTML}
 \alias{readWebJSON}
 \alias{readWebXML}
-\title{Read content from WebXMLSource/WebHTMLSource/WebJSONSource.
-\code{readWeb} is a FunctionGenerator which specifies content retrieval from a \code{\link{WebSource}}
-content elements. Currently, it is defined for XML, HTML and JSON feeds through \code{readWebXML},
-\code{readWebHTML} and \code{readWebJSON}. Also content parsers (\code{tm:::xml_content}, \code{json_content})
-need to be defined.}
+\title{Read content from WebXMLSource/WebHTMLSource/WebJSONSource.}
 \usage{
   readWeb(spec, doc, parser, contentparser, freeFUN = NULL)
 }
@@ -29,12 +25,10 @@ need to be defined.}
   FunctionGenerator
 }
 \description{
-  Read content from
-  WebXMLSource/WebHTMLSource/WebJSONSource. \code{readWeb}
-  is a FunctionGenerator which specifies content retrieval
-  from a \code{\link{WebSource}} content elements.
-  Currently, it is defined for XML, HTML and JSON feeds
-  through \code{readWebXML}, \code{readWebHTML} and
+  \code{readWeb} is a FunctionGenerator which specifies
+  content retrieval from a \code{\link{WebSource}} content
+  elements. Currently, it is defined for XML, HTML and JSON
+  feeds through \code{readWebXML}, \code{readWebHTML} and
   \code{readWebJSON}. Also content parsers
   (\code{tm:::xml_content}, \code{json_content}) need to be
   defined.

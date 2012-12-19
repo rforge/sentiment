@@ -1,5 +1,5 @@
-#' WebCorpus constructor function.
-#' \code{WebCorpus} adds further methods and meta data to \code{\link[tm]{Corpus}} and therefore
+#' @title WebCorpus constructor function.
+#' @description \code{WebCorpus} adds further methods and meta data to \code{\link[tm]{Corpus}} and therefore
 #' constructs a derived class of \code{\link[tm]{Corpus}}. Most importantly, \code{WebCorpus}
 #' calls \code{$PostFUN} on the generated \code{WebCorpus}, which retrieves the main content
 #' for most implemented \code{WebSource}s. Thus it enables an efficient retrieval of new feed items
@@ -45,10 +45,21 @@ WebCorpus <- function(x, readerControl = list(reader = x$DefaultReader, language
 	corpus
 }
 
-#' Update Corpus
-#' Generic function to update a text \code{\link{Corpus}}
+#' @title Update/Extend \code{\link{WebCorpus}} with new feed items.
+#' @description The \code{corpus.update} method ensures, that the original 
+#' \code{\link{WebCorpus}} feed sources are downloaded and checked against
+#' already included \code{TextDocument}s. Based on the \code{ID} included
+#' in the  \code{TextDocument}'s meta data, only new feed elements are
+#' downloaded and added to the \code{\link{WebCorpus}}.
+#' All relevant information regariding the original source feeds are stored
+#' in the \code{\link{WebCorpus}}' meta data (\code{\link[tm]{CMetaData}}).
 #' @param x object of type \code{\link{WebCorpus}}
-#' @param ... additional parameters to \code{\link{Corpus}} function
+#' @param ... 
+#' \describe{
+#' \item{fieldname}{name of \code{\link{Corpus}} field name to be used as ID, defaults to "ID"}
+#' \item{retryempty}{specifies if empty corpus elements should be downloaded again, defaults to TRUE}
+#' \item{...}{additional parameters to \code{\link{Corpus}} function}
+#' }
 #' @export corpus.update
 #' @aliases corpus.update.WebCorpus
 corpus.update <- function(x, ...){
@@ -56,13 +67,6 @@ corpus.update <- function(x, ...){
 }
 
 #' Update/Extend \code{\link{WebCorpus}} with new feed items.
-#' The \code{corpus.update} method ensures, that the original 
-#' \code{\link{WebCorpus}} feed sources are downloaded and checked against
-#' already included \code{TextDocument}s. Based on the \code{ID} included
-#' in the  \code{TextDocument}'s meta data, only new feed elements are
-#' downloaded and added to the \code{\link{WebCorpus}}.
-#' All relevant information regariding the original source feeds are stored
-#' in the \code{\link{WebCorpus}}' meta data (\code{\link[tm]{CMetaData}}).
 #' @S3method corpus.update WebCorpus
 #' @param x \code{\link{WebCorpus}}
 #' @param fieldname name of \code{\link{Corpus}} field name to be used as ID, defaults to "ID"
@@ -110,8 +114,8 @@ function(x, fieldname = "ID", retryempty = T, verbose = F, ...) {
 }
 
 
-#' Retrieve Empty Corpus Elements through \code{$postFUN}. 
-#' Retrieve content of all empty (textlength equals zero) corpus elements. If 
+#' @title Retrieve Empty Corpus Elements through \code{$postFUN}. 
+#' @description Retrieve content of all empty (textlength equals zero) corpus elements. If 
 #' corpus element is empty, \code{$postFUN} is called (specified in \code{\link{CMetaData}})
 #' @param x object of type \code{\link{WebCorpus}}
 #' @param ... additional parameters to PostFUN

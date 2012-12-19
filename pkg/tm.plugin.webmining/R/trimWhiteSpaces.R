@@ -1,5 +1,5 @@
-#' Trim White Spaces from Text Document.
-#' Transformation function, actually equal to stripWhiteSpace 
+#' @title Trim White Spaces from Text Document.
+#' @description Transformation function, actually equal to stripWhiteSpace 
 #' applicable for simple strings using Perl parser
 #' @author Mario Annau
 #' @param txt character

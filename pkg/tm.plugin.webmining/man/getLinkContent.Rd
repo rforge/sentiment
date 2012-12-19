@@ -1,10 +1,6 @@
 \name{getLinkContent}
 \alias{getLinkContent}
-\title{Get main content for corpus items, specified by links.
-\code{getLinkContent} downloads and extracts content from weblinks for \code{\link[tm]{Corpus}} objects.
-Typically it is integrated and called as a post-processing function (field:\code{$postFUN}) for most \code{\link{WebSource}}
-objects. \code{getLinkContent} implements content download in chunks which has been proven to be a stabler approach for
-large content requests.}
+\title{Get main content for corpus items, specified by links.}
 \usage{
   getLinkContent(corpus,
     links = sapply(corpus, meta, "Origin"),
@@ -54,7 +50,6 @@ large content requests.}
   corpus including downloaded link content
 }
 \description{
-  Get main content for corpus items, specified by links.
   \code{getLinkContent} downloads and extracts content from
   weblinks for \code{\link[tm]{Corpus}} objects. Typically
   it is integrated and called as a post-processing function

@@ -1,10 +1,7 @@
 \name{ReutersNewsSource}
 \alias{readReutersNews}
 \alias{ReutersNewsSource}
-\title{Get feed data from Reuters News RSS feed channels. Reuters provides numerous feed
-channels (\url{http://www.reuters.com/tools/rss}) which can be retrieved through RSS
-feeds. Only up to 10 items can be retrieved---therefore an alternative retrieval
-through the Google Reader API (\code{link{GoogleReaderSource}}) could be considered.}
+\title{Get feed data from Reuters News RSS feed channels. Reuters provides numerous feed}
 \usage{
   ReutersNewsSource(query = "businessNews", ...)
 }
@@ -22,13 +19,11 @@ through the Google Reader API (\code{link{GoogleReaderSource}}) could be conside
   WebXMLSource
 }
 \description{
-  Get feed data from Reuters News RSS feed channels.
-  Reuters provides numerous feed channels
-  (\url{http://www.reuters.com/tools/rss}) which can be
-  retrieved through RSS feeds. Only up to 10 items can be
-  retrieved---therefore an alternative retrieval through
-  the Google Reader API (\code{link{GoogleReaderSource}})
-  could be considered.
+  channels (\url{http://www.reuters.com/tools/rss}) which
+  can be retrieved through RSS feeds. Only up to 10 items
+  can be retrieved---therefore an alternative retrieval
+  through the Google Reader API
+  (\code{link{GoogleReaderSource}}) could be considered.
 }
 \examples{
 \dontrun{

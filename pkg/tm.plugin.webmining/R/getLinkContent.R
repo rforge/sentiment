@@ -1,5 +1,5 @@
-#' Get main content for corpus items, specified by links. 
-#' \code{getLinkContent} downloads and extracts content from weblinks for \code{\link[tm]{Corpus}} objects.
+#' @title Get main content for corpus items, specified by links. 
+#' @description \code{getLinkContent} downloads and extracts content from weblinks for \code{\link[tm]{Corpus}} objects.
 #' Typically it is integrated and called as a post-processing function (field:\code{$postFUN}) for most \code{\link{WebSource}}
 #' objects. \code{getLinkContent} implements content download in chunks which has been proven to be a stabler approach for
 #' large content requests. 

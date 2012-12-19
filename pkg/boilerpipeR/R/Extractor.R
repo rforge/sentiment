@@ -1,6 +1,5 @@
-
-#'Generic extraction function which calls boilerpipe extractors. It is the actual
-#' workhorse which directly calls the boilerpipe Java library. Typically called through
+#' @title Generic extraction function which calls boilerpipe extractors. 
+#' @description It is the actual workhorse which directly calls the boilerpipe Java library. Typically called through
 #' functions as listed for parameter \code{exname}.
 #' @param exname character specifying the extractor to be used. 
 #' It can take one of the following values:
@@ -45,8 +44,8 @@ Extractor <- function(exname, content, asText = TRUE, ...){
 	content
 }
 
-#' A full-text extractor which is tuned towards news articles. In this scenario
-#' it achieves higher accuracy than \code{\link{DefaultExtractor}}.
+#' @title A full-text extractor which is tuned towards news articles. 
+#' @description In this scenario it achieves higher accuracy than \code{\link{DefaultExtractor}}.
 #' @param content Text content as character
 #' @param ... additional parameters
 #' @seealso \code{\link{Extractor}}
@@ -60,7 +59,7 @@ ArticleExtractor <- function(content, ...){
 	Extractor("ArticleExtractor", content, ...)
 }
 
-#' A full-text extractor which is tuned towards extracting sentences from news articles.
+#' @title A full-text extractor which is tuned towards extracting sentences from news articles.
 #' @param content Text content as character
 #' @param ... additional parameters
 #' @seealso \code{\link{Extractor}}
@@ -74,8 +73,7 @@ ArticleSentencesExtractor <- function(content, ...){
 	Extractor("ArticleSentencesExtractor", content, ...)
 }
 
-#' A full-text extractor trained on a
-#' \href{http://krdwrd.org/}{krdwrd} \href{https://krdwrd.org/trac/attachment/wiki/Corpora/Canola/CANOLA.pdf}{Canola}.
+#' @title A full-text extractor trained on a \href{http://krdwrd.org/}{krdwrd} \href{https://krdwrd.org/trac/attachment/wiki/Corpora/Canola/CANOLA.pdf}{Canola}.
 #' @param content Text content as character
 #' @param ... additional parameters
 #' @seealso \code{\link{Extractor}}
@@ -89,7 +87,7 @@ CanolaExtractor <- function(content, ...){
 	Extractor("CanolaExtractor", content, ...)
 }
 
-#'A quite generic full-text extractor.
+#' @title A quite generic full-text extractor.
 #' @param content Text content as character
 #' @param ... additional parameters
 #' @seealso \code{\link{Extractor}}
@@ -103,7 +101,7 @@ DefaultExtractor <- function(content, ...){
 	Extractor("DefaultExtractor", content, ...)
 }
 
-#'Marks everything as content.
+#' @title Marks everything as content.
 #' @param content Text content as character
 #' @param ... additional parameters
 #' @seealso \code{\link{Extractor}}
@@ -125,8 +123,8 @@ KeepEverythingExtractor <- function(content, ...){
 #	Extractor("KeepEverythingWithMinKWordsExtractor", content, kMin = kMin.integer, ...)
 #}
 
-#' A full-text extractor which extracts the largest text component of a page.
-#' For news articles, it may perform better than the \code{\link{DefaultExtractor}},
+#' @title A full-text extractor which extracts the largest text component of a page.
+#' @description For news articles, it may perform better than the \code{\link{DefaultExtractor}},
 #' but usually worse than \code{\link{ArticleExtractor}}.
 #' @param content Text content as character
 #' @param ... additional parameters
@@ -141,8 +139,7 @@ LargestContentExtractor <- function(content, ...){
 	Extractor("LargestContentExtractor", content, ...)
 }
 
-#' A quite generic full-text extractor solely based upon the number of words per
-#' block (the current, the previous and the next block).
+#' @title A quite generic full-text extractor solely based upon the number of words per block (the current, the previous and the next block).
 #' @param content Text content as character
 #' @param ... additional parameters
 #' @seealso \code{\link{Extractor}}

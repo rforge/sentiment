@@ -1,9 +1,6 @@
 \name{extractHTMLStrip}
 \alias{extractHTMLStrip}
-\title{Simply strip HTML Tags from Document
-\code{extractHTMLStrip} parses an url, character or filename, reads the DOM
-tree, removes all HTML tags in the tree and outputs the source text without
-markup.}
+\title{Simply strip HTML Tags from Document}
 \usage{
   extractHTMLStrip(url, asText = TRUE, encoding, ...)
 }
@@ -20,7 +17,6 @@ markup.}
   \code{\link{htmlTreeParse}}}
 }
 \description{
-  Simply strip HTML Tags from Document
   \code{extractHTMLStrip} parses an url, character or
   filename, reads the DOM tree, removes all HTML tags in
   the tree and outputs the source text without markup.

@@ -1,12 +1,7 @@
 \name{TwitterSource}
 \alias{readTwitter}
 \alias{TwitterSource}
-\title{Get feed data from Twitter Search API (\url{https://dev.twitter.com/docs/api/1/get/search}).
-The microblogging and social networking service twitter provides text based messages
-of up to 140 characters which can be searched and retrieved through the Twitter Search API.
-Up to 1500 tweets are provided per request and no external content retrieval is necessary.
-However, it should be noted that tweets contain special character formats and are quite
-challenging for text mining tasks (therefore require specialized toolset).}
+\title{Get feed data from Twitter Search API (\url{https://dev.twitter.com/docs/api/1/get/search}).}
 \usage{
   TwitterSource(query, n = 1500,
     params = list(lang = "en"), ...)
@@ -26,8 +21,6 @@ challenging for text mining tasks (therefore require specialized toolset).}
   WebXMLSource
 }
 \description{
-  Get feed data from Twitter Search API
-  (\url{https://dev.twitter.com/docs/api/1/get/search}).
   The microblogging and social networking service twitter
   provides text based messages of up to 140 characters
   which can be searched and retrieved through the Twitter

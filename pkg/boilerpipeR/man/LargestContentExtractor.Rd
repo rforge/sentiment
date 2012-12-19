@@ -1,8 +1,6 @@
 \name{LargestContentExtractor}
 \alias{LargestContentExtractor}
-\title{A full-text extractor which extracts the largest text component of a page.
-For news articles, it may perform better than the \code{\link{DefaultExtractor}},
-but usually worse than \code{\link{ArticleExtractor}}.}
+\title{A full-text extractor which extracts the largest text component of a page.}
 \usage{
   LargestContentExtractor(content, ...)
 }
@@ -15,10 +13,9 @@ but usually worse than \code{\link{ArticleExtractor}}.}
   extracted text as character
 }
 \description{
-  A full-text extractor which extracts the largest text
-  component of a page. For news articles, it may perform
-  better than the \code{\link{DefaultExtractor}}, but
-  usually worse than \code{\link{ArticleExtractor}}.
+  For news articles, it may perform better than the
+  \code{\link{DefaultExtractor}}, but usually worse than
+  \code{\link{ArticleExtractor}}.
 }
 \examples{
 data(content)

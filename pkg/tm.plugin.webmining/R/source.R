@@ -1,5 +1,5 @@
-#' Read Web Content and respective Link Content from feedurls.
-#' WebSource is derived from \code{\link[tm]{Source}}. In addition to calling the
+#' @title Read Web Content and respective Link Content from feedurls.
+#' @description WebSource is derived from \code{\link[tm]{Source}}. In addition to calling the
 #' base \code{\link[tm]{Source}} constructor function it also retrieves the specified
 #' feedurls and pre--parses the content with the parser function.
 #' The fields \code{$Content}, \code{$Feedurls} \code{$Parser} and \code{$CurlOpts} are finally
@@ -42,8 +42,8 @@ WebSource <- function(feedurls, class = "WebXMLSource", parser, encoding = "UTF-
 	s
 }
 
-#' Update WebXMLSource/WebHTMLSource/WebJSONSource
-#' Typically, update is called from \code{link{corpus.update}} and refreshes \code{$Content} in 
+#' @title Update WebXMLSource/WebHTMLSource/WebJSONSource
+#' @description Typically, update is called from \code{link{corpus.update}} and refreshes \code{$Content} in 
 #' Source object.
 #' @param x Source object to be updated
 #' @export source.update
@@ -70,8 +70,8 @@ function(x) {
 	x
 }
 
-#' Get feed Meta Data from Google Finance. 
-#' Google Finance provides business and enterprise headlines for many companies. Coverage is 
+#' @title Get feed Meta Data from Google Finance. 
+#' @description Google Finance provides business and enterprise headlines for many companies. Coverage is 
 #' particularly strong for US-Markets. However, only up to 20 feed items can be retrieved.
 #' @author Mario Annau
 #' @param query ticker symbols of companies to be searched for, see \url{http://www.google.com/finance}.
@@ -113,8 +113,8 @@ GoogleFinanceSource <- function(query, params =
 	ws
 }
 
-#' Get feed data from Yahoo! Finance.
-#' Yahoo! Finance is a popular site which provides financial news and information. It is a large source
+#' @title Get feed data from Yahoo! Finance.
+#' @description Yahoo! Finance is a popular site which provides financial news and information. It is a large source
 #' for historical price data as well as financial news. Using the typical Yahoo! Finance ticker 
 #' news items can easily be retrieved. However, the maximum number of items is 20. 
 #' @author Mario Annau
@@ -155,8 +155,8 @@ YahooFinanceSource <- function(query, params =
 	ws
 }
 
-#' Get feed data from Google Blog Search (\url{http://www.google.com/blogsearch}).
-#' Google Blog Search is a specialized search service/index for web blogs. Since the Googlebots
+#' @title Get feed data from Google Blog Search (\url{http://www.google.com/blogsearch}).
+#' @description Google Blog Search is a specialized search service/index for web blogs. Since the Googlebots
 #' are typically just scanning the blog's RSS feeds for updates they are much faster updating than comparable
 #' general purpose crawlers.
 #' @author Mario Annau
@@ -201,8 +201,8 @@ GoogleBlogSearchSource <- function(query, params =
 }
 
 
-#' Get feed data from Google News Search \url{http://news.google.com/}
-#' Google News Search is one of the most popular news aggregators on the web. News
+#' @title Get feed data from Google News Search \url{http://news.google.com/}
+#' @description Google News Search is one of the most popular news aggregators on the web. News
 #' can be retrieved for any customized user query. Up to 100 can be retrieved per 
 #' request.
 #' @author Mario Annau
@@ -245,8 +245,8 @@ GoogleNewsSource <- function(query, params =
 	ws
 }
 
-#' Get feed data from Reuters News RSS feed channels. Reuters provides numerous feed 
-#' channels (\url{http://www.reuters.com/tools/rss}) which can be retrieved through RSS 
+#' @title Get feed data from Reuters News RSS feed channels. Reuters provides numerous feed 
+#' @description channels (\url{http://www.reuters.com/tools/rss}) which can be retrieved through RSS 
 #' feeds. Only up to 10 items can be retrieved---therefore an alternative retrieval
 #' through the Google Reader API (\code{link{GoogleReaderSource}}) could be considered.
 #' @author Mario Annau
@@ -287,8 +287,8 @@ ReutersNewsSource <- function(query = 'businessNews', ...){
 }
 
 
-#' Get feed data from Twitter Search API (\url{https://dev.twitter.com/docs/api/1/get/search}). 
-#' The microblogging and social networking service twitter provides text based messages
+#' @title Get feed data from Twitter Search API (\url{https://dev.twitter.com/docs/api/1/get/search}). 
+#' @description The microblogging and social networking service twitter provides text based messages
 #' of up to 140 characters which can be searched and retrieved through the Twitter Search API. 
 #' Up to 1500 tweets are provided per request and no external content retrieval is necessary. 
 #' However, it should be noted that tweets contain special character formats and are quite 
@@ -350,8 +350,8 @@ TwitterSource <- function(query, n = 1500, params =
 }
 
 
-#' Get feed data from Yahoo! News (\url{http://news.yahoo.com/}).
-#' Yahoo! News is a large news aggregator and provides a customizable RSS feed. 
+#' @title Get feed data from Yahoo! News (\url{http://news.yahoo.com/}).
+#' @description Yahoo! News is a large news aggregator and provides a customizable RSS feed. 
 #' Only a maximum of 20 items can be retrieved.
 #' @author Mario Annau
 #' @param query words to be searched in Yahoo News, multiple words must be separated by '+'
@@ -390,8 +390,8 @@ YahooNewsSource <- function(query, params =
 }
 
 
-#' Get feed data from NYTimes Article Search (\url{http://developer.nytimes.com/docs/read/article_search_api}). 
-#' Excerpt from the website: "With the NYTimes Article Search API, you can search New York Times articles 
+#' @title Get feed data from NYTimes Article Search (\url{http://developer.nytimes.com/docs/read/article_search_api}). 
+#' @description Excerpt from the website: "With the NYTimes Article Search API, you can search New York Times articles 
 #' from 1981 to today, retrieving headlines, abstracts, lead paragraphs, links to associated multimedia 
 #' and other article metadata. Along with standard keyword searching, the API also offers faceted searching. 
 #' The available facets include Times-specific fields such as sections, taxonomic classifiers and controlled 
@@ -451,8 +451,8 @@ NYTimesSource <- function(query, n = 100, count = 10, appid, params =
 
 
 
-#' Get News from Yahoo Inplay.
-#' Yahoo Inplay lists a range of company news provided by Briefing.com. Since Yahoo Inplay
+#' @title Get News from Yahoo Inplay.
+#' @description Yahoo Inplay lists a range of company news provided by Briefing.com. Since Yahoo Inplay
 #' does not provide a structured XML news feed, content is parsed directly from the HTML page.
 #' Therefore, no further Source parameters can be specified. The number of feed items per 
 #' request can vary substantially.  
@@ -480,8 +480,8 @@ YahooInplaySource <- function(...){
 	ws
 }
 
-#' Retrieve feeds through the Google Reader API.
-#' This function utilizes the (unofficial) Google Reader API to retrieve RSS
+#' @title Retrieve feeds through the Google Reader API.
+#' @description This function utilizes the (unofficial) Google Reader API to retrieve RSS
 #' feeds. The advantage of access RSS feeds through the Google Reader API is that
 #' you are not limited by the number of entries a website may included in their
 #' feed. That is, Google maintains generally maintains a complete history of

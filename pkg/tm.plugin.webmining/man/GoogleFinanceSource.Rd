@@ -1,9 +1,7 @@
 \name{GoogleFinanceSource}
 \alias{GoogleFinanceSource}
 \alias{readGoogle}
-\title{Get feed Meta Data from Google Finance.
-Google Finance provides business and enterprise headlines for many companies. Coverage is
-particularly strong for US-Markets. However, only up to 20 feed items can be retrieved.}
+\title{Get feed Meta Data from Google Finance.}
 \usage{
   GoogleFinanceSource(query,
     params = list(hl = "en", q = query, ie = "utf-8", start = 0, num = 20, output = "rss"),
@@ -24,9 +22,8 @@ particularly strong for US-Markets. However, only up to 20 feed items can be ret
   WebXMLSource
 }
 \description{
-  Get feed Meta Data from Google Finance. Google Finance
-  provides business and enterprise headlines for many
-  companies. Coverage is particularly strong for
+  Google Finance provides business and enterprise headlines
+  for many companies. Coverage is particularly strong for
   US-Markets. However, only up to 20 feed items can be
   retrieved.
 }

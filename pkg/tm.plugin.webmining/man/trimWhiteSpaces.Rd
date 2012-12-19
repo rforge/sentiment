@@ -1,8 +1,6 @@
 \name{trimWhiteSpaces}
 \alias{trimWhiteSpaces}
-\title{Trim White Spaces from Text Document.
-Transformation function, actually equal to stripWhiteSpace
-applicable for simple strings using Perl parser}
+\title{Trim White Spaces from Text Document.}
 \usage{
   trimWhiteSpaces(txt)
 }
@@ -10,9 +8,9 @@ applicable for simple strings using Perl parser}
   \item{txt}{character}
 }
 \description{
-  Trim White Spaces from Text Document. Transformation
-  function, actually equal to stripWhiteSpace applicable
-  for simple strings using Perl parser
+  Transformation function, actually equal to
+  stripWhiteSpace applicable for simple strings using Perl
+  parser
 }
 \author{
   Mario Annau

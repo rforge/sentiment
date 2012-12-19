@@ -1,5 +1,5 @@
-#' Extract Main Content from Text Documents
-#' Use implemented extraction functions (through boilerpipeR) to extract main content from
+#' @title Extract main content from \code{TextDocument}s.
+#' @description Use implemented extraction functions (through boilerpipeR) to extract main content from
 #' \code{TextDocument}s.
 #' @param x PlainTextDocument
 #' @param extractor default extraction function to be used, defaults to \code{\link{extractContentDOM}}
@@ -27,8 +27,8 @@ extract.PlainTextDocument <- function(x, extractor = extractContentDOM, ...){
 	x
 } 
 
-#' Simply strip HTML Tags from Document
-#' \code{extractHTMLStrip} parses an url, character or filename, reads the DOM
+#' @title Simply strip HTML Tags from Document
+#' @description \code{extractHTMLStrip} parses an url, character or filename, reads the DOM
 #' tree, removes all HTML tags in the tree and outputs the source text without
 #' markup.
 #' @author Mario Annau
@@ -70,8 +70,8 @@ function(url, asText = TRUE, encoding, ...){
 }
 
 
-#' Extract Main HTML Content from DOM
-#' Function extracts main HTML Content using its Document Object Model.
+#' @title Extract Main HTML Content from DOM
+#' @description Function extracts main HTML Content using its Document Object Model.
 #' Idea comes basically from the fact, that main content of an HTML Document
 #' is in a subnode of the HTML DOM Tree with a high text-to-tag ratio.
 #' Internally, this function also calls 

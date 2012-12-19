@@ -1,7 +1,6 @@
 \name{ArticleExtractor}
 \alias{ArticleExtractor}
-\title{A full-text extractor which is tuned towards news articles. In this scenario
-it achieves higher accuracy than \code{\link{DefaultExtractor}}.}
+\title{A full-text extractor which is tuned towards news articles.}
 \usage{
   ArticleExtractor(content, ...)
 }
@@ -14,9 +13,8 @@ it achieves higher accuracy than \code{\link{DefaultExtractor}}.}
   extracted text as character
 }
 \description{
-  A full-text extractor which is tuned towards news
-  articles. In this scenario it achieves higher accuracy
-  than \code{\link{DefaultExtractor}}.
+  In this scenario it achieves higher accuracy than
+  \code{\link{DefaultExtractor}}.
 }
 \examples{
 data(content)

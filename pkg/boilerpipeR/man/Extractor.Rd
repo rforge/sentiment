@@ -1,8 +1,6 @@
 \name{Extractor}
 \alias{Extractor}
-\title{Generic extraction function which calls boilerpipe extractors. It is the actual
-workhorse which directly calls the boilerpipe Java library. Typically called through
-functions as listed for parameter \code{exname}.}
+\title{Generic extraction function which calls boilerpipe extractors.}
 \usage{
   Extractor(exname, content, asText = TRUE, ...)
 }
@@ -40,10 +38,9 @@ functions as listed for parameter \code{exname}.}
   extracted text as character
 }
 \description{
-  Generic extraction function which calls boilerpipe
-  extractors. It is the actual workhorse which directly
-  calls the boilerpipe Java library. Typically called
-  through functions as listed for parameter \code{exname}.
+  It is the actual workhorse which directly calls the
+  boilerpipe Java library. Typically called through
+  functions as listed for parameter \code{exname}.
 }
 \author{
   Mario Annau

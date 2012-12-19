@@ -1,11 +1,6 @@
 \name{WebSource}
 \alias{WebSource}
-\title{Read Web Content and respective Link Content from feedurls.
-WebSource is derived from \code{\link[tm]{Source}}. In addition to calling the
-base \code{\link[tm]{Source}} constructor function it also retrieves the specified
-feedurls and pre--parses the content with the parser function.
-The fields \code{$Content}, \code{$Feedurls} \code{$Parser} and \code{$CurlOpts} are finally
-added to the \code{Source} object.}
+\title{Read Web Content and respective Link Content from feedurls.}
 \usage{
   WebSource(feedurls, class = "WebXMLSource", parser,
     encoding = "UTF-8", vectorized = FALSE,
@@ -34,15 +29,13 @@ added to the \code{Source} object.}
   WebSource
 }
 \description{
-  Read Web Content and respective Link Content from
-  feedurls. WebSource is derived from
-  \code{\link[tm]{Source}}. In addition to calling the base
-  \code{\link[tm]{Source}} constructor function it also
-  retrieves the specified feedurls and pre--parses the
-  content with the parser function. The fields
-  \code{$Content}, \code{$Feedurls} \code{$Parser} and
-  \code{$CurlOpts} are finally added to the \code{Source}
-  object.
+  WebSource is derived from \code{\link[tm]{Source}}. In
+  addition to calling the base \code{\link[tm]{Source}}
+  constructor function it also retrieves the specified
+  feedurls and pre--parses the content with the parser
+  function. The fields \code{$Content}, \code{$Feedurls}
+  \code{$Parser} and \code{$CurlOpts} are finally added to
+  the \code{Source} object.
 }
 \author{
   Mario Annau

@@ -1,7 +1,6 @@
 \name{CanolaExtractor}
 \alias{CanolaExtractor}
-\title{A full-text extractor trained on a
-\href{http://krdwrd.org/}{krdwrd} \href{https://krdwrd.org/trac/attachment/wiki/Corpora/Canola/CANOLA.pdf}{Canola}.}
+\title{A full-text extractor trained on a \href{http://krdwrd.org/}{krdwrd} \href{https://krdwrd.org/trac/attachment/wiki/Corpora/Canola/CANOLA.pdf}{Canola}.}
 \usage{
   CanolaExtractor(content, ...)
 }

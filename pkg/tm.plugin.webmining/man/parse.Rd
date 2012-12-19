@@ -1,12 +1,6 @@
 \name{parse}
 \alias{parse}
-\title{Wrapper/Convenience function to ensure right encoding for different Platforms
-Depending on specified type one of the following parser functions is called:
-\describe{
-\item{XML}{\code{\link{xmlInternalTreeParse}}}
-\item{HTML}{\code{\link{htmlTreeParse}}}
-\item{JSON}{\code{\link{fromJSON}}}
-}}
+\title{Wrapper/Convenience function to ensure right encoding for different Platforms}
 \usage{
   parse(..., asText = TRUE,
     type = c("XML", "HTML", "JSON"))
@@ -22,9 +16,8 @@ Depending on specified type one of the following parser functions is called:
   "XML"}
 }
 \description{
-  Wrapper/Convenience function to ensure right encoding for
-  different Platforms Depending on specified type one of
-  the following parser functions is called: \describe{
+  Depending on specified type one of the following parser
+  functions is called: \describe{
   \item{XML}{\code{\link{xmlInternalTreeParse}}}
   \item{HTML}{\code{\link{htmlTreeParse}}}
   \item{JSON}{\code{\link{fromJSON}}} }

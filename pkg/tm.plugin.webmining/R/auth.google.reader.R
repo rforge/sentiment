@@ -1,5 +1,5 @@
-#' Authentification and token retrieval from the Google Reader web service
-#' Function to retrieve token string for the Google Reader web service. 
+#' @title Authentification and token retrieval from the Google Reader web service.
+#' @description Function to retrieve token string for the Google Reader web service. 
 #' String can subsequently be used with \code{\link{GoogleReaderSource}} 
 #' @param email email address, e.g. <firstname.lastname@@gmail.com>
 #' @param password password for Google Account

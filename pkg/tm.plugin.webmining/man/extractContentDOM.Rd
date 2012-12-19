@@ -4,13 +4,7 @@
 \alias{extractContentDOM}
 \alias{getMainText}
 \alias{removeTags}
-\title{Extract Main HTML Content from DOM
-Function extracts main HTML Content using its Document Object Model.
-Idea comes basically from the fact, that main content of an HTML Document
-is in a subnode of the HTML DOM Tree with a high text-to-tag ratio.
-Internally, this function also calls
-\code{assignValues}, \code{calcDensity}, \code{getMainText}
-and \code{removeTags}.}
+\title{Extract Main HTML Content from DOM}
 \usage{
   extractContentDOM(url, threshold, asText = TRUE, ...)
 }
@@ -27,13 +21,13 @@ and \code{removeTags}.}
   \code{\link{htmlTreeParse}}}
 }
 \description{
-  Extract Main HTML Content from DOM Function extracts main
-  HTML Content using its Document Object Model. Idea comes
-  basically from the fact, that main content of an HTML
-  Document is in a subnode of the HTML DOM Tree with a high
-  text-to-tag ratio. Internally, this function also calls
-  \code{assignValues}, \code{calcDensity},
-  \code{getMainText} and \code{removeTags}.
+  Function extracts main HTML Content using its Document
+  Object Model. Idea comes basically from the fact, that
+  main content of an HTML Document is in a subnode of the
+  HTML DOM Tree with a high text-to-tag ratio. Internally,
+  this function also calls \code{assignValues},
+  \code{calcDensity}, \code{getMainText} and
+  \code{removeTags}.
 }
 \author{
   Mario Annau

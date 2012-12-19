@@ -1,8 +1,6 @@
 \name{auth.google.reader}
 \alias{auth.google.reader}
-\title{Authentification and token retrieval from the Google Reader web service
-Function to retrieve token string for the Google Reader web service.
-String can subsequently be used with \code{\link{GoogleReaderSource}}}
+\title{Authentification and token retrieval from the Google Reader web service.}
 \usage{
   auth.google.reader(email = readline("Email:"),
     password = readline("Password:"), get.curl.opts = F)
@@ -21,10 +19,9 @@ String can subsequently be used with \code{\link{GoogleReaderSource}}}
   get.curl.opts is TRUE
 }
 \description{
-  Authentification and token retrieval from the Google
-  Reader web service Function to retrieve token string for
-  the Google Reader web service. String can subsequently be
-  used with \code{\link{GoogleReaderSource}}
+  Function to retrieve token string for the Google Reader
+  web service. String can subsequently be used with
+  \code{\link{GoogleReaderSource}}
 }
 \seealso{
   \code{\link{GoogleReaderSource}}

@@ -1,5 +1,5 @@
-#' Copy of RCurl:::getURL() including a little bugfix for the .encoding parameter.
-#' For the full description of getURL refer to \code{\link[RCurl]{getURL}}.
+#' @title Copy of RCurl:::getURL() including a little bugfix for the .encoding parameter.
+#' @description For the full description of getURL refer to \code{\link[RCurl]{getURL}}.
 #' @param url see \code{\link[RCurl]{getURL}}
 #' @param .opts see \code{\link[RCurl]{getURL}}
 #' @param write see \code{\link[RCurl]{getURL}}

@@ -1,8 +1,6 @@
 \name{YahooNewsSource}
 \alias{YahooNewsSource}
-\title{Get feed data from Yahoo! News (\url{http://news.yahoo.com/}).
-Yahoo! News is a large news aggregator and provides a customizable RSS feed.
-Only a maximum of 20 items can be retrieved.}
+\title{Get feed data from Yahoo! News (\url{http://news.yahoo.com/}).}
 \usage{
   YahooNewsSource(query,
     params = list(p = query, n = 20, ei = "UTF-8"), ...)
@@ -21,10 +19,9 @@ Only a maximum of 20 items can be retrieved.}
   WebXMLSource
 }
 \description{
-  Get feed data from Yahoo! News
-  (\url{http://news.yahoo.com/}). Yahoo! News is a large
-  news aggregator and provides a customizable RSS feed.
-  Only a maximum of 20 items can be retrieved.
+  Yahoo! News is a large news aggregator and provides a
+  customizable RSS feed. Only a maximum of 20 items can be
+  retrieved.
 }
 \examples{
 \dontrun{

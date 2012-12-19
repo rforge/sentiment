@@ -1,9 +1,7 @@
 \name{extract}
 \alias{extract}
 \alias{extract.PlainTextDocument}
-\title{Extract Main Content from Text Documents
-Use implemented extraction functions (through boilerpipeR) to extract main content from
-\code{TextDocument}s.}
+\title{Extract main content from \code{TextDocument}s.}
 \usage{
   extract(x, extractor, ...)
 }
@@ -16,8 +14,8 @@ Use implemented extraction functions (through boilerpipeR) to extract main conte
   \item{...}{additional parameters to extractor function}
 }
 \description{
-  Extract Main Content from Text Documents Use implemented
-  extraction functions (through boilerpipeR) to extract
-  main content from \code{TextDocument}s.
+  Use implemented extraction functions (through
+  boilerpipeR) to extract main content from
+  \code{TextDocument}s.
 }
 

@@ -1,10 +1,5 @@
-# TODO: Add comment
-# 
-# Author: mario
-###############################################################################
-
-#' Wrapper/Convenience function to ensure right encoding for different Platforms
-#' Depending on specified type one of the following parser functions is called:
+#' @title Wrapper/Convenience function to ensure right encoding for different Platforms
+#' @description Depending on specified type one of the following parser functions is called:
 #' \describe{
 #' \item{XML}{\code{\link{xmlInternalTreeParse}}}
 #' \item{HTML}{\code{\link{htmlTreeParse}}}
