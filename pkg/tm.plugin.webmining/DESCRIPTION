@@ -5,7 +5,7 @@ License: GPL-3
 Title: Retrieve structured, textual data from various web sources
 Authors@R: c(person("Mario", "Annau", role = c("aut", "cre"),
     email = "mario.annau@gmail.com"))
-Maintainer: Mario Annau <mario.annau@gmail.com>
+Maintainer: Mario Annau <mario.annau@gmail.com> 
 Description: tm.plugin.webmining facilitates text retrieval from feed
     formats like XML (RSS, ATOM) and JSON. Also direct retrieval from
     HTML is supported. As most (news) feeds only incorporate small
