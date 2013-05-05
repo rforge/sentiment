@@ -1,4 +1,4 @@
-#' Add Sentiment Field to chob
+#' Add Sentiment Field to chobs
 #' Adds one of the following sentiment fields to the current chob:
 #' Subjectivity, Polarity, Pos_Refs_Per_Ref, Pos_Refs_Per_Ref, Neg_Refs_Per_Ref, 
 #' Senti_Diffs_Per_Ref, SentVol
