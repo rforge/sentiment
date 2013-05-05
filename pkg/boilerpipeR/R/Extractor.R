@@ -1,4 +1,4 @@
-#' @title Generic extraction function which calls boilerpipe extractors. 
+#' @title Generic extraction function which calls boilerpipe extractors
 #' @description It is the actual workhorse which directly calls the boilerpipe Java library. Typically called through
 #' functions as listed for parameter \code{exname}.
 #' @param exname character specifying the extractor to be used. 
