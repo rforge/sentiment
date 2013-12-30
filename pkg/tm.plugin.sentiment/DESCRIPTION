@@ -10,7 +10,7 @@ Description: tm.plugin.sentiment supports sentiment analysis of text
     series in xts and charting using facilities of quantmod are
     supported.
 Version: 0.0.1
-Date: 2012-03-17
+Date: 2013-12-30
 Depends:
     tm,
     quantmod
