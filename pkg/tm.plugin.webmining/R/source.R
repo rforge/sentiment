@@ -32,7 +32,7 @@ WebSource <- function(feedurls, class = "WebXMLSource", parser, encoding = "UTF-
 	#content_parsed <- unlist(lapply(feedurls, parser), recursive = FALSE)
 	
 	# generate source object
-	s <- tm:::.Source(NULL, encoding, length(content_parsed), FALSE, NULL, 0, vectorized, class = class)
+	s <- tm::Source(NULL, encoding, length(content_parsed), FALSE, NULL, 0, vectorized, class = class)
 	
 	s$Content <- content_parsed
 	s$Feedurls <- feedurls
@@ -504,6 +504,7 @@ YahooInplaySource <- function(...){
 #' @author Mario Annau
 #' @aliases readGoogleReader
 #' @note Currently, \code{\link{corpus.update}} is not supported for GoogleReaderSource
+#' @importFrom XML saveXML
 #' @export 
 GoogleReaderSource <- function(feed, auth.token = auth.google.reader(), params = list(n = 100), curlOpts = NULL, ...){
 	google.auth <- paste("GoogleLogin auth=", auth.token, sep='')
@@ -554,7 +555,7 @@ GoogleReaderSource <- function(feed, auth.token = auth.google.reader(), params =
 	for(i in 1:length(fq)){
 		url.content <- getURL(fq[i], .opts = curlOpts)
 		tree <- parse(url.content, type = "XML")
-		elements <- parser(XML:::saveXML(tree))
+		elements <- parser(XML::saveXML(tree))
 		content <- c(content, elements)
 		
 		continue <- unlist(getNodeSet(tree,  "//gr:continuation", namespaces, xmlValue))
@@ -566,7 +567,7 @@ GoogleReaderSource <- function(feed, auth.token = auth.google.reader(), params =
 		}
 	}
 	
-	s <- tm:::.Source(NULL, encoding = "UTF-8", length(content), FALSE, NULL, 0, vectorized = FALSE, class = "WebXMLSource")
+	s <- tm::Source(NULL, encoding = "UTF-8", length(content), FALSE, NULL, 0, vectorized = FALSE, class = "WebXMLSource")
 	s$Content <- content
 	s$Feedurls <- fq
 	s$Parser <- parser

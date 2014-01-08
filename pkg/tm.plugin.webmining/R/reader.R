@@ -54,7 +54,7 @@ readWebXML <- function(...){
 	} 
 	#contentparser <- function(x, cspec) tm:::.xml_content(x, cspec)
 	contentparser <- tm:::.xml_content
-	freeFUN <- XML:::free
+	freeFUN <- XML::free
 	readWeb(parser = parser, contentparser = contentparser, freeFUN = freeFUN, ...)
 }
 
@@ -68,7 +68,7 @@ readWebHTML <- function(...){
 	#parser <- function(x) XML::htmlTreeParse(x, asText = TRUE, useInternalNodes = TRUE)
 	parser <- function(x) parse(x, type = "HTML", useInternalNodes = TRUE)
 	contentparser <- function(x, cspec) tm:::.xml_content(x, cspec)
-	freeFUN <- XML:::free
+	freeFUN <- XML::free
 	readWeb(parser = parser, contentparser = contentparser, freeFUN = freeFUN, ...)
 }
 

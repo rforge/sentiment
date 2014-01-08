@@ -65,10 +65,9 @@ function(url, asText = TRUE, encoding, ...){
 	#childidx <- min(childidx, length(children))
 	html <- children[[childidx]]
 	val <- xmlValue(html)
-	XML:::free(tree)
+	XML::free(tree)
 	return(val)
 }
-
 
 #' @title Extract Main HTML Content from DOM
 #' @description Function extracts main HTML Content using its Document Object Model.

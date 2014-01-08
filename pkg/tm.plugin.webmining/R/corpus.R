@@ -40,7 +40,7 @@ WebCorpus <- function(x, readerControl = list(reader = x$DefaultReader, language
 #' @noRd
 `[.WebCorpus` <- function(x, i) {
 	if (missing(i)) return(x)
-	corpus <- tm:::.VCorpus(NextMethod("["), CMetaData(x), DMetaData(x)[i, , drop = FALSE])
+	corpus <- .VCorpus(NextMethod("["), CMetaData(x), DMetaData(x)[i, , drop = FALSE])
 	class(corpus) <- c("WebCorpus", class(corpus))
 	corpus
 }
@@ -141,6 +141,17 @@ function(x, nChar = 0, ...){
 		x[noContent] <- corp_nocontent
 	}
 	x
+}
+
+#' VCorpus
+#' @noRd
+.VCorpus <-
+    function(x, cmeta, dmeta)
+{
+  attr(x, "CMetaData") <- cmeta
+  attr(x, "DMetaData") <- dmeta
+  class(x) <- c("VCorpus", "Corpus", "list")
+  x
 }
 
 
