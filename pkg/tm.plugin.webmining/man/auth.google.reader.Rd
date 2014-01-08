@@ -1,6 +1,6 @@
 \name{auth.google.reader}
 \alias{auth.google.reader}
-\title{Authentification and token retrieval from the Google Reader web service.}
+\title{Authentification and token retrieval from the Google Reader web service}
 \usage{
   auth.google.reader(email = readline("Email:"),
     password = readline("Password:"), get.curl.opts = F)

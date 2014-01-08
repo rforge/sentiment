@@ -1,6 +1,6 @@
 \name{TwitterSource}
-\alias{readTwitter}
 \alias{TwitterSource}
+\alias{readTwitter}
 \title{Get feed data from Twitter Search API (\url{https://dev.twitter.com/docs/api/1/get/search}).}
 \usage{
   TwitterSource(query, n = 1500,

@@ -1,6 +1,6 @@
 \name{ReutersNewsSource}
-\alias{readReutersNews}
 \alias{ReutersNewsSource}
+\alias{readReutersNews}
 \title{Get feed data from Reuters News RSS feed channels. Reuters provides numerous feed}
 \usage{
   ReutersNewsSource(query = "businessNews", ...)

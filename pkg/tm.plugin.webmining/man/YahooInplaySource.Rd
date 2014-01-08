@@ -1,6 +1,6 @@
 \name{YahooInplaySource}
-\alias{readYahooInplay}
 \alias{YahooInplaySource}
+\alias{readYahooInplay}
 \title{Get News from Yahoo Inplay.}
 \usage{
   YahooInplaySource(...)

@@ -1,6 +1,6 @@
 \name{YahooFinanceSource}
-\alias{readYahoo}
 \alias{YahooFinanceSource}
+\alias{readYahoo}
 \title{Get feed data from Yahoo! Finance.}
 \usage{
   YahooFinanceSource(query,

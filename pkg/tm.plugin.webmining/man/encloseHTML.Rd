@@ -1,7 +1,7 @@
 \name{encloseHTML}
 \alias{encloseHTML}
-\alias{encloseHTML.character}
 \alias{encloseHTML.PlainTextDocument}
+\alias{encloseHTML.character}
 \title{Enclose Text Content in HTML tags}
 \usage{
   encloseHTML(x)
