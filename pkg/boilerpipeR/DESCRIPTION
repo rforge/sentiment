@@ -10,7 +10,7 @@ Description: Generic Extraction of main text content from HTML files; removal
     extraction heuristics from boilerpipe show a robust performance for a wide
     range of web site templates.
 Version: 1.1
-Date: 2013-12-30
+Date: 2013-01-10
 Depends:
     rJava
 Collate:
