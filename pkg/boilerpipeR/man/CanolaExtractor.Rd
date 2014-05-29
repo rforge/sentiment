@@ -2,7 +2,7 @@
 \alias{CanolaExtractor}
 \title{A full-text extractor trained on a \href{http://krdwrd.org/}{krdwrd} \href{https://krdwrd.org/trac/attachment/wiki/Corpora/Canola/CANOLA.pdf}{Canola}.}
 \usage{
-  CanolaExtractor(content, ...)
+CanolaExtractor(content, ...)
 }
 \arguments{
   \item{content}{Text content as character}
@@ -10,21 +10,21 @@
   \item{...}{additional parameters}
 }
 \value{
-  extracted text as character
+extracted text as character
 }
 \description{
-  A full-text extractor trained on a
-  \href{http://krdwrd.org/}{krdwrd}
-  \href{https://krdwrd.org/trac/attachment/wiki/Corpora/Canola/CANOLA.pdf}{Canola}.
+A full-text extractor trained on a
+\href{http://krdwrd.org/}{krdwrd}
+\href{https://krdwrd.org/trac/attachment/wiki/Corpora/Canola/CANOLA.pdf}{Canola}.
 }
 \examples{
 data(content)
 extract <- CanolaExtractor(content)
 }
 \author{
-  Mario Annau
+Mario Annau
 }
 \seealso{
-  \code{\link{Extractor}}
+\code{\link{Extractor}}
 }
 

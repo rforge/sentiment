@@ -2,14 +2,13 @@
 \alias{getLinkContent}
 \title{Get main content for corpus items, specified by links.}
 \usage{
-  getLinkContent(corpus,
-    links = sapply(corpus, meta, "Origin"),
-    timeout.request = 30, chunksize = 20,
-    verbose = getOption("verbose"),
-    curlOpts = curlOptions(verbose = FALSE, followlocation = TRUE, maxconnects = 5, maxredirs = 10, timeout = timeout.request, connecttimeout = timeout.request, ssl.verifyhost = FALSE, ssl.verifypeer = FALSE, useragent = "R"),
-    retry.empty = 3, sleep.time = 3,
-    extractor = ArticleExtractor, .encoding = integer(),
-    ...)
+getLinkContent(corpus, links = sapply(corpus, meta, "origin"),
+  timeout.request = 30, chunksize = 20, verbose = getOption("verbose"),
+  curlOpts = curlOptions(verbose = FALSE, followlocation = TRUE, maxconnects =
+  5, maxredirs = 10, timeout = timeout.request, connecttimeout =
+  timeout.request, ssl.verifyhost = FALSE, ssl.verifypeer = FALSE, useragent =
+  "R"), retry.empty = 3, sleep.time = 3, extractor = ArticleExtractor,
+  .encoding = integer(), ...)
 }
 \arguments{
   \item{corpus}{object of class \code{\link[tm]{Corpus}}
@@ -47,19 +46,19 @@
   (=autodetect)}
 }
 \value{
-  corpus including downloaded link content
+corpus including downloaded link content
 }
 \description{
-  \code{getLinkContent} downloads and extracts content from
-  weblinks for \code{\link[tm]{Corpus}} objects. Typically
-  it is integrated and called as a post-processing function
-  (field:\code{$postFUN}) for most \code{\link{WebSource}}
-  objects. \code{getLinkContent} implements content
-  download in chunks which has been proven to be a stabler
-  approach for large content requests.
+\code{getLinkContent} downloads and extracts content from
+weblinks for \code{\link[tm]{Corpus}} objects. Typically it
+is integrated and called as a post-processing function
+(field:\code{$postFUN}) for most \code{\link{WebSource}}
+objects. \code{getLinkContent} implements content download
+in chunks which has been proven to be a stabler approach
+for large content requests.
 }
 \seealso{
-  \code{\link{WebSource}} \code{\link[RCurl]{getURL}}
-  \code{\link[boilerpipeR]{Extractor}}
+\code{\link{WebSource}} \code{\link[RCurl]{getURL}}
+\code{\link[boilerpipeR]{Extractor}}
 }
 

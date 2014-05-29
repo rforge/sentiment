@@ -3,7 +3,7 @@
 \alias{readReutersNews}
 \title{Get feed data from Reuters News RSS feed channels. Reuters provides numerous feed}
 \usage{
-  ReutersNewsSource(query = "businessNews", ...)
+ReutersNewsSource(query = "businessNews", ...)
 }
 \arguments{
   \item{query}{Reuters News RSS Feed, see
@@ -16,14 +16,14 @@
   \code{\link{WebSource}}}
 }
 \value{
-  WebXMLSource
+WebXMLSource
 }
 \description{
-  channels (\url{http://www.reuters.com/tools/rss}) which
-  can be retrieved through RSS feeds. Only up to 10 items
-  can be retrieved---therefore an alternative retrieval
-  through the Google Reader API
-  (\code{link{GoogleReaderSource}}) could be considered.
+channels (\url{http://www.reuters.com/tools/rss}) which can
+be retrieved through RSS feeds. Only up to 25 items can be
+retrieved---therefore an alternative retrieval through the
+Google Reader API (\code{link{GoogleReaderSource}}) could
+be considered.
 }
 \examples{
 \dontrun{
@@ -31,9 +31,9 @@ corpus <- Corpus(ReutersNewsSource("businessNews"))
 }
 }
 \author{
-  Mario Annau
+Mario Annau
 }
 \seealso{
-  \code{\link{WebSource}}
+\code{\link{WebSource}}
 }
 

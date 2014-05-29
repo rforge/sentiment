@@ -4,9 +4,9 @@
 \title{WebCorpus retrieved from Yahoo! News for the search term "Microsoft"
 through the YahooNewsSource. Length of retrieved corpus is 20.}
 \description{
-  WebCorpus retrieved from Yahoo! News for the search term
-  "Microsoft" through the YahooNewsSource. Length of
-  retrieved corpus is 20.
+WebCorpus retrieved from Yahoo! News for the search term
+"Microsoft" through the YahooNewsSource. Length of
+retrieved corpus is 20.
 }
 \examples{
 #Data set has been generated as follows:
@@ -15,11 +15,7 @@ yahoonews <- WebCorpus(YahooNewsSource("Microsoft"))
 }
 }
 \author{
-  Mario Annau
-}
-\references{
-  \url{search.twitter.com}
+Mario Annau
 }
 \keyword{data}
-\keyword{datasets}
 

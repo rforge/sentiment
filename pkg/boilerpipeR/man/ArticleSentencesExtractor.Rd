@@ -2,7 +2,7 @@
 \alias{ArticleSentencesExtractor}
 \title{A full-text extractor which is tuned towards extracting sentences from news articles.}
 \usage{
-  ArticleSentencesExtractor(content, ...)
+ArticleSentencesExtractor(content, ...)
 }
 \arguments{
   \item{content}{Text content as character}
@@ -10,20 +10,20 @@
   \item{...}{additional parameters}
 }
 \value{
-  extracted text as character
+extracted text as character
 }
 \description{
-  A full-text extractor which is tuned towards extracting
-  sentences from news articles.
+A full-text extractor which is tuned towards extracting
+sentences from news articles.
 }
 \examples{
 data(content)
 extract <- ArticleSentencesExtractor(content)
 }
 \author{
-  Mario Annau
+Mario Annau
 }
 \seealso{
-  \code{\link{Extractor}}
+\code{\link{Extractor}}
 }
 

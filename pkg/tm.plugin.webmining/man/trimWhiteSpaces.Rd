@@ -2,20 +2,19 @@
 \alias{trimWhiteSpaces}
 \title{Trim White Spaces from Text Document.}
 \usage{
-  trimWhiteSpaces(txt)
+trimWhiteSpaces(txt)
 }
 \arguments{
   \item{txt}{character}
 }
 \description{
-  Transformation function, actually equal to
-  stripWhiteSpace applicable for simple strings using Perl
-  parser
+Transformation function, actually equal to stripWhiteSpace
+applicable for simple strings using Perl parser
 }
 \author{
-  Mario Annau
+Mario Annau
 }
 \seealso{
-  \code{\link{stripWhitespace}}
+\code{\link{stripWhitespace}}
 }
 

@@ -2,7 +2,7 @@
 \alias{LargestContentExtractor}
 \title{A full-text extractor which extracts the largest text component of a page.}
 \usage{
-  LargestContentExtractor(content, ...)
+LargestContentExtractor(content, ...)
 }
 \arguments{
   \item{content}{Text content as character}
@@ -10,21 +10,21 @@
   \item{...}{additional parameters}
 }
 \value{
-  extracted text as character
+extracted text as character
 }
 \description{
-  For news articles, it may perform better than the
-  \code{\link{DefaultExtractor}}, but usually worse than
-  \code{\link{ArticleExtractor}}.
+For news articles, it may perform better than the
+\code{\link{DefaultExtractor}}, but usually worse than
+\code{\link{ArticleExtractor}}.
 }
 \examples{
 data(content)
 extract <- LargestContentExtractor(content)
 }
 \author{
-  Mario Annau
+Mario Annau
 }
 \seealso{
-  \code{\link{Extractor}}
+\code{\link{Extractor}}
 }
 

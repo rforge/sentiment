@@ -2,7 +2,7 @@
 \alias{KeepEverythingExtractor}
 \title{Marks everything as content.}
 \usage{
-  KeepEverythingExtractor(content, ...)
+KeepEverythingExtractor(content, ...)
 }
 \arguments{
   \item{content}{Text content as character}
@@ -10,19 +10,19 @@
   \item{...}{additional parameters}
 }
 \value{
-  extracted text as character
+extracted text as character
 }
 \description{
-  Marks everything as content.
+Marks everything as content.
 }
 \examples{
 data(content)
 extract <- KeepEverythingExtractor(content)
 }
 \author{
-  Mario Annau
+Mario Annau
 }
 \seealso{
-  \code{\link{Extractor}}
+\code{\link{Extractor}}
 }
 

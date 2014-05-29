@@ -3,9 +3,8 @@
 \alias{removeNonASCII.PlainTextDocument}
 \title{Remove non-ASCII characters from Text.}
 \usage{
-  removeNonASCII(x,
-    fields = c("Content", "Heading", "Description"),
-    from = "UTF-8", to = "ASCII//TRANSLIT")
+removeNonASCII(x, fields = c("Content", "Heading", "Description"),
+  from = "UTF-8", to = "ASCII//TRANSLIT")
 }
 \arguments{
   \item{x}{object of PlainTextDocument class}
@@ -20,8 +19,7 @@
   "ASCII//TRANSLIT"}
 }
 \description{
-  This is a helper function to generate package data
-  without non-ASCII character and omit the warning at R CMD
-  check.
+This is a helper function to generate package data without
+non-ASCII character and omit the warning at R CMD check.
 }
 

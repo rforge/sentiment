@@ -6,7 +6,7 @@
 \alias{readWebXML}
 \title{Read content from WebXMLSource/WebHTMLSource/WebJSONSource.}
 \usage{
-  readWeb(spec, doc, parser, contentparser, freeFUN = NULL)
+readWeb(spec, doc, parser, contentparser, freeFUN = NULL)
 }
 \arguments{
   \item{spec}{specification of content reader}
@@ -22,15 +22,15 @@
   (actually only relevant for XML and HTML trees)}
 }
 \value{
-  FunctionGenerator
+FunctionGenerator
 }
 \description{
-  \code{readWeb} is a FunctionGenerator which specifies
-  content retrieval from a \code{\link{WebSource}} content
-  elements. Currently, it is defined for XML, HTML and JSON
-  feeds through \code{readWebXML}, \code{readWebHTML} and
-  \code{readWebJSON}. Also content parsers
-  (\code{tm:::xml_content}, \code{json_content}) need to be
-  defined.
+\code{readWeb} is a FunctionGenerator which specifies
+content retrieval from a \code{\link{WebSource}} content
+elements. Currently, it is defined for XML, HTML and JSON
+feeds through \code{readWebXML}, \code{readWebHTML} and
+\code{readWebJSON}. Also content parsers
+(\code{xml_content}, \code{json_content}) need to be
+defined.
 }
 

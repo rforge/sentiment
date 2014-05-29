@@ -19,7 +19,7 @@
 #' @title Retrieve structured, textual data from various web sources
 #' @author Mario Annau \email{mario.annau@@gmail}
 #' @keywords package
-#' @seealso \code{\link{WebCorpus}} \code{\link{GoogleBlogSearchSource}} \code{\link{GoogleFinanceSource}} \code{\link{GoogleNewsSource}} \code{\link{NYTimesSource}} \code{\link{ReutersNewsSource}} \code{\link{TwitterSource}} \code{\link{YahooFinanceSource}} \code{\link{YahooInplaySource}} \code{\link{YahooNewsSource}} \code{\link{GoogleReaderSource}}
+#' @seealso \code{\link{WebCorpus}} \code{\link{GoogleBlogSearchSource}} \code{\link{GoogleFinanceSource}} \code{\link{GoogleNewsSource}} \code{\link{NYTimesSource}} \code{\link{ReutersNewsSource}} \code{\link{YahooFinanceSource}} \code{\link{YahooInplaySource}} \code{\link{YahooNewsSource}} 
 #' @examples
 #' \dontrun{
 #' googleblogsearch <- WebCorpus(GoogleBlogSearchSource("Microsoft"))
@@ -27,15 +27,9 @@
 #' googlenews <- WebCorpus(GoogleNewsSource("Microsoft"))
 #' nytimes <- WebCorpus(NYTimesSource("Microsoft", appid = nytimes_appid))
 #' reutersnews <- WebCorpus(ReutersNewsSource("businessNews"))
-#' twitter <- WebCorpus(TwitterSource("Microsoft"))
 #' yahoofinance <- WebCorpus(YahooFinanceSource("MSFT"))
 #' yahooinplay <- WebCorpus(YahooInplaySource())
 #' yahoonews <- WebCorpus(YahooNewsSource("Microsoft"))
-#' 
-#' token <- auth.google.reader()
-#' feed <- "http://feeds.feedburner.com/RBloggers"
-#' test <- WebCorpus(GoogleReaderSource(feed, auth.token = token, params = list(n = 100)))
-
 #' }
 NULL
 
@@ -44,28 +38,10 @@ NULL
 #' @name yahoonews
 #' @docType data
 #' @author Mario Annau
-#' @references \url{search.twitter.com}
 #' @keywords data
 #' @examples
 #' #Data set has been generated as follows:
 #' \dontrun{
 #' yahoonews <- WebCorpus(YahooNewsSource("Microsoft"))
-#' }
-NULL
-
-#' WebCorpus retrieved from the Google Reader API for the R-Bloggers blog 
-#' consisting only of meta data (no main content available). Length of 
-#' retrieved corpus is 1000.
-#' @name rbloggers
-#' @docType data
-#' @author Mario Annau
-#' @references \url{http://feeds.feedburner.com/RBloggers}
-#' @keywords data
-#' @examples
-#' #Data set has been generated as follows:
-#' \dontrun{
-#' token <- auth.google.reader(email="<username>@@gmail.com", password="<password>")
-#' rbloggers <- WebCorpus(GoogleReaderSource("http://feeds.feedburner.com/RBloggers", token, params = list(n = 1000)), 
-#' 		postFUN = NULL)
 #' }
 NULL

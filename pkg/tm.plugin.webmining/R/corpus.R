@@ -3,8 +3,8 @@
 #' constructs a derived class of \code{\link[tm]{Corpus}}. Most importantly, \code{WebCorpus}
 #' calls \code{$PostFUN} on the generated \code{WebCorpus}, which retrieves the main content
 #' for most implemented \code{WebSource}s. Thus it enables an efficient retrieval of new feed items
-#' (\code{\link{corpus.update}}). All additional WebCorpus fields are added to \code{\link[tm]{CMetaData}}
-#' like \code{$Source}, \code{$ReaderControl} and \code{$PostFUN}.
+#' (\code{\link{corpus.update}}). All additional WebCorpus fields are added to \code{tm$meta}
+#' like \code{$source}, \code{$readerControl} and \code{$postFUN}.
 #' @param x object of type Source, see also \code{\link{Corpus}}
 #' @param readerControl specifies reader to be used for \code{Source}, defaults to
 #' list(reader = x$DefaultReader, language = "en"
@@ -13,34 +13,95 @@
 #' @param retryEmpty specifies if retrieval for empty content elements should be repeated, 
 #' defaults to TRUE
 #' @param ... additional parameters for Corpus function (actually Corpus reader)
+#' @importFrom tm Corpus reader getElem stepNext eoi SimpleSource
 #' @export
-WebCorpus <- function(x, readerControl = list(reader = x$DefaultReader, language = "en"), 
-		postFUN = x$PostFUN, retryEmpty = T, ...){
-	corpus <- Corpus(x, readerControl, ...)
-	if(!is.null(postFUN)){
-		corpus <- postFUN(corpus)
-	}
-	
-	cm <- CMetaData(corpus)
-	
-	cm$MetaData$Source <- x
-	cm$MetaData$ReaderControl <- readerControl
-	cm$MetaData$PostFUN <- postFUN
-	
-	attr(corpus, "CMetaData") <- cm
-	class(corpus) <- c("WebCorpus", class(corpus))
-	if(retryEmpty){
-		corpus <- getEmpty(corpus)
-	}
-	corpus
-	
+WebCorpus <- function(x, readerControl = list(reader = reader(x), language = "en"),
+    postFUN = x$postFUN, retryEmpty = TRUE, ...)
+{
+  stopifnot(inherits(x, "WebSource"))
+  
+  readerControl <- prepareReader(readerControl, reader(x))
+  
+  if (is.function(readerControl$init))
+    readerControl$init()
+  
+  if (is.function(readerControl$exit))
+    on.exit(readerControl$exit())
+  
+  tdl <- vector("list", length(x))
+  counter <- 1
+  while (!eoi(x)) {
+    x <- stepNext(x)
+    elem <- getElem(x)
+    doc <- readerControl$reader(elem,
+        readerControl$language,
+        as.character(counter))
+    tdl[[counter]] <- doc
+    counter <- counter + 1
+  }
+
+  corpus <- structure(list(content = tdl,
+          meta = CorpusMeta(source = x, readerControl = readerControl, postFUN = postFUN),
+          dmeta = data.frame(row.names = seq_along(tdl))),
+      class = c("WebCorpus", "VCorpus", "Corpus"))
+  if(retryEmpty){
+    corpus <- getEmpty(corpus)
+  }
+  corpus
 }
 
-#'@S3method [ WebCorpus
+# TODO: Tell Ingo to export CorpusMeta
+CorpusMeta <-
+    function(..., meta = NULL)
+{
+  if (is.null(meta))
+    meta <- list(...)
+  
+  stopifnot(is.list(meta))
+  
+  structure(meta, class = "CorpusMeta")
+}
+
+# TODO: Tell Ingo to export prepareReader
+prepareReader <- 
+function(readerControl, reader = NULL, ...)
+{
+  if (is.null(readerControl$reader))
+    readerControl$reader <- reader
+  if (inherits(readerControl$reader, "FunctionGenerator"))
+    readerControl$reader <- readerControl$reader(...)
+  if (is.null(readerControl$language))
+    readerControl$language <- "en"
+  readerControl
+}
+
+#WebCorpus <- function(x, readerControl = list(reader = x$reader, language = "en"), 
+#		postFUN = x$postFUN, retryEmpty = T, ...){
+#	corpus <- Corpus(x, readerControl, ...)
+#	if(!is.null(postFUN)){
+#		corpus <- postFUN(corpus)
+#	}
+#
+#	cm <- CMetaData(corpus)
+#	
+#	cm$MetaData$Source <- x
+#	cm$MetaData$ReaderControl <- readerControl
+#	cm$MetaData$PostFUN <- postFUN
+#	
+#	attr(corpus, "CMetaData") <- cm
+#	class(corpus) <- c("WebCorpus", class(corpus))
+#	if(retryEmpty){
+#		corpus <- getEmpty(corpus)
+#	}
+#	corpus
+#	
+#}
+
+#' @S3method [ WebCorpus
 #' @noRd
 `[.WebCorpus` <- function(x, i) {
 	if (missing(i)) return(x)
-	corpus <- .VCorpus(NextMethod("["), CMetaData(x), DMetaData(x)[i, , drop = FALSE])
+	corpus <- NextMethod("[")
 	class(corpus) <- c("WebCorpus", class(corpus))
 	corpus
 }
@@ -52,7 +113,7 @@ WebCorpus <- function(x, readerControl = list(reader = x$DefaultReader, language
 #' in the  \code{TextDocument}'s meta data, only new feed elements are
 #' downloaded and added to the \code{\link{WebCorpus}}.
 #' All relevant information regariding the original source feeds are stored
-#' in the \code{\link{WebCorpus}}' meta data (\code{\link[tm]{CMetaData}}).
+#' in the \code{\link{WebCorpus}}' meta data (\code{\link[tm]{meta}}).
 #' @param x object of type \code{\link{WebCorpus}}
 #' @param ... 
 #' \describe{
@@ -72,14 +133,18 @@ corpus.update <- function(x, ...){
 #' @param fieldname name of \code{\link{Corpus}} field name to be used as ID, defaults to "ID"
 #' @param retryempty specifies if empty corpus elements should be downloaded again, defaults to TRUE
 #' @param ... additional parameters to \code{\link{Corpus}} function
+#' @importFrom tm Corpus
+#' @importFrom NLP meta
 #' @noRd
 corpus.update.WebCorpus <- 
-function(x, fieldname = "ID", retryempty = T, verbose = F, ...) {
-	cm <- CMetaData(x)
+function(x, fieldname = "id", retryempty = TRUE, verbose = FALSE, ...) {
+	cm <- x$meta
 	
-	newsource <- source.update(cm$MetaData$Source)
+	newsource <- source.update(cm$source)
 	
-	newcorpus <- Corpus(newsource, readerControl = cm$MetaData$ReaderControl, postFUN = NULL, ...)
+  #WebCorpus
+	newcorpus <- WebCorpus(newsource, readerControl = cm$MetaData$ReaderControl, 
+      retryEmpty = FALSE, ...)
 	#intersect on ID
 	id_old <- sapply(x, meta, fieldname)
 	if(any(sapply(id_old, length) == 0))
@@ -92,11 +157,11 @@ function(x, fieldname = "ID", retryempty = T, verbose = F, ...) {
 	newcorpus <- newcorpus[!id_new %in% id_old]
 	
 	if(length(newcorpus) > 0){
-		if(!is.null(cm$MetaData$PostFUN)){
-			newcorpus <- cm$MetaData$PostFUN(newcorpus)
+		if(!is.null(cm$postFUN)){
+			newcorpus <- cm$postFUN(newcorpus)
 		}
 		corpus <- c(x, newcorpus)
-		attr(corpus, "CMetaData") <- CMetaData(x)
+		#attr(corpus, "CMetaData") <- CMetaData(x)
 		class(corpus) <- c("WebCorpus", class(corpus))
 	}else{
 		corpus <- x
@@ -116,7 +181,7 @@ function(x, fieldname = "ID", retryempty = T, verbose = F, ...) {
 
 #' @title Retrieve Empty Corpus Elements through \code{$postFUN}. 
 #' @description Retrieve content of all empty (textlength equals zero) corpus elements. If 
-#' corpus element is empty, \code{$postFUN} is called (specified in \code{\link{CMetaData}})
+#' corpus element is empty, \code{$postFUN} is called (specified in \code{\link{meta}})
 #' @param x object of type \code{\link{WebCorpus}}
 #' @param ... additional parameters to PostFUN
 #' @seealso \code{\link{WebCorpus}}
@@ -128,30 +193,27 @@ getEmpty <- function(x, ...){
 	
 
 #' @S3method getEmpty WebCorpus
+#' @importFrom NLP content
 #' @noRd
 getEmpty.WebCorpus <- 
 function(x, nChar = 0, ...){
-	cm <- CMetaData(x)
-	noContent <- which(sapply(x, nchar) <= nChar)
+	cm <- x$meta
+	noContent <- which(sapply(x, function(y){
+            cy <- content(y)
+            if(length(cy) == 0L) 0
+            else nchar(content(y)) 
+          }) <= nChar)
 	if(length(noContent) > 0){
 		corp_nocontent <- x[noContent]
-		if(!is.null(cm$MetaData$PostFUN)){
-			corp_nocontent <- cm$MetaData$PostFUN(corp_nocontent, ...)
+		if(!is.null(cm$postFUN)){
+			corp_nocontent <- cm$postFUN(corp_nocontent, ...)
 		}
-		x[noContent] <- corp_nocontent
+    # TODO: stupid construct because direct assignment of corpus does not work
+    for(i in 1:length(noContent)){
+      x[[noContent[i]]] <- corp_nocontent[[i]]
+    }
 	}
 	x
-}
-
-#' VCorpus
-#' @noRd
-.VCorpus <-
-    function(x, cmeta, dmeta)
-{
-  attr(x, "CMetaData") <- cmeta
-  attr(x, "DMetaData") <- dmeta
-  class(x) <- c("VCorpus", "Corpus", "list")
-  x
 }
 
 

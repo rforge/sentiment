@@ -16,13 +16,14 @@ extract <- function(x, extractor, ...) UseMethod("extract", x)
 #' @param x PlainTextDocument
 #' @param extractor default extraction function to be used, defaults to \code{\link{extractContentDOM}}
 #' @param ... additional parameters to extractor function
+#' @importFrom NLP content
 #' @export
 #' @noRd
 extract.PlainTextDocument <- function(x, extractor = extractContentDOM, ...){
-	Content(x) <- tryCatch(extractor(x, ...),
+	content(x) <- tryCatch(extractor(x, ...),
 			error = function(e){
 				warning(e)
-				Content(x)
+				content(x)
 			})
 	x
 } 
@@ -37,10 +38,7 @@ extract.PlainTextDocument <- function(x, extractor = extractContentDOM, ...){
 #' @param encoding specifies local encoding to be used, depending on platform
 #' @param ... Additional parameters for \code{\link{htmlTreeParse}} 
 #' @seealso \code{\link{xmlNode}}
-#' @importFrom XML htmlTreeParse
-#' @importFrom XML toString.XMLNode
-#' @importFrom XML xmlChildren
-#' @importFrom XML xmlValue
+#' @importFrom XML htmlTreeParse toString.XMLNode xmlChildren xmlValue free
 #' @seealso \code{\link{htmlTreeParse}} \code{\link{encloseHTML}}
 #' @note Input text should be enclosed in <html>'TEXT'</html> tags to ensure correct
 #' DOM parsing (issue especially under .Platform$os.type = 'windows')
@@ -68,6 +66,7 @@ function(url, asText = TRUE, encoding, ...){
 	XML::free(tree)
 	return(val)
 }
+
 
 #' @title Extract Main HTML Content from DOM
 #' @description Function extracts main HTML Content using its Document Object Model.

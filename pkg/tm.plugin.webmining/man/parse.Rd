@@ -2,8 +2,7 @@
 \alias{parse}
 \title{Wrapper/Convenience function to ensure right encoding for different Platforms}
 \usage{
-  parse(..., asText = TRUE,
-    type = c("XML", "HTML", "JSON"))
+parse(..., asText = TRUE, type = c("XML", "HTML", "JSON"))
 }
 \arguments{
   \item{...}{arguments to be passed to specified parser
@@ -16,10 +15,10 @@
   "XML"}
 }
 \description{
-  Depending on specified type one of the following parser
-  functions is called: \describe{
-  \item{XML}{\code{\link{xmlInternalTreeParse}}}
-  \item{HTML}{\code{\link{htmlTreeParse}}}
-  \item{JSON}{\code{\link{fromJSON}}} }
+Depending on specified type one of the following parser
+functions is called: \describe{
+\item{XML}{\code{\link{xmlInternalTreeParse}}}
+\item{HTML}{\code{\link{htmlTreeParse}}}
+\item{JSON}{\code{\link{fromJSON}}} }
 }
 
